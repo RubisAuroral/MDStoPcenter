@@ -28,7 +28,7 @@ adjacencyListElement * BnB(Graph *g, adjacencyListElement *D, adjacencyListEleme
         U2 = difference(U, solo);
         free(solo);
         //mark i as branched
-        
+        //test
     }
     printf("b\n");
 }
