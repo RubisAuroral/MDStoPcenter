@@ -117,16 +117,14 @@ int listeSize(adjacencyListElement *L){
   return count;
 }
 
-void addListeToListe(adjacencyListElement ** Liste1, adjacencyListElement * Liste2){
-  if (*Liste1 == NULL){
-        *Liste1 = Liste2;
-        return;
-    }
-    adjacencyListElement* current = *Liste1;
-    while (current->next != NULL) {
-        current = current->next;
-    }
-    current->next = Liste2;
+adjacencyListElement * Union(adjacencyListElement * Liste1, adjacencyListElement * Liste2){
+  adjacencyListElement * resultat = Liste1;
+  adjacencyListElement * temp = Liste2;
+  while(temp!=NULL){
+    if(!inL(Liste1,temp->v,-1)) ajoute(&resultat, temp->v);
+    temp=temp->next;
+  }
+  return resultat;
 }
 
 adjacencyListElement * Intersection(adjacencyListElement *Liste1, adjacencyListElement *Liste2, int sommet){
