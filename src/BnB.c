@@ -32,20 +32,26 @@ adjacencyListElement * BnB(Graph *g, adjacencyListElement *D, adjacencyListEleme
     if(B==NULL){
         return Dnow;
     }
-    for(int i=0; i<listeSize(B); i++){
-        adjacencyListElement *U2 = difference(U, g->adjacencyLists[B->v]);
+    //trier B
+    adjacencyListElement *Btemp = B;
+    while(Btemp!=NULL){
+        adjacencyListElement *U2 = difference(U, g->adjacencyLists[Btemp->v]);
         adjacencyListElement *solo = NULL;
-        solo->v=B->v;
+        solo -> v = Btemp -> v;
         U2 = difference(U, solo);
         free(solo);
-        //mark i as branched
+        g -> branched[Btemp->v] = 1;
         adjacencyListElement *newD0 = BnB(g, D, U2, Dnow);
         if(listeSize(newD0)<listeSize(Dnow)){
             Dnow=newD0;
         }
-        //test
+        Btemp = Btemp -> next;
     }
-    //mark all i as unbranched
+    free(Btemp);
+    while(B!=NULL){
+        g -> branched[B->v] = 1;
+        B= B -> next;
+    }
     printf("b\n");
     return NULL;
 }

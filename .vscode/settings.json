@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "p_center.h": "c"
+        "p_center.h": "c",
+        "math.h": "c"
     }
 }

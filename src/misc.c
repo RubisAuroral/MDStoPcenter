@@ -82,6 +82,7 @@ Graph* cleanGraph(int x){
         for (int i = 0; i < nbVertices; i++){
             g -> adjacencyLists[i] = NULL;
             g -> dom[i] = 0 ;
+            g -> branched[i] = 0 ;
         }
         return g;
 }
