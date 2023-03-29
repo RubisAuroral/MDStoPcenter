@@ -116,3 +116,15 @@ int listeSize(adjacencyListElement *L){
   }
   return count;
 }
+
+void addListeToListe(adjacencyListElement ** Liste1, adjacencyListElement * Liste2){
+  if (*Liste1 == NULL){
+        *Liste1 = Liste2;
+        return;
+    }
+    adjacencyListElement* current = *Liste1;
+    while (current->next != NULL) {
+        current = current->next;
+    }
+    current->next = Liste2;
+}
