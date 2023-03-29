@@ -2,5 +2,4 @@
 #include "misc.h"
 #define UNUSED(x) (void)(x)
 
-
 adjacencyListElement * BnB(Graph *g, adjacencyListElement *D, adjacencyListElement *U, adjacencyListElement *Dnow);

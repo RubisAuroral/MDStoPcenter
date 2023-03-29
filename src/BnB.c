@@ -4,6 +4,10 @@
 #define UNUSED(x) (void)(x)
 extern int k;
 
+int score(Graph *g, adjacencyListElement * IS, adjacencyListElement * S[4], int sommet){
+    
+}
+
 void printAllS(adjacencyListElement * S[4]){
     printf("S1 : ");
     afficheListe(S[0]);
@@ -38,8 +42,6 @@ void setS(Graph *g, adjacencyListElement * S[4], adjacencyListElement *Df){
 
 adjacencyListElement *ReduceBranches(Graph *g, adjacencyListElement *D, adjacencyListElement *U, adjacencyListElement *Dnow){
     UNUSED(g);
-    UNUSED(D);
-    UNUSED(U);
     UNUSED(Dnow);
     printf("k : %d\n", k);
     adjacencyListElement * P = NULL;
@@ -57,6 +59,38 @@ adjacencyListElement *ReduceBranches(Graph *g, adjacencyListElement *D, adjacenc
     addListeToListe(&C, S[1]);
     printf("C : ");
     afficheListe(C);
+    
+    while(U!=NULL){
+        int scoretot=0;
+        int memory=0;
+        int allscore[k];
+        for(int i=0; i<k; i++) allscore[i]=2;
+        
+        for(int i=0; i<k; i++){ 
+            if(I[i]!=NULL){
+                allscore[i]=score(g, I[0], S, U->v);
+                scoretot+=allscore[i];
+            }
+        }
+
+        if(scoretot>=0){
+            ajoute(&P, U->v);
+            for(int i=0; i<k; i++){ 
+                if(allscore[i]!=2 && allscore[i]>0){
+                    ajoute(&I[i], U->v);
+                    memory=1;
+                }
+                if(allscore[i]<0); //c'est chiant
+            }
+            if(!memory){
+                int j=0;
+                while(I[j]!=NULL && j<k) j++;
+                if(j<k) ajoute(&I[j], U->v);
+            }
+        }
+        U=U->next;
+    }
+
     return NULL;
 }
 
@@ -76,7 +110,9 @@ adjacencyListElement * BnB(Graph *g, adjacencyListElement *D, adjacencyListEleme
     if(B==NULL){
         return Dnow;
     }
+    
     //trier B
+    
     adjacencyListElement *Btemp = B;
     while(Btemp!=NULL){
         adjacencyListElement *U2 = difference(U, g->adjacencyLists[Btemp->v]);
