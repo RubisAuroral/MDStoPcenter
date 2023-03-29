@@ -76,6 +76,7 @@ Graph* cleanGraph(int x){
 	Graph *g = (Graph*)malloc(sizeof(*g));
     	int nbVertices=x;
     	g -> dom = (int*)malloc(nbVertices*sizeof(int));
+      g -> branched = (int*)malloc(nbVertices*sizeof(int));
     	g -> adjacencyLists = (adjacencyListElement**)malloc(nbVertices*sizeof(adjacencyListElement*));
         if (g-> adjacencyLists == NULL){exit(0);}
         g -> nbVertices = nbVertices;

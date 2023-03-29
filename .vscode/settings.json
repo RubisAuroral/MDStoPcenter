@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "p_center.h": "c",
-        "math.h": "c"
+        "math.h": "c",
+        "preproc.h": "c"
     }
 }
