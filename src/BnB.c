@@ -11,8 +11,6 @@ int score(Graph *g, adjacencyListElement * IS, adjacencyListElement * C, adjacen
     adjacencyListElement * N1 = Intersection(g->adjacencyLists[sommet], IS, -1);
     adjacencyListElement * N2 = Intersection(C, P, -1);
     if(N2!=NULL) N2=Intersection(N2, g->adjacencyLists[sommet], sommet);
-    printf("N2 : ");
-    afficheListe(N2);
     return 0;
 }
 
@@ -49,7 +47,6 @@ void setS(Graph *g, adjacencyListElement * S[4], adjacencyListElement *Df){
 }
 
 adjacencyListElement *ReduceBranches(Graph *g, adjacencyListElement *D, adjacencyListElement *U, adjacencyListElement *Dnow){
-    UNUSED(g);
     UNUSED(Dnow);
     printf("k : %d\n", k);
     adjacencyListElement * P = NULL;
@@ -63,8 +60,8 @@ adjacencyListElement *ReduceBranches(Graph *g, adjacencyListElement *D, adjacenc
     adjacencyListElement * C = NULL; 
     setS(g, S, D);
     printAllS(S);
-    addListeToListe(&C, S[0]);
-    addListeToListe(&C, S[1]);
+    C=Union(C, S[0]);
+    C=Union(C, S[1]);
     printf("C : ");
     afficheListe(C);
     
