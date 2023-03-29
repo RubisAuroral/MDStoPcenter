@@ -2,11 +2,14 @@
 #include "../headers/preproc.h"
 #include "../headers/BnB.h"
 
-int main(){
+int k=0;
+
+int main(int argc, char *argv[]){
 	//Graph *g;
 	Graph *gd;
 	//char *file=argv[1];
 	//g = initializeGraph(file);
+	if(argc>1)k=atoi(argv[1]);
 	gd = cleanGraph(12);
 	adjacencyListElement *tabN[gd->nbVertices][3];
 	/*for(int i=0; i<g->nbVertices; i++){
