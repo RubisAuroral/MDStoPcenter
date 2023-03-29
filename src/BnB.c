@@ -13,7 +13,7 @@ int score(Graph *g, adjacencyListElement * IS, adjacencyListElement * C, adjacen
     if(N2!=NULL) N2=Intersection(N2, g->adjacencyLists[sommet], sommet);
     return 0;
 }
-
+//va
 void printAllS(adjacencyListElement * S[4]){
     printf("S1 : ");
     afficheListe(S[0]);
