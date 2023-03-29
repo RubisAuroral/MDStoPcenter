@@ -4,8 +4,16 @@
 #define UNUSED(x) (void)(x)
 extern int k;
 
-int score(Graph *g, adjacencyListElement * IS, adjacencyListElement * S[4], int sommet){
-    
+
+
+int score(Graph *g, adjacencyListElement * IS, adjacencyListElement * C, adjacencyListElement * P, adjacencyListElement * S[4], int sommet){
+    afficheListe(IS);
+    adjacencyListElement * N1 = Intersection(g->adjacencyLists[sommet], IS, -1);
+    adjacencyListElement * N2 = Intersection(C, P, -1);
+    if(N2!=NULL) N2=Intersection(N2, g->adjacencyLists[sommet], sommet);
+    printf("N2 : ");
+    afficheListe(N2);
+    return 0;
 }
 
 void printAllS(adjacencyListElement * S[4]){
@@ -68,7 +76,7 @@ adjacencyListElement *ReduceBranches(Graph *g, adjacencyListElement *D, adjacenc
         
         for(int i=0; i<k; i++){ 
             if(I[i]!=NULL){
-                allscore[i]=score(g, I[0], S, U->v);
+                allscore[i]=score(g, I[0],C,P, S, U->v);
                 scoretot+=allscore[i];
             }
         }
@@ -90,7 +98,12 @@ adjacencyListElement *ReduceBranches(Graph *g, adjacencyListElement *D, adjacenc
         }
         U=U->next;
     }
-
+    for(int i=0; i<k; i++){
+        if(I[i]!=NULL){
+            printf("IS%d : ", i);
+            afficheListe(I[i]);
+        }
+    }
     return NULL;
 }
 
@@ -112,7 +125,7 @@ adjacencyListElement * BnB(Graph *g, adjacencyListElement *D, adjacencyListEleme
     }
     
     //trier B
-    
+
     adjacencyListElement *Btemp = B;
     while(Btemp!=NULL){
         adjacencyListElement *U2 = difference(U, g->adjacencyLists[Btemp->v]);
