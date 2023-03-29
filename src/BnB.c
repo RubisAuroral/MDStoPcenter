@@ -4,6 +4,38 @@
 #define UNUSED(x) (void)(x)
 extern int k;
 
+void printAllS(adjacencyListElement * S[4]){
+    printf("S1 : ");
+    afficheListe(S[0]);
+    printf("S2 : ");
+    afficheListe(S[1]);
+    printf("S3 : ");
+    afficheListe(S[2]);
+    printf("S4 : ");
+    afficheListe(S[3]);
+}
+
+void setS(Graph *g, adjacencyListElement * S[4], adjacencyListElement *Df){
+    for(int i=0; i<g->nbVertices; i++){
+        if(inL(Df, i, -1)==0 && listeSize(g->adjacencyLists[i])!=0){
+            switch(g->dom[i]){
+                case 1:
+                    switch(g->branched[i]){
+                        case 1: ajoute(&S[3], i); break;
+                        case 0: ajoute(&S[1], i); break;
+                    }
+                    break;
+                case 0:
+                    switch(g->branched[i]){
+                        case 1: ajoute(&S[2], i); break;
+                        case 0: ajoute(&S[0], i); break;
+                    }
+                    break;
+            }
+        }
+    }
+}
+
 adjacencyListElement *ReduceBranches(Graph *g, adjacencyListElement *D, adjacencyListElement *U, adjacencyListElement *Dnow){
     UNUSED(g);
     UNUSED(D);
@@ -11,8 +43,20 @@ adjacencyListElement *ReduceBranches(Graph *g, adjacencyListElement *D, adjacenc
     UNUSED(Dnow);
     printf("k : %d\n", k);
     adjacencyListElement * P = NULL;
+    
     adjacencyListElement * S[4];
-    adjacencyListElement * I[k]; 
+    for(int i=0; i<4; i++) S[i]=NULL;
+    
+    adjacencyListElement * I[k];
+    for(int i=0; i<k; i++) I[i]=NULL;
+
+    adjacencyListElement * C = NULL; 
+    setS(g, S, D);
+    printAllS(S);
+    addListeToListe(&C, S[0]);
+    addListeToListe(&C, S[1]);
+    printf("C : ");
+    afficheListe(C);
     return NULL;
 }
 
