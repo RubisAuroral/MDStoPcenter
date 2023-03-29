@@ -128,3 +128,13 @@ void addListeToListe(adjacencyListElement ** Liste1, adjacencyListElement * List
     }
     current->next = Liste2;
 }
+
+adjacencyListElement * Intersection(adjacencyListElement *Liste1, adjacencyListElement *Liste2, int sommet){
+  adjacencyListElement * temp = Liste2;
+  adjacencyListElement * resultat = NULL;
+  while(temp!=NULL){
+    if(inL(Liste1,temp->v,sommet)) ajoute(&resultat, temp->v);
+    temp=temp->next;
+  }
+  return resultat;
+}
