@@ -4,16 +4,53 @@
 #define UNUSED(x) (void)(x)
 extern int k;
 
+void removeConflict(Graph *g, adjacencyListElement *IS, int sommet, int number){
+    adjacencyListElement *temp=g->adjacencyLists[sommet];
+    while(number>0 && temp!=NULL){
+        if(inL(IS,temp->v,-1)){
+            IS=deleteNode(IS, temp->v);
+        }
+        temp=temp->next;
+    }
+}
 
+int maxIS(adjacencyListElement * I[k]){
+    int max=0;
+    for(int i=0; i<k;i++){
+        int temp=listeSize(I[i]);
+        if(temp>max) max=temp;
+    }
+    return max;
+}
+
+adjacencyListElement* IkNeighbors(Graph* g, adjacencyListElement* IS) {
+    adjacencyListElement* result = NULL;
+    result = Union(result, IS);
+    adjacencyListElement* temp = IS;
+    while (temp != NULL) {
+        Union(result, g->adjacencyLists[temp->v]);
+        temp = temp->next;
+    }
+    return result;
+}
 
 int score(Graph *g, adjacencyListElement * IS, adjacencyListElement * C, adjacencyListElement * P, adjacencyListElement * S[4], int sommet){
     afficheListe(IS);
     adjacencyListElement * N1 = Intersection(g->adjacencyLists[sommet], IS, -1);
     adjacencyListElement * N2 = Intersection(C, P, -1);
     if(N2!=NULL) N2=Intersection(N2, g->adjacencyLists[sommet], sommet);
-    return 0;
+    if(N2!=NULL){
+        adjacencyListElement * temp = IkNeighbors(g, IS);
+        N2=Intersection(N2, temp, -1);
+    }
+    if(inL(S[0], sommet, -1) && N1==NULL && N2==NULL) return 1;
+    if(inL(S[0], sommet, -1) && N1==NULL && N2!=NULL) return 0;
+    if((inL(S[0], sommet, -1) || inL(S[1], sommet, -1)) && N1!=NULL) return 1-listeSize(N1);
+    if(inL(S[1], sommet, -1) && N1==NULL) return 0;
+    if(inL(S[2], sommet, -1) && N2!=NULL) return 0;
+    if(inL(S[2], sommet, -1) && N2==NULL) return 1;
 }
-//va
+
 void printAllS(adjacencyListElement * S[4]){
     printf("S1 : ");
     afficheListe(S[0]);
@@ -85,7 +122,7 @@ adjacencyListElement *ReduceBranches(Graph *g, adjacencyListElement *D, adjacenc
                     ajoute(&I[i], U->v);
                     memory=1;
                 }
-                if(allscore[i]<0); //c'est chiant
+                if(allscore[i]<0) removeConflict(g, I[i], U->v,allscore[i]);
             }
             if(!memory){
                 int j=0;
@@ -101,7 +138,9 @@ adjacencyListElement *ReduceBranches(Graph *g, adjacencyListElement *D, adjacenc
             afficheListe(I[i]);
         }
     }
-    return NULL;
+    int max = maxIS(I);
+    if(max<listeSize(Dnow)-listeSize(D)) return C;
+    else return difference(C, P);
 }
 
 adjacencyListElement * BnB(Graph *g, adjacencyListElement *D, adjacencyListElement *U, adjacencyListElement *Dnow){
@@ -112,36 +151,39 @@ adjacencyListElement * BnB(Graph *g, adjacencyListElement *D, adjacencyListEleme
     afficheListe(U);
     printf("D0 : ");
     afficheListe(Dnow);
-
+    char c =getchar();
     if(U==NULL){
-        return Dnow;
+        return D;
     }
     adjacencyListElement *B = ReduceBranches(g,D,U,Dnow);
     if(B==NULL){
         return Dnow;
     }
     
-    //trier B
-
+    trierListe(g, B);
     adjacencyListElement *Btemp = B;
     while(Btemp!=NULL){
         adjacencyListElement *U2 = difference(U, g->adjacencyLists[Btemp->v]);
+        adjacencyListElement *D2 = D;
+        ajoute(&D2,Btemp -> v);
         adjacencyListElement *solo = NULL;
-        solo -> v = Btemp -> v;
-        U2 = difference(U, solo);
+        ajoute(&solo,Btemp -> v);
+        U2 = difference(U2, solo);
+        printf("ici\n");
         free(solo);
         g -> branched[Btemp->v] = 1;
-        adjacencyListElement *newD0 = BnB(g, D, U2, Dnow);
+        adjacencyListElement *newD0 = BnB(g, D2, U2, Dnow);
+        afficheListe(newD0);
         if(listeSize(newD0)<listeSize(Dnow)){
+            Dnow=NULL;
             Dnow=newD0;
         }
         Btemp = Btemp -> next;
     }
     free(Btemp);
     while(B!=NULL){
-        g -> branched[B->v] = 1;
+        g -> branched[B->v] = 0;
         B= B -> next;
     }
-    printf("b\n");
-    return NULL;
+    return Dnow;
 }

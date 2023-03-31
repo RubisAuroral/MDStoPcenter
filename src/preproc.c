@@ -16,6 +16,16 @@ int bestToChoose(Graph *gd){
 	return b;
 }
 
+int undomBy(Graph *g, int x){
+	int count=0;
+	adjacencyListElement *temp = g->adjacencyLists[x];
+	while(temp!=NULL){
+		if(g->dom[temp->v]==0) count++;
+		temp=temp->next;
+	}
+	return count;
+}
+
 void domine(int x, Graph *gd){
 	adjacencyListElement *adj = gd->adjacencyLists[x];
 	while (adj != NULL){

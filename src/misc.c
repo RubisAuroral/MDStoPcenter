@@ -136,3 +136,23 @@ adjacencyListElement * Intersection(adjacencyListElement *Liste1, adjacencyListE
   }
   return resultat;
 }
+
+void trierListe(Graph *g, adjacencyListElement** liste) {
+    int trie = 0;
+    while (!trie) {
+        trie = 1;
+        adjacencyListElement* current = liste;
+        adjacencyListElement* previous = NULL;
+        while (current != NULL && current->next != NULL) {
+            if (undomBy(g,current->v) < undomBy(g,current->next->v)) {
+                // Échange les valeurs des noeuds actuel et suivant
+                int temp = current->v;
+                current->v = current->next->v;
+                current->next->v = temp;
+                trie = 0;
+            }
+            previous = current;
+            current = current->next;
+        }
+    }
+}

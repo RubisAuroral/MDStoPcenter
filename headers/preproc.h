@@ -2,6 +2,7 @@
 #include "misc.h"
 
 int bestToChoose(Graph *gd);
+int undomBy(Graph *g, int x);
 void domine(int x, Graph *gd);
 void domineliste(adjacencyListElement *df, Graph *g);
 int count(Graph *gd, int x);

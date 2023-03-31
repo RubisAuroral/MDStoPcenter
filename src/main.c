@@ -64,5 +64,6 @@ int main(int argc, char *argv[]){
 	}
 	free(adeltemp);
 	afficheDom(gd);
-	BnB(gd, df, undomlist(gd),d0);
+	adjacencyListElement *final=BnB(gd, df, undomlist(gd),d0);
+	afficheListe(final);
 }
