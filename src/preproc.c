@@ -106,6 +106,6 @@ void reduceGraph(Graph *gd, int x) {
 
 adjacencyListElement * undomlist(Graph *gd){
 	adjacencyListElement *U = NULL;
-	for(int i=0; i<gd->nbVertices; i++) if(gd->dom[i]==0) ajoute(&U, i);
+	for(int i=0; i<gd->nbVertices; i++) if(gd->dom[i]==0 && gd->adjacencyLists[i]!=NULL) ajoute(&U, i);
 	return U;
 }

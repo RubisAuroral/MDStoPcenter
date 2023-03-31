@@ -10,7 +10,7 @@ int main(int argc, char *argv[]){
 	//char *file=argv[1];
 	//g = initializeGraph(file);
 	if(argc>1)k=atoi(argv[1]);
-	gd = cleanGraph(12);
+	gd = cleanGraph(16);
 	adjacencyListElement *tabN[gd->nbVertices][3];
 	/*for(int i=0; i<g->nbVertices; i++){
 		for(int j=0; j<g->nbVertices;j++){
@@ -23,7 +23,6 @@ int main(int argc, char *argv[]){
 			}
 		}
 	}*/
-	
 	exemple(gd);
 	adjacencyListElement *d0 = NULL;
 	adjacencyListElement *df = NULL;
@@ -33,11 +32,9 @@ int main(int argc, char *argv[]){
 		ajoute(&d0, x);
 		domine(x, gd);
 	}
-
 	for(int i=0; i<gd->nbVertices; i++) tabN[i][0]=createN1(gd, i);
-
 	for(int i=0; i<gd->nbVertices; i++) tabN[i][1]=createN2(gd, i,tabN[i][0]);
-
+	
 	for(int i=0; i<gd->nbVertices; i++){
 		tabN[i][2]=createN3(gd, i,tabN[i][0], tabN[i][1]);
 		if(tabN[i][2]!=NULL){
@@ -53,17 +50,28 @@ int main(int argc, char *argv[]){
 				temp=temp->next;
 			}
 			ajoute(&df,i);
-		} 
+		}
 	}
 	unDom(gd);
-	domineliste(df, gd);
 	adjacencyListElement *adeltemp = adel;
 	while(adeltemp!=NULL){
 	reduceGraph(gd,adeltemp->v);
 		adeltemp=adeltemp->next;
 	}
 	free(adeltemp);
-	afficheDom(gd);
-	adjacencyListElement *final=BnB(gd, df, undomlist(gd),d0);
+	afficherGraph(gd);
+	adjacencyListElement *final=BnB(gd, df, d0);
+	printf("\nFINAL : ");
+	/*for(int i=0; i<16; i++){
+		for(int j=i+1; j<16;j++){
+			adjacencyListElement *testopt = NULL;
+			ajoute(&testopt, i);
+			ajoute(&testopt, j);
+			domineliste(testopt, gd);
+			printf("%d - %d : ", i,j);
+			afficheDom(gd);
+			unDom(gd);
+		}
+	}*/
 	afficheListe(final);
 }

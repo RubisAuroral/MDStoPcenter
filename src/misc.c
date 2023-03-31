@@ -1,14 +1,15 @@
 #include "../headers/p_center.h"
 
 void exemple(Graph *g){
-	Edge edge;
+	int i=0;
+  Edge edge;
 	edge.weight=0;
-	FILE *f = fopen("exemple", "r");
+	FILE *f = fopen("exemple3", "r");
     	while(fscanf(f, "%d %d", &edge.beginIdVertex, &edge.endIdVertex) !=  EOF){
-    		addEdge(g,edge);
+        addEdge(g,edge);
     		addInverseEdge(g,edge);
+        i++;
     	}
-	printf("\n");
 }
 
 void ajoute(adjacencyListElement** firstValue, int nouvelleValeur) {
@@ -47,6 +48,8 @@ adjacencyListElement * deleteNode(adjacencyListElement *L, int x) {
 	  if(temp->v!=x) ajoute(&new, temp->v);
 		temp=temp->next;
 	}
+  printf("Dtemp : ");
+  afficheListe(new);
 	return new;
 }
 

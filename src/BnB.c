@@ -1,5 +1,6 @@
 #include "../headers/p_center.h"
 #include "../headers/misc.h"
+#include "../headers/preproc.h"
 
 #define UNUSED(x) (void)(x)
 extern int k;
@@ -35,7 +36,6 @@ adjacencyListElement* IkNeighbors(Graph* g, adjacencyListElement* IS) {
 }
 
 int score(Graph *g, adjacencyListElement * IS, adjacencyListElement * C, adjacencyListElement * P, adjacencyListElement * S[4], int sommet){
-    afficheListe(IS);
     adjacencyListElement * N1 = Intersection(g->adjacencyLists[sommet], IS, -1);
     adjacencyListElement * N2 = Intersection(C, P, -1);
     if(N2!=NULL) N2=Intersection(N2, g->adjacencyLists[sommet], sommet);
@@ -64,7 +64,7 @@ void printAllS(adjacencyListElement * S[4]){
 
 void setS(Graph *g, adjacencyListElement * S[4], adjacencyListElement *Df){
     for(int i=0; i<g->nbVertices; i++){
-        if(inL(Df, i, -1)==0 && listeSize(g->adjacencyLists[i])!=0){
+        if(listeSize(g->adjacencyLists[i])!=0){
             switch(g->dom[i]){
                 case 1:
                     switch(g->branched[i]){
@@ -94,7 +94,8 @@ adjacencyListElement *ReduceBranches(Graph *g, adjacencyListElement *D, adjacenc
     adjacencyListElement * I[k];
     for(int i=0; i<k; i++) I[i]=NULL;
 
-    adjacencyListElement * C = NULL; 
+    adjacencyListElement * C = NULL;
+    afficheDom(g);
     setS(g, S, D);
     printAllS(S);
     C=Union(C, S[0]);
@@ -124,7 +125,7 @@ adjacencyListElement *ReduceBranches(Graph *g, adjacencyListElement *D, adjacenc
                 }
                 if(allscore[i]<0) removeConflict(g, I[i], U->v,allscore[i]);
             }
-            if(!memory){
+            if(memory==0){
                 int j=0;
                 while(I[j]!=NULL && j<k) j++;
                 if(j<k) ajoute(&I[j], U->v);
@@ -143,15 +144,16 @@ adjacencyListElement *ReduceBranches(Graph *g, adjacencyListElement *D, adjacenc
     else return difference(C, P);
 }
 
-adjacencyListElement * BnB(Graph *g, adjacencyListElement *D, adjacencyListElement *U, adjacencyListElement *Dnow){
-    afficherGraph(g);
+adjacencyListElement * BnB(Graph *g, adjacencyListElement *D, adjacencyListElement *Dnow){
+    unDom(g);
+    domineliste(D, g);
+    adjacencyListElement *U = undomlist(g);
     printf("\nDf : ");
     afficheListe(D);
     printf("U : ");
     afficheListe(U);
     printf("D0 : ");
     afficheListe(Dnow);
-    char c =getchar();
     if(U==NULL){
         return D;
     }
@@ -159,31 +161,42 @@ adjacencyListElement * BnB(Graph *g, adjacencyListElement *D, adjacencyListEleme
     if(B==NULL){
         return Dnow;
     }
-    
     trierListe(g, B);
+    afficheListe(B);
     adjacencyListElement *Btemp = B;
     while(Btemp!=NULL){
-        adjacencyListElement *U2 = difference(U, g->adjacencyLists[Btemp->v]);
-        adjacencyListElement *D2 = D;
-        ajoute(&D2,Btemp -> v);
-        adjacencyListElement *solo = NULL;
-        ajoute(&solo,Btemp -> v);
-        U2 = difference(U2, solo);
-        printf("ici\n");
-        free(solo);
-        g -> branched[Btemp->v] = 1;
-        adjacencyListElement *newD0 = BnB(g, D2, U2, Dnow);
-        afficheListe(newD0);
-        if(listeSize(newD0)<listeSize(Dnow)){
-            Dnow=NULL;
-            Dnow=newD0;
+        //getchar();
+        printf("B restant : ");
+        afficheListe(Btemp);
+        if(listeSize(D)<listeSize(Dnow)){
+            g -> branched[Btemp->v] = 1;
+            adjacencyListElement *U2 = difference(U, g->adjacencyLists[Btemp->v]);
+            ajoute(&D,Btemp -> v);
+            adjacencyListElement *solo = NULL;
+            ajoute(&solo,Btemp -> v);
+            U2 = difference(U2, solo);
+            free(solo);
+            adjacencyListElement *newD0 = BnB(g, D, Dnow);
+            if(listeSize(newD0)<listeSize(Dnow)){
+                afficheListe(newD0);    
+                Dnow->v = newD0->v;
+                Dnow->next=newD0->next;
+            }
+            D = deleteNode(D, Btemp->v);
+            printf("Sauvetage cliché : ");
+            afficheListe(D);
+            unDom(g);
+            domineliste(D, g);
         }
         Btemp = Btemp -> next;
     }
+    
     free(Btemp);
-    while(B!=NULL){
-        g -> branched[B->v] = 0;
-        B= B -> next;
+    
+    Btemp = B;
+    while(Btemp!=NULL){
+        g -> branched[Btemp->v] = 0;
+        Btemp = Btemp -> next;
     }
     return Dnow;
 }
