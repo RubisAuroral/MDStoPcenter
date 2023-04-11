@@ -4,3 +4,4 @@
 #define UNUSED(x) (void)(x)
 
 adjacencyListElement * BnB(Graph *g, adjacencyListElement *D, adjacencyListElement *Dnow);
+adjacencyListElement * BnB2(Graph *g);

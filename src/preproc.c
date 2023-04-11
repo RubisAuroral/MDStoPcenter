@@ -109,3 +109,11 @@ adjacencyListElement * undomlist(Graph *gd){
 	for(int i=0; i<gd->nbVertices; i++) if(gd->dom[i]==0 && gd->adjacencyLists[i]!=NULL) ajoute(&U, i);
 	return U;
 }
+
+void branchedf(Graph *g, adjacencyListElement *df){
+	adjacencyListElement *temp = df;
+	while(temp!=NULL){
+		g->branched[temp->v]=1;
+		temp=temp->next;
+	}
+}

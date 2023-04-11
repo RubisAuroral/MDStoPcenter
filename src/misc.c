@@ -1,10 +1,19 @@
 #include "../headers/p_center.h"
 
+void freeList(adjacencyListElement *node) {
+  adjacencyListElement *temp;
+  while (node != NULL) {
+    temp = node;
+    node = node->next;
+    free(temp);
+  }
+}
+
 void exemple(Graph *g){
 	int i=0;
   Edge edge;
 	edge.weight=0;
-	FILE *f = fopen("exemple3", "r");
+	FILE *f = fopen("exemple4f", "r");
     	while(fscanf(f, "%d %d", &edge.beginIdVertex, &edge.endIdVertex) !=  EOF){
         addEdge(g,edge);
     		addInverseEdge(g,edge);
@@ -48,8 +57,7 @@ adjacencyListElement * deleteNode(adjacencyListElement *L, int x) {
 	  if(temp->v!=x) ajoute(&new, temp->v);
 		temp=temp->next;
 	}
-  printf("Dtemp : ");
-  afficheListe(new);
+  freeList(temp);
 	return new;
 }
 
@@ -97,6 +105,7 @@ int inL(adjacencyListElement *adj, int x, int base){
     if(adj2->v==x || x==base) return 1;
     adj2 = adj2->next;
   }
+  freeList(adj2);
   return 0;
 }
 
@@ -117,6 +126,7 @@ int listeSize(adjacencyListElement *L){
     count++;
     temp=temp->next;
   }
+  freeList(temp);
   return count;
 }
 
@@ -127,6 +137,7 @@ adjacencyListElement * Union(adjacencyListElement * Liste1, adjacencyListElement
     if(!inL(Liste1,temp->v,-1)) ajoute(&resultat, temp->v);
     temp=temp->next;
   }
+  freeList(temp);
   return resultat;
 }
 
@@ -137,6 +148,7 @@ adjacencyListElement * Intersection(adjacencyListElement *Liste1, adjacencyListE
     if(inL(Liste1,temp->v,sommet)) ajoute(&resultat, temp->v);
     temp=temp->next;
   }
+  freeList(temp);
   return resultat;
 }
 
@@ -158,4 +170,12 @@ void trierListe(Graph *g, adjacencyListElement** liste) {
             current = current->next;
         }
     }
+}
+
+void freeGraph(Graph *g){
+  for(int i=0; i<g->nbVertices; i++) freeList(g->adjacencyLists[i]);
+  free(g->adjacencyLists);
+  free(g->branched);
+  free(g->distanceMatrix);
+  free(g->dom);
 }

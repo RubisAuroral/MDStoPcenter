@@ -13,3 +13,4 @@ adjacencyListElement * createN2(Graph *gd, int x, adjacencyListElement *L);
 adjacencyListElement * createN3(Graph *gd, int x, adjacencyListElement *N1, adjacencyListElement *N2);
 void reduceGraph(Graph *gd, int x);
 adjacencyListElement * undomlist(Graph *gd);
+void branchedf(Graph *g, adjacencyListElement *df);
