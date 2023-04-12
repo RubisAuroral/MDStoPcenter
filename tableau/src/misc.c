@@ -19,6 +19,7 @@ void exemple(Graph *g){
     		addInverseEdge(g,edge);
         i++;
     	}
+      fclose(f);
 }
 
 void ajoute(adjacencyListElement** firstValue, int nouvelleValeur) {
@@ -176,6 +177,5 @@ void freeGraph(Graph *g){
   for(int i=0; i<g->nbVertices; i++) freeList(g->adjacencyLists[i]);
   free(g->adjacencyLists);
   free(g->branched);
-  free(g->distanceMatrix);
   free(g->dom);
 }
