@@ -100,7 +100,8 @@ adjacencyListElement *ReduceBranches(Graph *g, adjacencyListElement *U){
     adjacencyListElement * C = NULL;
     //afficheDom(g);
     setS(g, S);
-    //printAllS(S);
+    printAllS(S);
+    /*
     C=Union(C, S[0]);
     C=Union(C, S[1]);
     freeList(P);
@@ -196,7 +197,7 @@ adjacencyListElement *ReduceBranches(Graph *g, adjacencyListElement *U){
         Swd=Swd->next;
     }*/
 
-    return difference(C, P);
+    //return difference(C, P);
 }
 
 /*adjacencyListElement * BnB(Graph *g, adjacencyListElement *D, adjacencyListElement *Dnow){
@@ -210,13 +211,7 @@ adjacencyListElement *ReduceBranches(Graph *g, adjacencyListElement *U){
     printf("D0 : ");
     afficheListe(Dnow);
     if(U==NULL){
-        return D;
-    }
-    adjacencyListElement *B = ReduceBranches(g,D,U,Dnow);
-    if(B==NULL){
-        return Dnow;
-    }
-    trierListe(g, B);
+        return D;afficheListe(S[2]);
     afficheListe(B);
     adjacencyListElement *Btemp = B;
     while(Btemp!=NULL){
@@ -274,6 +269,7 @@ adjacencyListElement * BnB2(Graph *g){
         return df;
     }
     adjacencyListElement *B = ReduceBranches(g,U);
+    /*
     if(B==NULL){
         freeList(U);
         freeList(B);
@@ -308,5 +304,5 @@ adjacencyListElement * BnB2(Graph *g){
     freeList(U);
     freeList(B);
     freeList(Btemp);
-    return d0;
+    return d0;*/
 }

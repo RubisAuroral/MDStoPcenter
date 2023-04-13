@@ -34,8 +34,16 @@ int main(int argc, char *argv[]){
 	}
 	for(int i=0; i<gd->nbVertices; i++) tabN[i][0]=createN1(gd, i);
 	for(int i=0; i<gd->nbVertices; i++) tabN[i][1]=createN2(gd, i,tabN[i][0]);
+	/*for(int i=0; i<gd->nbVertices; i++){
+		printf("N2[%d] :", i);
+		afficheListe(tabN[i][1]);
+	}
+	getchar();*/
+
 	for(int i=0; i<gd->nbVertices; i++){
 		tabN[i][2]=createN3(gd, i,tabN[i][0], tabN[i][1]);
+		printf("N3[%d] : ", i);
+		afficheListe(tabN[i][2]);
 		if(tabN[i][2]!=NULL){
 			adjacencyListElement *temp = tabN[i][2];
 			while(temp!=NULL){
@@ -51,10 +59,13 @@ int main(int argc, char *argv[]){
 		}
 	}
 	afficherGraph(gd);
+	//afficheListe(df);
+	
 	getchar();
 	branchedf(gd,df);
 	//adjacencyListElement *final=BnB(gd, df, d0);
 	adjacencyListElement *final=BnB2(gd);
+	/*
 	printf("\nFINAL (%d): ", listeSize(final));
 	/*for(int i=0; i<16; i++){
 		for(int j=i+1; j<16;j++){
@@ -67,6 +78,6 @@ int main(int argc, char *argv[]){
 			unDom(gd);
 		}
 	}*/
-	afficheListe(final);
+	//afficheListe(final);
 	freeGraph(gd);
 }
