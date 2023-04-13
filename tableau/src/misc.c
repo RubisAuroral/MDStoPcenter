@@ -51,15 +51,24 @@ void afficheListe(adjacencyListElement * node) {
   printf("\n");
 }
 
-adjacencyListElement * deleteNode(adjacencyListElement *L, int x) {
-	adjacencyListElement *temp = L;
-	adjacencyListElement *new = NULL;
-	while(temp!=NULL){
-	  if(temp->v!=x) ajoute(&new, temp->v);
-		temp=temp->next;
-	}
-  freeList(temp);
-	return new;
+void deleteNode(adjacencyListElement **L, int x) {
+  if(*L==NULL) return;
+
+  if((*L)->v == x){
+    adjacencyListElement * del = *L;
+    *L = (*L)->next;
+    free(del);
+    return;
+  }
+
+  for(adjacencyListElement * current = * L; current->next!=NULL; current=current->next){
+    if(current->next->v==x){
+      adjacencyListElement * del = current->next;
+      current->next=current->next->next;
+      free(del);
+      return;
+    }
+  }
 }
 
 adjacencyListElement* difference(adjacencyListElement * L1, adjacencyListElement* L2) {

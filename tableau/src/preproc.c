@@ -67,7 +67,7 @@ void unDom(Graph *g){
 	for(int i=0; i<g->nbVertices;i++) g->dom[i]=0;
 }
 
-void createN1(Graph *gd, int x, int **N1){
+void createN1(Graph *gd, int x, char **N1){
 	adjacencyListElement *adj = gd->adjacencyLists[x];
 	while (adj != NULL){
 	        adjacencyListElement *adj2 = gd->adjacencyLists[adj->v];
@@ -79,26 +79,28 @@ void createN1(Graph *gd, int x, int **N1){
 	}
 }
 
-void createN2(Graph *gd, int x, int **N1, int **N2){
+void createN2(Graph *gd, int x, char **N1, char **N2){
 	adjacencyListElement *adj = gd->adjacencyLists[x];
 	while (adj != NULL){
-	        if(!N1[x][adj->v]){
+	        if(N1[x][adj->v]==0){
 	        	adjacencyListElement *adj2 = gd->adjacencyLists[adj->v];
 				int test=0;
-	        	while(adj2!=NULL && !test){
-					if(N1[x][adj2->v]) test=1;
+	        	while(adj2!=NULL){
+					if(N1[x][adj2->v]==1) test=1;	
 					adj2=adj2->next;
 				}
-	        	if(test) N2[x][adj->v]=1; 
+	        	if(test){
+					N2[x][adj->v]=1;
+				} 
 	        } 
 	        adj = adj->next;
 	}
 }
 
-void createN3(Graph *gd, int x, int **N1, int **N2, int **N3){
+void createN3(Graph *gd, int x, char **N1, char **N2, char **N3){
 	adjacencyListElement *adj = gd->adjacencyLists[x];
 	while (adj != NULL){ 
-		if(!N1[x][adj->v] && !N2[x][adj->v]) N3[x][adj->v]=1;
+		if(N1[x][adj->v]==0 && N2[x][adj->v]==0) N3[x][adj->v]=1;
 		adj=adj->next;
 	}
 }
@@ -108,12 +110,18 @@ int nullTab(int * tab, int taille){
 	return 1;
 }
 
+int fullTab(int * tab, int taille){
+	for(int i=0; i<taille; i++) if(tab[i]==0) return 0;
+	return 1;
+}
+
 void reduceGraph(Graph *gd, int x) {
 	for(int i=0; i<gd->nbVertices;i++){
 		if(x==i){
+			freeList(gd->adjacencyLists[i]);
 			gd->adjacencyLists[i]=NULL;
 		}
-		else gd->adjacencyLists[i]=deleteNode(gd->adjacencyLists[i], x);
+		else deleteNode(&gd->adjacencyLists[i], x);
 	}
 }
 
@@ -127,8 +135,8 @@ void branchedf(Graph *g, int *df){
 	for(int i=0; i<g->nbVertices; i++) if(df[i] || g->adjacencyLists[i]==NULL) g->branched[i]=1;
 }
 
-int ** initMatC(int taille){
-	int ** M = (int**) malloc(taille * sizeof(int*));
+char ** initMatC(int taille){
+	char ** M = (int**) malloc(taille * sizeof(int*));
 	for (int i = 0; i < taille; i++) {
   		M[i] = (int*) malloc(taille * sizeof(int));
 	}

@@ -3,8 +3,8 @@
 #include "../headers/BnB.h"
 
 int k=0;
-int *d0 = NULL;
-int *df = NULL;
+int *d0;
+int *df;
 
 int main(int argc, char *argv[]){
 	Graph *gd;
@@ -13,9 +13,9 @@ int main(int argc, char *argv[]){
 	d0=(int*)malloc(gd->nbVertices*sizeof(int));
 	df=(int*)malloc(gd->nbVertices*sizeof(int));
 	
-	int **N1 = initMatC(gd->nbVertices);
-	int **N2 = initMatC(gd->nbVertices);
-	int **N3 = initMatC(gd->nbVertices);
+	char **N1 = initMatC(gd->nbVertices);
+	char **N2 = initMatC(gd->nbVertices);
+	char **N3 = initMatC(gd->nbVertices);
 
 	for(int j=0; j<gd->nbVertices; j++){
 		for(int i=0; i<gd->nbVertices;i++){
@@ -33,47 +33,33 @@ int main(int argc, char *argv[]){
 	afficheDom(gd);
 
 	for(int i=0; i<gd->nbVertices; i++) createN1(gd, i, N1);
+
 	for(int i=0; i<gd->nbVertices; i++) createN2(gd, i, N1, N2);
-	/*for(int i=0; i<gd->nbVertices; i++){
-		printf("N2[%d] :", i);
-		for(int j=0; j<gd->nbVertices; j++){
-			if(N2[i][j]==1) printf(" %d", j);
-		}
-		printf("\n");
-	}
-	for(int i=0; i<gd->nbVertices; i++){
-		createN3(gd, i, N1, N2, N3);
-	}*/
 
+	for(int i=0; i<gd->nbVertices; i++) createN3(gd, i, N1, N2, N3);
 	
-
 	for(int i=0; i<gd->nbVertices; i++){
-		createN3(gd, i, N1, N2, N3);
 		int inN3 = 0;
 		for(int j=0;j<gd->nbVertices; j++){
-			if(N3[i][j]){
+			if(N3[i][j]==1){
 				inN3=1;
 				reduceGraph(gd,j);
 			}
 		}
-		if(inN3){
+		if(inN3==1){
 			inN3=0;
 			for(int j=0;j<gd->nbVertices; j++){
-				if(N2[i][j]) reduceGraph(gd,j);
+				if(N2[i][j]==1) reduceGraph(gd,j);
 			}
 			df[i]=1;
 		}
 	}
+
 	afficherGraph(gd);
 	branchedf(gd,df);
-	printf("df :");
-	for(int i=0; i<gd->nbVertices; i++)if(df[i]) printf(" %d", i);
-	printf("\nd0 :");
-	for(int i=0; i<gd->nbVertices; i++)if(d0[i]) printf(" %d", i);
-	/*
 	//adjacencyListElement *final=BnB(gd, df, d0);
 	adjacencyListElement *final=BnB2(gd);
-	printf("\nFINAL (%d): ", listeSize(final));
+	/*printf("\nFINAL (%d): ", listeSize(final));
 	/*for(int i=0; i<16; i++){
 		for(int j=i+1; j<16;j++){
 			adjacencyListElement *testopt = NULL;
