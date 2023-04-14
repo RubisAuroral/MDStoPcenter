@@ -8,6 +8,12 @@ extern int *d0;
 extern int *df;
 int br=-1;
 
+int myComp(const void * v1, const void * v2){
+    int fI = * (const int *) v1;
+    int sI = * (const int *) v2;
+    return fI - sI;
+}
+
 void freeAllS(int **S, int nb){
 	for(int i=0; i<nb; i++){
         free(S[i]);
@@ -312,8 +318,8 @@ adjacencyListElement * BnB2(Graph *g){
     if(nullTab(LB[br].B, g->nbVertices)){
         return d0;
     } 
+    //trierListe(g, B);
     /*
-    trierListe(g, B);
     adjacencyListElement *Btemp = NULL;
     if(listeSize(df)<listeSize(d0)){
         while(B!=NULL){
