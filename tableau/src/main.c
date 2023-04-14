@@ -54,7 +54,7 @@ int main(int argc, char *argv[]){
 			df[i]=1;
 		}
 	}
-
+	
 	afficherGraph(gd);
 	branchedf(gd,df);
 	//adjacencyListElement *final=BnB(gd, df, d0);
@@ -72,9 +72,11 @@ int main(int argc, char *argv[]){
 		}
 	}
 	afficheListe(final);*/
+	//printf("oui ?\n");
 	free(d0);
 	free(df);
 	freeNs(gd->nbVertices,N1,N2,N3);
 	freeGraph(gd);
 	free(gd);
+	printf("oui ?\n");
 }

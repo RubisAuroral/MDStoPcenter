@@ -106,7 +106,9 @@ void createN3(Graph *gd, int x, char **N1, char **N2, char **N3){
 }
 
 int nullTab(int * tab, int taille){
-	for(int i=0; i<taille; i++) if(tab[i]==1) return 0;
+	for(int i=0; i<taille; i++){
+		if(tab[i]==1) return 0;
+	}
 	return 1;
 }
 

@@ -129,37 +129,27 @@ int inLv2(adjacencyListElement *adj, adjacencyListElement *L){
   return test;
 }
 
-int listeSize(adjacencyListElement *L){
-  adjacencyListElement *temp = L;
+int listeSize(int *L, int taille){
   int count=0;
-  while(temp!=NULL){
-    count++;
-    temp=temp->next;
-  }
-  freeList(temp);
+  for(int i=0; i<taille; i++) if(L[i]) count++;
   return count;
 }
 
-adjacencyListElement * Union(adjacencyListElement * Liste1, adjacencyListElement * Liste2){
-  adjacencyListElement * resultat = Liste1;
+void Union(int * Liste1, adjacencyListElement * Liste2){
   adjacencyListElement * temp = Liste2;
   while(temp!=NULL){
-    if(!inL(Liste1,temp->v,-1)) ajoute(&resultat, temp->v);
+    Liste1[temp->v]=1;
     temp=temp->next;
   }
   freeList(temp);
-  return resultat;
 }
 
-adjacencyListElement * Intersection(adjacencyListElement *Liste1, adjacencyListElement *Liste2, int sommet){
-  adjacencyListElement * temp = Liste2;
-  adjacencyListElement * resultat = NULL;
-  while(temp!=NULL){
-    if(inL(Liste1,temp->v,sommet)) ajoute(&resultat, temp->v);
-    temp=temp->next;
+void Intersection(int *tab, adjacencyListElement *Liste1, int *Liste2, int taille){
+  adjacencyListElement * temp = Liste1;
+  for(int i=0; i<taille; i++){
+    if(tab[i]==1) if(!inL(Liste1,i,-1)) tab[i]==0;
   }
   freeList(temp);
-  return resultat;
 }
 
 void trierListe(Graph *g, adjacencyListElement** liste) {

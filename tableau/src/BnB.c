@@ -4,61 +4,66 @@
 #include "../headers/BnB.h"
 
 extern int k;
-extern adjacencyListElement *d0;
-extern adjacencyListElement *df;
+extern int *d0;
+extern int *df;
 
-void freeAllS(int taille, int **S){
-	free(S[1]);
-	free(S[2]);
-	free(S[0]);
-}
-
-adjacencyListElement * removeConflict(Graph *g, adjacencyListElement *IS, int sommet){
-    adjacencyListElement *temp=Intersection(g->adjacencyLists[sommet], IS,-1);
-    int nb =listeSize(temp)-1;
-    while(nb>0 && temp!=NULL){
-        //IS=deleteNode(IS, temp->v);
-        temp=temp->next;
-        nb--;
+void freeAllS(int **S, int nb){
+	for(int i=0; i<nb; i++){
+        free(S[i]);
     }
-    return IS;
 }
 
-int maxIS(adjacencyListElement * I[k]){
+void removeConflict(Graph *g, int *IS, int sommet){
+    int temp[g->nbVertices];
+    for(int i=0; i<g->nbVertices; i++) temp[i]=0;
+    Intersection(temp,g->adjacencyLists[sommet], IS,g->nbVertices);
+    int nb =listeSize(temp, g->nbVertices)-1;
+    for(int i=0; i<g->nbVertices && nb>0; i++){
+        if(temp[i]){
+            IS[i]=0;
+            nb--;
+        }
+    }
+}
+
+int maxIS(int ** I, int taille){
     int max=0;
     for(int i=0; i<k;i++){
-        int temp=listeSize(I[i]);
+        int temp=listeSize(I[i], taille);
         if(temp>max) max=temp;
     }
     return max;
 }
 
-adjacencyListElement* IkNeighbors(Graph* g, adjacencyListElement* IS) {
-    adjacencyListElement* result = NULL;
-    result = Union(result, IS);
-    adjacencyListElement* temp = IS;
-    while (temp != NULL) {
-        Union(result, g->adjacencyLists[temp->v]);
-        temp = temp->next;
+void IkNeighbors(Graph* g, int * ISv, int * IS) {
+    for(int i=0; i<g->nbVertices; i++){ 
+        if(IS[i]){ 
+            ISv[i]=1;
+            Union(ISv, g->adjacencyLists[i]);
+        }
     }
-    return result;
 }
 
-int score(Graph *g, adjacencyListElement * IS, adjacencyListElement * C, adjacencyListElement * P, adjacencyListElement * S[4], int sommet){
-    adjacencyListElement * N1 = Intersection(g->adjacencyLists[sommet], IS, -1);
-    adjacencyListElement * N2 = Intersection(C, P, -1);
-    if(N2!=NULL) N2=Intersection(N2, g->adjacencyLists[sommet], sommet);
-    if(N2!=NULL){
-        adjacencyListElement * temp = IkNeighbors(g, IS);
-        N2=Intersection(N2, temp, -1);
-        freeList(temp);
+int score(Graph *g, int * IS, int * C, int * P, int ** S, int sommet){
+    int N1[g->nbVertices];
+    int N2[g->nbVertices];
+    int ISv[g->nbVertices];
+    for(int i=0; i<g->nbVertices; i++) ISv[i]=0;
+    IkNeighbors(g, ISv, IS);
+    for(int i=0; i<g->nbVertices; i++){
+        N1[i]=0;
+        if(C[i] && P[i] && ISv[i]) N2[i]=1;
+        else N2[i]=0;
     }
-    if(inL(S[0], sommet, -1) && N1==NULL && N2==NULL) return 1;
-    if(inL(S[0], sommet, -1) && N1==NULL && N2!=NULL) return 0;
-    if((inL(S[0], sommet, -1) || inL(S[1], sommet, -1)) && N1!=NULL) return 1-listeSize(N1);
-    if(inL(S[1], sommet, -1) && N1==NULL) return 0;
-    if(inL(S[2], sommet, -1) && N2!=NULL) return 0;
-    if(inL(S[2], sommet, -1) && N2==NULL) return 1;
+    Intersection(N1, g->adjacencyLists[sommet], IS, g->nbVertices);
+    Intersection(N2, g->adjacencyLists[sommet], N2, g->nbVertices);
+    int N1n=nullTab(N1, g->nbVertices), N2n=nullTab(N2, g->nbVertices);
+    if(S[0][sommet] && N1n && N2n) return 1;
+    if(S[0][sommet] && N1n && !N2n) return 0;
+    if(S[0][sommet] || S[1][sommet] && !N1n) return 1-listeSize(N1, g->nbVertices);
+    if(S[1][sommet] && N1n) return 0;
+    if(S[2][sommet] && !N2n) return 0;
+    if(S[2][sommet] && N2n) return 1;
 }
 
 void printAllS(Graph *g, int ** S){
@@ -92,7 +97,6 @@ void setS(Graph *g, int **S, int *C){
 
 int *ReduceBranches(Graph *g){
     //printf("k : %d\n", k);
-    //adjacencyListElement * P = NULL;
     
     int** S = (int**) malloc(3 * sizeof(int*));
     for (int i = 0; i < 3; i++) {
@@ -107,96 +111,108 @@ int *ReduceBranches(Graph *g){
 		}
 	}
     int C[g->nbVertices];
-    for(int i=0; i<g->nbVertices;i++) C[i]=0;
-
+    int P[g->nbVertices];
+    for(int i=0; i<g->nbVertices;i++){ 
+        C[i]=0;
+        P[i]=0;
+    }
     setS(g,S,C);
     printAllS(g,S);
-    freeAllS(g->nbVertices, S);
-    free(S);
-    adjacencyListElement * I[k];
-    for(int i=0; i<k; i++) I[i]=NULL;
-    /*
-    while(U!=NULL){
-        int scoretot=0;
-        int memory=0;
-        int allscore[k];
-        for(int i=0; i<k; i++) allscore[i]=2;
-        
-        for(int i=0; i<k; i++){ 
-            if(I[i]!=NULL){
-                allscore[i]=score(g, I[i],C,P, S, U->v);
-                scoretot+=allscore[i];
-            }
-        }
-
-        if(scoretot>=0){
-            ajoute(&P, U->v);
-            for(int i=0; i<k; i++){ 
-                if(allscore[i]!=2 && allscore[i]>0){
-                    ajoute(&I[i], U->v);
-                    memory=1;
-                }
-                if(allscore[i]<0) I[i]=removeConflict(g, I[i], U->v);
-            }
-            if(memory==0){
-                int j=0;
-                while(I[j]!=NULL && j<k) j++;
-                if(j<k) ajoute(&I[j], U->v);
-            }
-        }
-        U=U->next;
+    int **I = (int **) malloc(k * sizeof(int*));
+    for(int i=0; i<k; i++){
+        I[i] = (int*) malloc(g->nbVertices * sizeof(int*));
     }
-    int max = maxIS(I);
-    if(max<listeSize(d0)-listeSize(df)){
+
+    for(int j=0; j<k; j++){
+		for(int i=0; i<g->nbVertices;i++){
+			I[j][i]=0;
+			I[j][i]=0;
+			I[j][i]=0;
+		}
+	}
+
+    for(int i=0; i<g->nbVertices; i++){
+        if(g->dom[i]==0){
+            int scoretot=0;
+            int memory=0;
+            int allscore[k];
+            for(int j=0; j<k; j++) allscore[i]=2;
+            
+            for(int j=0; j<k; j++){ 
+                if(!nullTab(I[j], g->nbVertices)){
+                    allscore[j]=score(g, I[i],C, P, S, i);
+                    scoretot+=allscore[i];
+                }
+            }
+            if(scoretot>=0){
+                P[i]=1;
+                for(int j=0; j<k; j++){ 
+                    if(allscore[j]!=2 && allscore[j]>0){
+                        I[j][i];
+                        memory=1;
+                    }
+                    if(allscore[j]<0) removeConflict(g, I[j], i);
+                }
+                if(memory==0){
+                    int z=0;
+                    while(!nullTab(I[z], g->nbVertices) && z<k) z++;
+                    if(z<k) I[z][i]=1;
+                }
+            }
+        }
+    }
+    int max = maxIS(I, g->nbVertices);
+    if(max<listeSize(d0,g->nbVertices)-listeSize(df, g->nbVertices)){
         return C;
     }
-    
-    
-    /*adjacencyListElement * Swd = NULL;
-    printf("\nS[1] : ");
-    afficheListe(S[1]);
-    Swd=Union(Swd, S[1]);
-    
-    while(Swd!=NULL){
-        ajoute(&P, Swd->v);
-        adjacencyListElement * Itemp[k];
-        for(int j=0; j<k; j++){
-            Itemp[j]=NULL;
-            Itemp[j]=Union(Itemp[j], I[j]);
-        }
+    freeAllS(I, k);
+    free(I);
+    freeAllS(S, 3);
+    free(S);       
+        /*adjacencyListElement * Swd = NULL;
+        printf("\nS[1] : ");
+        afficheListe(S[1]);
+        Swd=Union(Swd, S[1]);
         
-        for(int i=0; i<k; i++){
-            printf("IS%d : ",i);
-            afficheListe(I[i]);
-        }
+        while(Swd!=NULL){
+            ajoute(&P, Swd->v);
+            adjacencyListElement * Itemp[k];
+            for(int j=0; j<k; j++){
+                Itemp[j]=NULL;
+                Itemp[j]=Union(Itemp[j], I[j]);
+            }
+            
+            for(int i=0; i<k; i++){
+                printf("IS%d : ",i);
+                afficheListe(I[i]);
+            }
 
-        for(int j=0; j<k; j++){
-            if(I[j]!=NULL){
-                if(score(g, I[j],C,P, S, Swd->v)<0){
-                    //getchar();
-                    afficheListe(I[j]);
-                    I[j]=removeConflict(g,I[j],Swd->v);
-                    afficheListe(I[j]);
-                    //getchar();
+            for(int j=0; j<k; j++){
+                if(I[j]!=NULL){
+                    if(score(g, I[j],C,P, S, Swd->v)<0){
+                        //getchar();
+                        afficheListe(I[j]);
+                        I[j]=removeConflict(g,I[j],Swd->v);
+                        afficheListe(I[j]);
+                        //getchar();
+                    }
                 }
             }
-        }
-        
-        for(int i=0; i<k; i++){
-            printf("IS%d : ",i);
-            afficheListe(I[i]);
-        }
-
-        if(maxIS(I)<listeSize(d0)-listeSize(df)){
-            printf("vrai ?");
-            for(int j=0; j<k; j++){
-                I[j]=Union(I[j], Itemp[j]);
+            
+            for(int i=0; i<k; i++){
+                printf("IS%d : ",i);
+                afficheListe(I[i]);
             }
-            deleteNode(P, Swd->v);
-        }
-        Swd=Swd->next;
-    }*/
 
+            if(maxIS(I)<listeSize(d0)-listeSize(df)){
+                printf("vrai ?");
+                for(int j=0; j<k; j++){
+                    I[j]=Union(I[j], Itemp[j]);
+                }
+                deleteNode(P, Swd->v);
+            }
+            Swd=Swd->next;
+        }*/
     return NULL;
 }
 
@@ -269,7 +285,8 @@ adjacencyListElement * BnB2(Graph *g){
     }
     
     int *B = ReduceBranches(g);
-
+    free(B);
+    printf("oui\n");
     /*if(B==NULL){
         return d0;
     }*/
