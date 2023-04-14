@@ -6,6 +6,7 @@
 extern int k;
 extern int *d0;
 extern int *df;
+int br=-1;
 
 void freeAllS(int **S, int nb){
 	for(int i=0; i<nb; i++){
@@ -60,7 +61,7 @@ int score(Graph *g, int * IS, int * C, int * P, int ** S, int sommet){
     int N1n=nullTab(N1, g->nbVertices), N2n=nullTab(N2, g->nbVertices);
     if(S[0][sommet] && N1n && N2n) return 1;
     if(S[0][sommet] && N1n && !N2n) return 0;
-    if(S[0][sommet] || S[1][sommet] && !N1n) return 1-listeSize(N1, g->nbVertices);
+    if((S[0][sommet] || S[1][sommet]) && !N1n) return 1-listeSize(N1, g->nbVertices);
     if(S[1][sommet] && N1n) return 0;
     if(S[2][sommet] && !N2n) return 0;
     if(S[2][sommet] && N2n) return 1;
@@ -95,7 +96,7 @@ void setS(Graph *g, int **S, int *C){
     }
 }
 
-int *ReduceBranches(Graph *g){
+void ReduceBranches(Graph *g, Branche * B){
     //printf("k : %d\n", k);
     
     int** S = (int**) malloc(3 * sizeof(int*));
@@ -163,12 +164,32 @@ int *ReduceBranches(Graph *g){
     }
     int max = maxIS(I, g->nbVertices);
     if(max<listeSize(d0,g->nbVertices)-listeSize(df, g->nbVertices)){
-        return C;
+        int size=listeSize(C, g->nbVertices);
+        printf("size : %d\n", size);
+        B[br].B = malloc(size * sizeof(int));
+        B[br].x = size;
+        int c=0;
+        for(int i=0; i<size; i++) if(C[i]){
+            B[br].B[c]=i;
+            c++;
+        }
+        return;
     }
     freeAllS(I, k);
     free(I);
     freeAllS(S, 3);
-    free(S);       
+    free(S);
+    for(int i=0; i<g->nbVertices; i++) if(C[i] && P[i]) C[i]=0;
+    int size=listeSize(C, g->nbVertices);
+    printf("size : %d\n", size);
+    B[br].B = malloc(size * sizeof(int));
+    B[br].x = size;
+    int c=0;
+    for(int i=0; i<g->nbVertices; i++) if(C[i]){
+        B[br].B[c]=i;
+        c++;
+    }
+    return;
         /*adjacencyListElement * Swd = NULL;
         printf("\nS[1] : ");
         afficheListe(S[1]);
@@ -276,6 +297,7 @@ int *ReduceBranches(Graph *g){
 }*/
 
 adjacencyListElement * BnB2(Graph *g){
+    br++;
     unDom(g);
     domineliste(df, g);
     afficheDom(g);
@@ -284,12 +306,12 @@ adjacencyListElement * BnB2(Graph *g){
         return df;
     }
     
-    int *B = ReduceBranches(g);
-    free(B);
-    printf("oui\n");
-    /*if(B==NULL){
+    Branche LB[g->nbVertices-listeSize(df, g->nbVertices)];
+    ReduceBranches(g, LB);
+    for(int i=0; i<LB[br].x; i++)  printf("%d\n", LB[br].B[i]);
+    if(nullTab(LB[br].B, g->nbVertices)){
         return d0;
-    }*/
+    } 
     /*
     trierListe(g, B);
     adjacencyListElement *Btemp = NULL;
