@@ -10,4 +10,5 @@ struct Branche{
 };
 
 adjacencyListElement * BnB(Graph *g, adjacencyListElement *D, adjacencyListElement *Dnow);
-adjacencyListElement * BnB2(Graph *g);
+void BnB2(Graph *g);
+int * BnB3();

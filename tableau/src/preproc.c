@@ -40,7 +40,7 @@ void domine(int x, Graph *gd){
 
 void domineliste(int *sol, Graph *g){
 	for(int i=0; i<g->nbVertices; i++){
-		if(sol[i]==1){
+		if(sol[i]==1 || g->adjacencyLists[i]==NULL){
 			domine(i, g);
 		}
 	}
@@ -69,31 +69,54 @@ void unDom(Graph *g){
 
 void createN1(Graph *gd, int x, char **N1){
 	adjacencyListElement *adj = gd->adjacencyLists[x];
+	int adjtab[gd->nbVertices];
+	for(int i=0; i<gd->nbVertices; i++) adjtab[i]=0;
 	while (adj != NULL){
-	        adjacencyListElement *adj2 = gd->adjacencyLists[adj->v];
-	        while(adj2 != NULL && inL(gd->adjacencyLists[x], adj2->v, x)){
-	        	adj2 = adj2->next;
-	        }
-	        if(adj2!=NULL) N1[x][adj->v]=1;
-	        adj = adj->next;
+		adjtab[adj->v]=1;
+		adj=adj->next;
+	}
+	for(int i=0; i<gd->nbVertices; i++){
+		if(adjtab[i]){
+	        adjacencyListElement *adj2 = gd->adjacencyLists[i];
+	        int adjtab2[gd->nbVertices];
+			for(int j=0; j<gd->nbVertices; j++) adjtab2[j]=0;
+			while (adj2 != NULL){
+				adjtab2[adj2->v]=1;
+				adj2=adj2->next;
+			}
+	        for(int j=0; j<gd->nbVertices; j++) if(adjtab2[j] && !adjtab[j] && j!=x){
+				N1[x][i]=1;
+				break;
+			}
+		}
 	}
 }
 
 void createN2(Graph *gd, int x, char **N1, char **N2){
 	adjacencyListElement *adj = gd->adjacencyLists[x];
+	int adjtab[gd->nbVertices];
+	for(int i=0; i<gd->nbVertices; i++) adjtab[i]=0;
 	while (adj != NULL){
-	        if(N1[x][adj->v]==0){
-	        	adjacencyListElement *adj2 = gd->adjacencyLists[adj->v];
-				int test=0;
-	        	while(adj2!=NULL){
-					if(N1[x][adj2->v]==1) test=1;	
+		adjtab[adj->v]=1;
+		adj=adj->next;
+	}
+	
+	for(int i=0; i<gd->nbVertices; i++){
+		if(adjtab[i]){
+	        if(N1[x][i]==0){
+	        	adjacencyListElement *adj2 = gd->adjacencyLists[i];
+				int adjtab2[gd->nbVertices];
+				for(int j=0; j<gd->nbVertices; j++) adjtab2[j]=0;
+				while (adj2 != NULL){
+					adjtab2[adj2->v]=1;
 					adj2=adj2->next;
 				}
-	        	if(test){
-					N2[x][adj->v]=1;
+	        	for(int j=0; j<gd->nbVertices; j++) if(adjtab2[j] && N1[x][j]){
+					N2[x][i]=1;
+					break;
 				} 
 	        } 
-	        adj = adj->next;
+		}
 	}
 }
 

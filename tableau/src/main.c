@@ -5,78 +5,92 @@
 int k=0;
 int *d0;
 int *df;
+Graph *g;
 
 int main(int argc, char *argv[]){
-	Graph *gd;
 	if(argc>1)k=atoi(argv[1]);
-	gd = cleanGraph(658);
-	d0=(int*)malloc(gd->nbVertices*sizeof(int));
-	df=(int*)malloc(gd->nbVertices*sizeof(int));
+	g = cleanGraph(136);
+	d0=(int*)malloc(g->nbVertices*sizeof(int));
+	df=(int*)malloc(g->nbVertices*sizeof(int));
 	
-	char **N1 = initMatC(gd->nbVertices);
-	char **N2 = initMatC(gd->nbVertices);
-	char **N3 = initMatC(gd->nbVertices);
+	char **N1 = initMatC(g->nbVertices);
+	char **N2 = initMatC(g->nbVertices);
+	char **N3 = initMatC(g->nbVertices);
 
-	for(int j=0; j<gd->nbVertices; j++){
-		for(int i=0; i<gd->nbVertices;i++){
+	for(int j=0; j<g->nbVertices; j++){
+		for(int i=0; i<g->nbVertices;i++){
 			N1[j][i]=0;
 			N2[j][i]=0;
 			N3[j][i]=0;
 		}
 	}
-	exemple(gd);
-	while(count(gd, gd->nbVertices)==0){
-		int x=bestToChoose(gd);
+	exemple(g);
+	while(count(g, g->nbVertices)==0){
+		int x=bestToChoose(g);
 		d0[x]=1;
-		domine(x, gd);
+		domine(x, g);
 	}
-	afficheDom(gd);
+	afficheDom(g);
 
-	for(int i=0; i<gd->nbVertices; i++) createN1(gd, i, N1);
+	for(int i=0; i<g->nbVertices; i++) createN1(g, i, N1);
 
-	for(int i=0; i<gd->nbVertices; i++) createN2(gd, i, N1, N2);
+	for(int i=0; i<g->nbVertices; i++) createN2(g, i, N1, N2);
 
-	for(int i=0; i<gd->nbVertices; i++) createN3(gd, i, N1, N2, N3);
+	//for(int i=0; i<g->nbVertices; i++) createN3(g, i, N1, N2, N3);
 	
-	for(int i=0; i<gd->nbVertices; i++){
+	for(int i=0; i<g->nbVertices; i++){
+		createN3(g, i, N1, N2, N3);
 		int inN3 = 0;
-		for(int j=0;j<gd->nbVertices; j++){
+		for(int j=0;j<g->nbVertices; j++){
 			if(N3[i][j]==1){
 				inN3=1;
-				reduceGraph(gd,j);
+				reduceGraph(g,j);
 			}
 		}
 		if(inN3==1){
 			inN3=0;
-			for(int j=0;j<gd->nbVertices; j++){
-				if(N2[i][j]==1) reduceGraph(gd,j);
+			for(int j=0;j<g->nbVertices; j++){
+				if(N2[i][j]==1) reduceGraph(g,j);
 			}
 			df[i]=1;
 		}
 	}
 	
-	afficherGraph(gd);
-	branchedf(gd,df);
-	//adjacencyListElement *final=BnB(gd, df, d0);
-	adjacencyListElement *final=BnB2(gd);
+	afficherGraph(g);
+	branchedf(g,df);
+	//adjacencyListElement *final=BnB(g, df, d0);
+	int yu=0, yi=0;
+	for(int i=0; i<g->nbVertices; i++){
+		if(df[i]) yu++;
+		if(d0[i]) yi++;
+	}
+	printf("df : %d - d0 : %d\n", yu, yi);
+	int * final = BnB3();
 	/*printf("\nFINAL (%d): ", listeSize(final));
 	/*for(int i=0; i<16; i++){
 		for(int j=i+1; j<16;j++){
 			adjacencyListElement *testopt = NULL;
 			ajoute(&testopt, i);
 			ajoute(&testopt, j);
-			domineliste(testopt, gd);
+			domineliste(testopt, g);
 			printf("%d - %d : ", i+1,j+1);
-			afficheDom(gd);
-			unDom(gd);
+			afficheDom(g);
+			unDom(g);
 		}
 	}
 	afficheListe(final);*/
 	//printf("oui ?\n");
+	int pitie=0;
+	for(int i=0; i<g->nbVertices; i++){
+		if(d0[i]){
+			pitie++;
+			printf("%d ", i);
+		} 
+	}
+	printf(" (%d)", pitie);
 	free(d0);
 	free(df);
-	freeNs(gd->nbVertices,N1,N2,N3);
-	freeGraph(gd);
-	free(gd);
-	printf("oui ?\n");
+	freeNs(g->nbVertices,N1,N2,N3);
+	freeGraph(g);
+	free(g);
 }

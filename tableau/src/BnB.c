@@ -6,12 +6,14 @@
 extern int k;
 extern int *d0;
 extern int *df;
-int br=-1;
+extern Graph *g;
+int br=0;
+Branche LB[1000];
 
 int myComp(const void * v1, const void * v2){
     int fI = * (const int *) v1;
     int sI = * (const int *) v2;
-    return fI - sI;
+    return nbVoisin(g, sI) - nbVoisin(g, fI); 
 }
 
 void freeAllS(int **S, int nb){
@@ -24,7 +26,7 @@ void removeConflict(Graph *g, int *IS, int sommet){
     int temp[g->nbVertices];
     for(int i=0; i<g->nbVertices; i++) temp[i]=0;
     Intersection(temp,g->adjacencyLists[sommet], IS,g->nbVertices);
-    int nb =listeSize(temp, g->nbVertices)-1;
+    int nb=listeSize(temp, g->nbVertices)-1;
     for(int i=0; i<g->nbVertices && nb>0; i++){
         if(temp[i]){
             IS[i]=0;
@@ -37,6 +39,7 @@ int maxIS(int ** I, int taille){
     int max=0;
     for(int i=0; i<k;i++){
         int temp=listeSize(I[i], taille);
+        printf("taille I : %d\n", temp);
         if(temp>max) max=temp;
     }
     return max;
@@ -52,6 +55,7 @@ void IkNeighbors(Graph* g, int * ISv, int * IS) {
 }
 
 int score(Graph *g, int * IS, int * C, int * P, int ** S, int sommet){
+    int save=0;
     int N1[g->nbVertices];
     int N2[g->nbVertices];
     int ISv[g->nbVertices];
@@ -63,14 +67,34 @@ int score(Graph *g, int * IS, int * C, int * P, int ** S, int sommet){
         else N2[i]=0;
     }
     Intersection(N1, g->adjacencyLists[sommet], IS, g->nbVertices);
+    if(N2[sommet]) save=1;
     Intersection(N2, g->adjacencyLists[sommet], N2, g->nbVertices);
+    if(save==1) N2[sommet]=1;
     int N1n=nullTab(N1, g->nbVertices), N2n=nullTab(N2, g->nbVertices);
-    if(S[0][sommet] && N1n && N2n) return 1;
-    if(S[0][sommet] && N1n && !N2n) return 0;
-    if((S[0][sommet] || S[1][sommet]) && !N1n) return 1-listeSize(N1, g->nbVertices);
-    if(S[1][sommet] && N1n) return 0;
-    if(S[2][sommet] && !N2n) return 0;
-    if(S[2][sommet] && N2n) return 1;
+    
+    if(S[0][sommet] && N1n && N2n){ 
+        //printf("Score : 1\n");
+        return 1;
+    }
+    if(S[0][sommet] && N1n && !N2n){
+        //printf("Score : 0\n");
+        return 0;
+    }
+    if((S[0][sommet] || S[1][sommet]) && !N1n){
+        return 1-listeSize(N1, g->nbVertices);
+    }
+    if(S[1][sommet] && N1n){
+        //printf("Score : 0\n");
+        return 0;
+    }
+    if(S[2][sommet] && !N2n){
+        //printf("Score : 0\n");
+        return 0;
+    }
+    if(S[2][sommet] && N2n){
+        //printf("Score : 1\n");
+        return 1;
+    }
 }
 
 void printAllS(Graph *g, int ** S){
@@ -102,9 +126,9 @@ void setS(Graph *g, int **S, int *C){
     }
 }
 
-void ReduceBranches(Graph *g, Branche * B){
+Branche ReduceBranches(Graph *g){
     //printf("k : %d\n", k);
-    
+    Branche B;
     int** S = (int**) malloc(3 * sizeof(int*));
     for (int i = 0; i < 3; i++) {
         S[i] = (int*) malloc(g->nbVertices * sizeof(int));
@@ -112,8 +136,6 @@ void ReduceBranches(Graph *g, Branche * B){
     
     for(int j=0; j<3; j++){
 		for(int i=0; i<g->nbVertices;i++){
-			S[j][i]=0;
-			S[j][i]=0;
 			S[j][i]=0;
 		}
 	}
@@ -124,7 +146,7 @@ void ReduceBranches(Graph *g, Branche * B){
         P[i]=0;
     }
     setS(g,S,C);
-    printAllS(g,S);
+    //printAllS(g,S);
     int **I = (int **) malloc(k * sizeof(int*));
     for(int i=0; i<k; i++){
         I[i] = (int*) malloc(g->nbVertices * sizeof(int*));
@@ -133,13 +155,11 @@ void ReduceBranches(Graph *g, Branche * B){
     for(int j=0; j<k; j++){
 		for(int i=0; i<g->nbVertices;i++){
 			I[j][i]=0;
-			I[j][i]=0;
-			I[j][i]=0;
 		}
 	}
 
     for(int i=0; i<g->nbVertices; i++){
-        if(g->dom[i]==0){
+        if(!g->dom[i]){
             int scoretot=0;
             int memory=0;
             int allscore[k];
@@ -147,39 +167,81 @@ void ReduceBranches(Graph *g, Branche * B){
             
             for(int j=0; j<k; j++){ 
                 if(!nullTab(I[j], g->nbVertices)){
-                    allscore[j]=score(g, I[i],C, P, S, i);
+                    allscore[j]=score(g, I[j],C, P, S, i);
                     scoretot+=allscore[i];
                 }
             }
+            for(int i=0; i<k; i++) printf("%d ", allscore[k]);
+            printf("\n");
             if(scoretot>=0){
                 P[i]=1;
                 for(int j=0; j<k; j++){ 
-                    if(allscore[j]!=2 && allscore[j]>0){
-                        I[j][i];
+                    if(allscore[j]!=2 && allscore[j]>0 && !nullTab(I[j], g->nbVertices)){
+                        //printf("I%d\n", j);
+                        I[j][i]=1;
                         memory=1;
                     }
-                    if(allscore[j]<0) removeConflict(g, I[j], i);
+                    if(allscore[j]<0){
+                        removeConflict(g, I[j], i);
+                    }
                 }
                 if(memory==0){
                     int z=0;
-                    while(!nullTab(I[z], g->nbVertices) && z<k) z++;
+                    while(z<k && !nullTab(I[z], g->nbVertices)) z++;
                     if(z<k) I[z][i]=1;
                 }
             }
         }
     }
     int max = maxIS(I, g->nbVertices);
+    printf("max : %d - ", max);
     if(max<listeSize(d0,g->nbVertices)-listeSize(df, g->nbVertices)){
+        freeAllS(I, k);
+        free(I);
+        freeAllS(S, 3);
+        free(S);
         int size=listeSize(C, g->nbVertices);
+        B.B = malloc(size * sizeof(int));
+        B.x = size;
         printf("size : %d\n", size);
-        B[br].B = malloc(size * sizeof(int));
-        B[br].x = size;
         int c=0;
-        for(int i=0; i<size; i++) if(C[i]){
-            B[br].B[c]=i;
+        for(int i=0; i<g->nbVertices; i++) if(C[i]){
+            B.B[c]=i;
             c++;
         }
-        return;
+        return B;
+    }
+    printf("oui ?\n");
+    
+    for(int i=0; i<g->nbVertices; i++){
+        if(S[1][i]){
+            int **Itemp = (int **) malloc(k * sizeof(int*));
+            for(int j=0; j<k; j++){
+                Itemp[j] = (int*) malloc(g->nbVertices * sizeof(int*));
+            }
+            for(int j=0; j<k; j++){
+                for(int z=0; z<g->nbVertices;z++){
+                    Itemp[j][z]=0;
+                }
+	        }
+            P[i]=1;
+            for(int j=0; j<k; j++){ 
+                if(!nullTab(I[j], g->nbVertices)){
+                    if(score(g, I[j],C, P, S, i) < 0) removeConflict(g, I[j], i);
+                }
+            }
+            int max = maxIS(I, g->nbVertices);
+            if(max<listeSize(d0,g->nbVertices)-listeSize(df, g->nbVertices)){
+                P[i]=0;
+                for(int j=0; j<k; j++){
+                    for(int z=0; z<g->nbVertices; z++){
+                        I[j][z]=Itemp[j][z];
+                    }
+                }
+            }
+            freeAllS(Itemp, k);
+            free(Itemp);
+        }
     }
     freeAllS(I, k);
     free(I);
@@ -187,15 +249,15 @@ void ReduceBranches(Graph *g, Branche * B){
     free(S);
     for(int i=0; i<g->nbVertices; i++) if(C[i] && P[i]) C[i]=0;
     int size=listeSize(C, g->nbVertices);
-    printf("size : %d\n", size);
-    B[br].B = malloc(size * sizeof(int));
-    B[br].x = size;
+    B.B = malloc(size * sizeof(int));
+    B.x = size;
+    printf("size2 : %d\n", size);
     int c=0;
     for(int i=0; i<g->nbVertices; i++) if(C[i]){
-        B[br].B[c]=i;
+        B.B[c]=i;
         c++;
     }
-    return;
+    return B;
         /*adjacencyListElement * Swd = NULL;
         printf("\nS[1] : ");
         afficheListe(S[1]);
@@ -240,7 +302,6 @@ void ReduceBranches(Graph *g, Branche * B){
             }
             Swd=Swd->next;
         }*/
-    return NULL;
 }
 
 /*adjacencyListElement * BnB(Graph *g, adjacencyListElement *D, adjacencyListElement *Dnow){
@@ -302,33 +363,71 @@ void ReduceBranches(Graph *g, Branche * B){
             Itemp[j]=NULL;
 }*/
 
-adjacencyListElement * BnB2(Graph *g){
+/*void BnB2(Graph *g){
+    newB :
     br++;
+    LB[br].df = malloc(g->nbVertices * sizeof(int));
+    for(int i=0; i<g->nbVertices; i++) if(df[i]) LB[br].df[i]=1; else LB[br].df[i]=0;
+    if(br>0){ 
+        for(int i=0; i<g->nbVertices; i++) if(LB[br-1].df[i]) LB[br].df[i]=1;
+        LB[br].df[LB[br].actuel]=1;
+    }
+    if(listeSize(LB[br].df, g->nbVertices)>=listeSize(d0, g->nbVertices)){
+        br--;
+        goto oldB;
+    }
     unDom(g);
-    domineliste(df, g);
-    afficheDom(g);
+    domineliste(LB[br].df, g);
 
     if(fullTab(g->dom, g->nbVertices)){
-        return df;
+        printf("a\n");
+        if(listeSize(LB[br].df, g->nbVertices)<listeSize(d0, g->nbVertices)) for(int i=0; i<g->nbVertices; i++) d0[i]=LB[br].df[i];
+        free(LB[br].df);
+        free(LB[br].B);
+        free(LB[br].Bsave);
+        br--;
+        goto oldB;
     }
-    
-    Branche LB[g->nbVertices-listeSize(df, g->nbVertices)];
+    printf("b\n");
     ReduceBranches(g, LB);
-    for(int i=0; i<LB[br].x; i++)  printf("%d\n", LB[br].B[i]);
-    if(nullTab(LB[br].B, g->nbVertices)){
-        return d0;
-    } 
-    //trierListe(g, B);
-    /*
-    adjacencyListElement *Btemp = NULL;
-    if(listeSize(df)<listeSize(d0)){
-        while(B!=NULL){
-            ajoute(&Btemp, B->v);
-            g -> branched[B->v] = 1;
-            ajoute(&df,B -> v);
-            adjacencyListElement *solo = NULL;
-            ajoute(&solo,B -> v);
-            freeList(solo);
+    getchar();
+    if(nullTab(LB[br].B, LB[br].x)){
+        free(LB[br].df);
+        free(LB[br].B);
+        free(LB[br].Bsave);
+        br--;
+        goto oldB;
+    }
+    qsort(LB[br].B, LB[br].x, sizeof(int), myComp);
+    for(int i=0; i<LB[br].x; i++) printf("%d", LB[br].B[i]);
+    int etape=0;
+    suite:
+    while(LB[br].B[etape]==-1 && etape<LB[br].x){
+        etape++;
+    }
+    printf("\netape : %d\n", etape);
+    if(etape<LB[br].x){
+        g -> branched[LB[br].B[etape]] = 1;
+        LB[br+1].actuel=LB[br].B[etape];
+        LB[br].B[etape]=-1;
+        goto newB;
+        oldB :
+        etape = 0;
+        unDom(g);
+        domineliste(LB[br].df, g);
+        goto suite;
+    }
+    else{
+        for(int i=0; i<LB[br].x; i++){
+            g->branched[LB[br].B[i]]=0;
+        }
+    }
+    free(LB[br].df);
+    free(LB[br].B);
+    free(LB[br].Bsave);
+    br--;
+    goto oldB;
+        /*
             adjacencyListElement *newD0 = BnB2(g);
             if(listeSize(newD0)<listeSize(d0)){  
                 d0->v = newD0->v;
@@ -348,5 +447,50 @@ adjacencyListElement * BnB2(Graph *g){
     freeList(Btemp);
     return d0;*/
     //free(B);
-    return NULL;
+    //return;
+//}
+
+int * BnB3(){
+    unDom(g);
+    domineliste(df, g);
+    if(fullTab(g->dom, g->nbVertices)){
+        int * aenv = malloc(g->nbVertices * sizeof(int));
+        for(int i=0; i<g->nbVertices; i++) aenv[i]=df[i];
+        return aenv;
+    }
+    if(listeSize(df, g->nbVertices)>=listeSize(d0, g->nbVertices)-1){
+        int * aenv = malloc(g->nbVertices * sizeof(int));
+        for(int i=0; i<g->nbVertices; i++) aenv[i]=d0[i];
+        return aenv;
+    }
+
+    Branche B = ReduceBranches(g);
+    getchar();
+    if(B.x==0){
+        int * aenv = malloc(g->nbVertices * sizeof(int));
+        for(int i=0; i<g->nbVertices; i++) aenv[i]=d0[i];
+        free(B.B);
+        return aenv;
+    }
+    if(B.x>1) qsort(B.B, B.x, sizeof(int), myComp);
+    for(int i=0; i<B.x; i++){
+        g->branched[B.B[i]]=1;
+        df[B.B[i]]=1;
+        br++;
+        int * temp = BnB3();
+        if(listeSize(temp, g->nbVertices)<listeSize(d0, g->nbVertices)){
+            int yu=0;
+            for(int j=0; j<g->nbVertices; j++) d0[j]=temp[j];
+            for(int i=0; i<g->nbVertices; i++) if(d0[i]) yu++;
+            printf("d0 : %d\n", yu);
+        }
+        free(temp);
+        df[B.B[i]]=0;
+    }
+
+    for(int i=0; i<B.x; i++) g->branched[B.B[i]]=0;
+    int * aenv = malloc(g->nbVertices * sizeof(int));
+    for(int i=0; i<g->nbVertices; i++) aenv[i]=d0[i];
+    free(B.B);
+    return aenv;
 }

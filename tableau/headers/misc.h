@@ -3,6 +3,7 @@
 void exemple(Graph *g);
 void ajoute(adjacencyListElement** firstValue, int nouvelleValeur);
 void afficheListe(adjacencyListElement * node);
+int nbVoisin(Graph *g, int x);
 void deleteNode(adjacencyListElement ** L, int x);
 adjacencyListElement* difference(adjacencyListElement * L1, adjacencyListElement* L2);
 Graph* cleanGraph(int x);

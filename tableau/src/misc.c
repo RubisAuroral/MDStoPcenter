@@ -9,11 +9,21 @@ void freeList(adjacencyListElement *node) {
   }
 }
 
+int nbVoisin(Graph *g, int x){
+  adjacencyListElement *temp = g->adjacencyLists[x];
+  int z=0;
+  while(temp!=NULL){
+    z++;
+    temp=temp->next;
+  }
+  return z;
+}
+
 void exemple(Graph *g){
 	int i=0;
   Edge edge;
 	edge.weight=0;
-	FILE *f = fopen("exemple4f", "r");
+	FILE *f = fopen("exemple5", "r");
     	while(fscanf(f, "%d %d", &edge.beginIdVertex, &edge.endIdVertex) !=  EOF){
         addEdge(g,edge);
     		addInverseEdge(g,edge);
@@ -146,8 +156,10 @@ void Union(int * Liste1, adjacencyListElement * Liste2){
 
 void Intersection(int *tab, adjacencyListElement *Liste1, int *Liste2, int taille){
   adjacencyListElement * temp = Liste1;
-  for(int i=0; i<taille; i++){
-    if(tab[i]==1) if(!inL(Liste1,i,-1)) tab[i]==0;
+  while(temp!=NULL){
+    if(!Liste2[temp->v]) tab[temp->v]=0;
+    else tab[temp->v]=1;
+    temp=temp->next;
   }
   freeList(temp);
 }
