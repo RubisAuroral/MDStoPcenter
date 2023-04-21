@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -std=c99 -pedantic -Wall -Wextra -g
+CFLAGS = -std=c99 -pedantic -Wall -Wextra -g -O3
 LDLIBS = -lm
 
 VPATH = src headers

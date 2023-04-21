@@ -9,16 +9,27 @@ void freeList(adjacencyListElement *node) {
   }
 }
 
+int nbVoisin(Graph *g, int x){
+  adjacencyListElement *temp = g->adjacencyLists[x];
+  int z=0;
+  while(temp!=NULL){
+    if(!g->dom[temp->v]) z++;
+    temp=temp->next;
+  }
+  return z;
+}
+
 void exemple(Graph *g){
 	int i=0;
   Edge edge;
 	edge.weight=0;
-	FILE *f = fopen("exemple4f", "r");
+	FILE *f = fopen("exemple6", "r");
     	while(fscanf(f, "%d %d", &edge.beginIdVertex, &edge.endIdVertex) !=  EOF){
         addEdge(g,edge);
     		addInverseEdge(g,edge);
         i++;
     	}
+      fclose(f);
 }
 
 void ajoute(adjacencyListElement** firstValue, int nouvelleValeur) {
@@ -50,15 +61,24 @@ void afficheListe(adjacencyListElement * node) {
   printf("\n");
 }
 
-adjacencyListElement * deleteNode(adjacencyListElement *L, int x) {
-	adjacencyListElement *temp = L;
-	adjacencyListElement *new = NULL;
-	while(temp!=NULL){
-	  if(temp->v!=x) ajoute(&new, temp->v);
-		temp=temp->next;
-	}
-  freeList(temp);
-	return new;
+void deleteNode(adjacencyListElement **L, int x) {
+  if(*L==NULL) return;
+
+  if((*L)->v == x){
+    adjacencyListElement * del = *L;
+    *L = (*L)->next;
+    free(del);
+    return;
+  }
+
+  for(adjacencyListElement * current = * L; current->next!=NULL; current=current->next){
+    if(current->next->v==x){
+      adjacencyListElement * del = current->next;
+      current->next=current->next->next;
+      free(del);
+      return;
+    }
+  }
 }
 
 adjacencyListElement* difference(adjacencyListElement * L1, adjacencyListElement* L2) {
@@ -119,40 +139,32 @@ int inLv2(adjacencyListElement *adj, adjacencyListElement *L){
   return test;
 }
 
-int listeSize(adjacencyListElement *L){
-  adjacencyListElement *temp = L;
+int listeSize(int *L, int taille){
   int count=0;
-  while(temp!=NULL){
-    count++;
-    temp=temp->next;
-  }
-  freeList(temp);
+  for(int i=0; i<taille; i++) if(L[i]) count++;
   return count;
 }
 
-adjacencyListElement * Union(adjacencyListElement * Liste1, adjacencyListElement * Liste2){
-  adjacencyListElement * resultat = Liste1;
+void Union(int * Liste1, adjacencyListElement * Liste2){
   adjacencyListElement * temp = Liste2;
   while(temp!=NULL){
-    if(!inL(Liste1,temp->v,-1)) ajoute(&resultat, temp->v);
+    Liste1[temp->v]=1;
     temp=temp->next;
   }
   freeList(temp);
-  return resultat;
 }
 
-adjacencyListElement * Intersection(adjacencyListElement *Liste1, adjacencyListElement *Liste2, int sommet){
-  adjacencyListElement * temp = Liste2;
-  adjacencyListElement * resultat = NULL;
+void Intersection(int *tab, adjacencyListElement *Liste1, int *Liste2){
+  adjacencyListElement * temp = Liste1;
   while(temp!=NULL){
-    if(inL(Liste1,temp->v,sommet)) ajoute(&resultat, temp->v);
+    if(!Liste2[temp->v]) tab[temp->v]=0;
+    else tab[temp->v]=1;
     temp=temp->next;
   }
   freeList(temp);
-  return resultat;
 }
 
-void trierListe(Graph *g, adjacencyListElement** liste) {
+/*void trierListe(Graph *g, adjacencyListElement** liste) {
     int trie = 0;
     while (!trie) {
         trie = 1;
@@ -170,12 +182,11 @@ void trierListe(Graph *g, adjacencyListElement** liste) {
             current = current->next;
         }
     }
-}
+}*/
 
 void freeGraph(Graph *g){
   for(int i=0; i<g->nbVertices; i++) freeList(g->adjacencyLists[i]);
   free(g->adjacencyLists);
   free(g->branched);
-  free(g->distanceMatrix);
   free(g->dom);
 }
