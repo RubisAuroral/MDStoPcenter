@@ -10,7 +10,7 @@ Graph *g;
 
 int main(int argc, char *argv[]){
 	if(argc>1)k=atoi(argv[1]);
-	g = cleanGraph(78);
+	g = cleanGraph(atoi(argv[3]));
 	d0=(int*)malloc(g->nbVertices*sizeof(int));
 	df=(int*)malloc(g->nbVertices*sizeof(int));
 	
@@ -25,7 +25,7 @@ int main(int argc, char *argv[]){
 			N3[j][i]=0;
 		}
 	}
-	exemple(g);
+	exemple(g, argv[2]);
 	while(count(g, g->nbVertices)==0){
 		int x=bestToChoose(g);
 		d0[x]=1;

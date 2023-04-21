@@ -1,6 +1,6 @@
 #include "p_center.h"
 
-void exemple(Graph *g);
+void exemple(Graph *g, char *file);
 void ajoute(adjacencyListElement** firstValue, int nouvelleValeur);
 void afficheListe(adjacencyListElement * node);
 int nbVoisin(Graph *g, int x);

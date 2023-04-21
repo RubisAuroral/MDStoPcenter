@@ -19,11 +19,11 @@ int nbVoisin(Graph *g, int x){
   return z;
 }
 
-void exemple(Graph *g){
+void exemple(Graph *g, char *file){
 	int i=0;
   Edge edge;
 	edge.weight=0;
-	FILE *f = fopen("exemple6", "r");
+	FILE *f = fopen(file, "r");
     	while(fscanf(f, "%d %d", &edge.beginIdVertex, &edge.endIdVertex) !=  EOF){
         addEdge(g,edge);
     		addInverseEdge(g,edge);

@@ -136,6 +136,14 @@ void setS(Graph *g, int **S, int *C, int *U){
 Branche ReduceBranches(){
     //printf("k : %d\n", k);
     Branche B;
+    /*B.x=g->nbVertices-listeSize(g->branched, g->nbVertices);
+    B.B = malloc(B.x * sizeof(int));
+    int d=0;
+    for(int i=0; i<g->nbVertices; i++) if(!g->branched[i]){
+        B.B[d]=i;
+        d++;
+    }
+    return B;*/
     int** S = (int**) malloc(3 * sizeof(int*));
     for (int i = 0; i < 3; i++) {
         S[i] = (int*) malloc(g->nbVertices * sizeof(int));
@@ -237,8 +245,6 @@ Branche ReduceBranches(){
             }
             int max2 = maxIS(I, g->nbVertices);
             if(max2<listeSize(d0,g->nbVertices)-listeSize(df, g->nbVertices)){
-                printf("c'est possible ?");
-                getchar();
                 P[i]=0;
                 for(int j=0; j<k; j++){
                     for(int z=0; z<g->nbVertices; z++){
@@ -268,15 +274,14 @@ Branche ReduceBranches(){
 }
 
 int * BnB3(){
-    /*if(br==0) for(int i=0; i<100; i++) Bwatch[i]=-1;
+    if(br==0) for(int i=0; i<100; i++) Bwatch[i]=-1;
     printf("B : ");
     int ac=0;
     while(Bwatch[ac]!=-1){
         printf("%d ", Bwatch[ac]);
         ac++;
     }
-    getchar();*/
-
+    printf("\n");
     //for(int i=0; i<g->nbVertices; i++) printf("%d", g->branched[i]);
     //printf("\n");  
     if(fullTab(g->dom, g->nbVertices)){
