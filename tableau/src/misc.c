@@ -13,7 +13,7 @@ int nbVoisin(Graph *g, int x){
   adjacencyListElement *temp = g->adjacencyLists[x];
   int z=0;
   while(temp!=NULL){
-    z++;
+    if(!g->dom[temp->v]) z++;
     temp=temp->next;
   }
   return z;
@@ -23,7 +23,7 @@ void exemple(Graph *g){
 	int i=0;
   Edge edge;
 	edge.weight=0;
-	FILE *f = fopen("exemple5", "r");
+	FILE *f = fopen("exemple6", "r");
     	while(fscanf(f, "%d %d", &edge.beginIdVertex, &edge.endIdVertex) !=  EOF){
         addEdge(g,edge);
     		addInverseEdge(g,edge);
@@ -154,7 +154,7 @@ void Union(int * Liste1, adjacencyListElement * Liste2){
   freeList(temp);
 }
 
-void Intersection(int *tab, adjacencyListElement *Liste1, int *Liste2, int taille){
+void Intersection(int *tab, adjacencyListElement *Liste1, int *Liste2){
   adjacencyListElement * temp = Liste1;
   while(temp!=NULL){
     if(!Liste2[temp->v]) tab[temp->v]=0;
@@ -164,7 +164,7 @@ void Intersection(int *tab, adjacencyListElement *Liste1, int *Liste2, int taill
   freeList(temp);
 }
 
-void trierListe(Graph *g, adjacencyListElement** liste) {
+/*void trierListe(Graph *g, adjacencyListElement** liste) {
     int trie = 0;
     while (!trie) {
         trie = 1;
@@ -182,7 +182,7 @@ void trierListe(Graph *g, adjacencyListElement** liste) {
             current = current->next;
         }
     }
-}
+}*/
 
 void freeGraph(Graph *g){
   for(int i=0; i<g->nbVertices; i++) freeList(g->adjacencyLists[i]);

@@ -161,9 +161,9 @@ void branchedf(Graph *g, int *df){
 }
 
 char ** initMatC(int taille){
-	char ** M = (int**) malloc(taille * sizeof(int*));
+	char ** M = (char**) malloc(taille * sizeof(char*));
 	for (int i = 0; i < taille; i++) {
-  		M[i] = (int*) malloc(taille * sizeof(int));
+  		M[i] = (char*) malloc(taille * sizeof(char));
 	}
 	return M;
 }

@@ -11,7 +11,7 @@ int inL(adjacencyListElement *adj, int x, int base);
 int inLv2(adjacencyListElement *adj, adjacencyListElement *L);
 int listeSize(int *L, int taille);
 void Union(int * Liste1, adjacencyListElement * Liste2);
-void Intersection(int *tab, adjacencyListElement *Liste1, int *Liste2, int taille);
+void Intersection(int *tab, adjacencyListElement *Liste1, int *Liste2);
 void trierListe(Graph *g, adjacencyListElement** liste);
 void freeList(adjacencyListElement *node);
 void freeGraph(Graph *g);

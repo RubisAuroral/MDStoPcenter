@@ -4,6 +4,7 @@
         "math.h": "c",
         "preproc.h": "c",
         "misc.h": "c",
-        "bnb.h": "c"
+        "bnb.h": "c",
+        "resource.h": "c"
     }
 }

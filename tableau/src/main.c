@@ -1,6 +1,7 @@
 #include "../headers/misc.h"
 #include "../headers/preproc.h"
 #include "../headers/BnB.h"
+#include <sys/resource.h>
 
 int k=0;
 int *d0;
@@ -9,7 +10,7 @@ Graph *g;
 
 int main(int argc, char *argv[]){
 	if(argc>1)k=atoi(argv[1]);
-	g = cleanGraph(136);
+	g = cleanGraph(78);
 	d0=(int*)malloc(g->nbVertices*sizeof(int));
 	df=(int*)malloc(g->nbVertices*sizeof(int));
 	
@@ -31,13 +32,11 @@ int main(int argc, char *argv[]){
 		domine(x, g);
 	}
 	afficheDom(g);
-
 	for(int i=0; i<g->nbVertices; i++) createN1(g, i, N1);
 
 	for(int i=0; i<g->nbVertices; i++) createN2(g, i, N1, N2);
 
 	//for(int i=0; i<g->nbVertices; i++) createN3(g, i, N1, N2, N3);
-	
 	for(int i=0; i<g->nbVertices; i++){
 		createN3(g, i, N1, N2, N3);
 		int inN3 = 0;
@@ -65,8 +64,10 @@ int main(int argc, char *argv[]){
 		if(d0[i]) yi++;
 	}
 	printf("df : %d - d0 : %d\n", yu, yi);
+	unDom(g);
+	domineliste(df, g);
 	int * final = BnB3();
-	/*printf("\nFINAL (%d): ", listeSize(final));
+	//printf("\nFINAL (%d): ", listeSize(final));
 	/*for(int i=0; i<16; i++){
 		for(int j=i+1; j<16;j++){
 			adjacencyListElement *testopt = NULL;
@@ -82,7 +83,7 @@ int main(int argc, char *argv[]){
 	//printf("oui ?\n");
 	int pitie=0;
 	for(int i=0; i<g->nbVertices; i++){
-		if(d0[i]){
+		if(final[i]){
 			pitie++;
 			printf("%d ", i);
 		} 
