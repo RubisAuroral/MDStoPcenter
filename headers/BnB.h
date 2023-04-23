@@ -10,6 +10,14 @@ struct Branche{
     int x;
 };
 
+typedef struct iteratif iteratif;
+
+struct iteratif{
+    Branche etage;
+    int last;
+}
+
 adjacencyListElement * BnB(Graph *g, adjacencyListElement *D, adjacencyListElement *Dnow);
 void BnB2(Graph *g);
 int * BnB3();
+void BnBtest();
