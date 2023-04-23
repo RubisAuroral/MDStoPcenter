@@ -328,3 +328,41 @@ int * BnB3(){
     free(B.B);
     return aenv;
 }
+
+void BnBtest(){
+	iteratif mb[100];
+	a :
+	if(fullTab(g->dom, g->nbVertices)){
+		if(listeSize(df, g->nbVertices)<listeSize(d0, g->nbVertices)){
+			for(int i=0; i<g->nbVertices; i++) d0[i]=df[i];
+		}
+		free(mb[br].etage.B);
+		printf("d0 : %d\n", listeSize(d0, g->nbVertices));
+		goto b;
+    	}
+	mb[br].last=0;
+	mb[br].etage.B = ReduceBranches();
+	if(mb[br].etage.x==0){
+		free(mb[br].etage.B);
+		goto b;
+	}
+	if(mb.etage.x>1) qsort(mb.etage.B, mb.etage.x, sizeof(int), myComp);
+	for(int i=mb[br].last; i<mb[br].etage.x; i++){
+		g->branched[mb[br].etage.B[i]]=1;
+            	g->domine[mb[br].etage.B[i]]=1;
+            	domine(mb[br].etage.B[i], g);
+		br++;
+		goto a;
+		b :
+		br--;
+		g->domine[mb[br].etage.B[mb[br].last]]=0;
+		mb[br].last++;
+		i=mb[br].last;
+	}
+	unDom(g);
+    	domineliste(df, g); 
+    	for(int i=0; i<mb[br].etage.x; i++) g->branched[mb[br].etage[i]]=0;
+	free(mb[br].etage.B);
+	if(br==0) return;
+	else goto b;
+}
