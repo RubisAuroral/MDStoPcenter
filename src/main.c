@@ -66,7 +66,7 @@ int main(int argc, char *argv[]){
 	printf("df : %d - d0 : %d\n", yu, yi);
 	unDom(g);
 	domineliste(df, g);
-	int * final = BnB3();
+	BnBtest();
 	//printf("\nFINAL (%d): ", listeSize(final));
 	/*for(int i=0; i<16; i++){
 		for(int j=i+1; j<16;j++){
@@ -83,7 +83,7 @@ int main(int argc, char *argv[]){
 	//printf("oui ?\n");
 	int pitie=0;
 	for(int i=0; i<g->nbVertices; i++){
-		if(final[i]){
+		if(d0[i]){
 			pitie++;
 			printf("%d ", i);
 		} 
@@ -91,7 +91,7 @@ int main(int argc, char *argv[]){
 	printf(" (%d)", pitie);
 	free(d0);
 	free(df);
-	freeNs(g->nbVertices,N1,N2,N3);
+	freeNs(g->nbVertices,N1,N2,N3);	
 	freeGraph(g);
 	free(g);
 }
