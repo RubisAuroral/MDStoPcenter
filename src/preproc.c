@@ -67,7 +67,7 @@ void unDom(Graph *g){
 	for(int i=0; i<g->nbVertices;i++) g->dom[i]=0;
 }
 
-void createN1(Graph *gd, int x, char **N1){
+void createN1(Graph *gd, int x, int *N1){
 	adjacencyListElement *adj = gd->adjacencyLists[x];
 	int adjtab[gd->nbVertices];
 	for(int i=0; i<gd->nbVertices; i++) adjtab[i]=0;
@@ -85,14 +85,14 @@ void createN1(Graph *gd, int x, char **N1){
 				adj2=adj2->next;
 			}
 	        for(int j=0; j<gd->nbVertices; j++) if(adjtab2[j] && !adjtab[j] && j!=x){
-				N1[x][i]=1;
+				N1[i]=1;
 				break;
 			}
 		}
 	}
 }
 
-void createN2(Graph *gd, int x, char **N1, char **N2){
+void createN2(Graph *gd, int x, int *N1, int *N2){
 	adjacencyListElement *adj = gd->adjacencyLists[x];
 	int adjtab[gd->nbVertices];
 	for(int i=0; i<gd->nbVertices; i++) adjtab[i]=0;
@@ -103,7 +103,7 @@ void createN2(Graph *gd, int x, char **N1, char **N2){
 	
 	for(int i=0; i<gd->nbVertices; i++){
 		if(adjtab[i]){
-	        if(N1[x][i]==0){
+	        if(N1[i]==0){
 	        	adjacencyListElement *adj2 = gd->adjacencyLists[i];
 				int adjtab2[gd->nbVertices];
 				for(int j=0; j<gd->nbVertices; j++) adjtab2[j]=0;
@@ -111,8 +111,8 @@ void createN2(Graph *gd, int x, char **N1, char **N2){
 					adjtab2[adj2->v]=1;
 					adj2=adj2->next;
 				}
-	        	for(int j=0; j<gd->nbVertices; j++) if(adjtab2[j] && N1[x][j]){
-					N2[x][i]=1;
+	        	for(int j=0; j<gd->nbVertices; j++) if(adjtab2[j] && N1[j]){
+					N2[i]=1;
 					break;
 				} 
 	        } 
@@ -120,10 +120,10 @@ void createN2(Graph *gd, int x, char **N1, char **N2){
 	}
 }
 
-void createN3(Graph *gd, int x, char **N1, char **N2, char **N3){
+void createN3(Graph *gd, int x, int *N1, int *N2, int *N3){
 	adjacencyListElement *adj = gd->adjacencyLists[x];
 	while (adj != NULL){ 
-		if(N1[x][adj->v]==0 && N2[x][adj->v]==0) N3[x][adj->v]=1;
+		if(N1[adj->v]==0 && N2[adj->v]==0) N3[adj->v]=1;
 		adj=adj->next;
 	}
 }
@@ -138,6 +138,32 @@ int nullTab(int * tab, int taille){
 int fullTab(int * tab, int taille){
 	for(int i=0; i<taille; i++) if(tab[i]==0) return 0;
 	return 1;
+}
+
+void rule1(Graph *g, int *cover){
+	/*int memory[g->nbVertices];
+	for(int i=0; i<g->nbVertices; i++){
+		for(int j=0; j<g->nbVertices; j++) memory[i]=0;
+		if(cover[i] && g->adjacencyLists!=NULL){
+			adjacencyListElement *temp = g->adjacencyLists[i];
+			while(temp!=NULL){
+				if(cover[temp->v]){
+					memory[temp->v]=1;
+					printf("\n%d - %d\n", i, temp->v);
+					afficherGraph(g);
+					deleteNode(&g->adjacencyLists[temp->v], i);
+					afficherGraph(g);
+					getchar();
+				}
+				temp=temp->next;
+			}
+		}
+		for(int j=0; j<g->nbVertices; j++) if(memory[j]) deleteNode(&g->adjacencyLists[i], j);
+	}*/
+}
+
+void simplerules(Graph *g, int * cover){
+	rule1(g, cover);
 }
 
 void reduceGraph(Graph *gd, int x) {
@@ -168,12 +194,7 @@ char ** initMatC(int taille){
 	return M;
 }
 
-void freeNs(int taille, int ** N1,int ** N2,int ** N3){
-	for(int i = 0; i < taille; i++){
-		free(N1[i]);
-		free(N2[i]);
-		free(N3[i]);
-	}
+void freeNs(int * N1,int * N2,int * N3){
 	free(N1);
 	free(N2);
 	free(N3);

@@ -27,6 +27,7 @@ void exemple(Graph *g, char *file){
     	while(fscanf(f, "%d %d", &edge.beginIdVertex, &edge.endIdVertex) !=  EOF){
         addEdge(g,edge);
     		addInverseEdge(g,edge);
+        edge.weight++;
         i++;
     	}
       fclose(f);

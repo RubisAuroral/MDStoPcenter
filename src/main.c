@@ -14,17 +14,10 @@ int main(int argc, char *argv[]){
 	d0=(int*)malloc(g->nbVertices*sizeof(int));
 	df=(int*)malloc(g->nbVertices*sizeof(int));
 	
-	char **N1 = initMatC(g->nbVertices);
-	char **N2 = initMatC(g->nbVertices);
-	char **N3 = initMatC(g->nbVertices);
-
-	for(int j=0; j<g->nbVertices; j++){
-		for(int i=0; i<g->nbVertices;i++){
-			N1[j][i]=0;
-			N2[j][i]=0;
-			N3[j][i]=0;
-		}
-	}
+	int N1[g->nbVertices];
+	int N2[g->nbVertices];
+	int N3[g->nbVertices];
+	
 	exemple(g, argv[2]);
 	while(count(g, g->nbVertices)==0){
 		int x=bestToChoose(g);
@@ -32,35 +25,55 @@ int main(int argc, char *argv[]){
 		domine(x, g);
 	}
 	afficheDom(g);
-	for(int i=0; i<g->nbVertices; i++) createN1(g, i, N1);
-
-	for(int i=0; i<g->nbVertices; i++) createN2(g, i, N1, N2);
-
+	int covered[g->nbVertices];
+	for(int j=0; j<g->nbVertices;j++){
+		covered[j]=0;
+	}
+	int inN3;
+	int rappel=-1;
 	//for(int i=0; i<g->nbVertices; i++) createN3(g, i, N1, N2, N3);
-	for(int i=0; i<g->nbVertices; i++){
-		createN3(g, i, N1, N2, N3);
-		int inN3 = 0;
-		for(int j=0;j<g->nbVertices; j++){
-			if(N3[i][j]==1){
-				inN3=1;
-				reduceGraph(g,j);
-			}
-		}
-		if(inN3==1){
+	while(rappel<listeSize(df, g->nbVertices)){
+		rappel=listeSize(df, g->nbVertices);
+		printf("rappel : %d\n", rappel);
+		for(int i=0; i<g->nbVertices; i++){
 			inN3=0;
-			for(int j=0;j<g->nbVertices; j++){
-				if(N2[i][j]==1) reduceGraph(g,j);
+			for(int j=0; j<g->nbVertices;j++){
+				N1[j]=0;
+				N2[j]=0;
+				N3[j]=0;
 			}
-			df[i]=1;
+			createN1(g, i, N1);
+			createN2(g, i, N1, N2);
+			createN3(g, i, N1, N2, N3);
+			for(int j=0;j<g->nbVertices; j++) if(N3[j]==1 && !covered[j]) inN3=1;
+			if(inN3==1){
+				adjacencyListElement *temp=g->adjacencyLists[i];
+				while(temp!=NULL){
+					covered[temp->v]=1;
+					temp=temp->next;
+				}
+				reduceGraph(g, i);
+				for(int j=0;j<g->nbVertices; j++){
+					if(N2[j] || N3[j]){
+						reduceGraph(g,j);
+					} 
+				}
+				df[i]=1;
+			}
 		}
+		simplerules(g, covered);
 	}
 	
 	afficherGraph(g);
 	branchedf(g,df);
 	//adjacencyListElement *final=BnB(g, df, d0);
 	int yu=0, yi=0;
+	printf("df : ");
 	for(int i=0; i<g->nbVertices; i++){
-		if(df[i]) yu++;
+		if(df[i]){
+			yu++;
+			printf("%d ", i);
+		}
 		if(d0[i]) yi++;
 	}
 	printf("df : %d - d0 : %d\n", yu, yi);
@@ -91,7 +104,6 @@ int main(int argc, char *argv[]){
 	printf(" (%d)", pitie);
 	free(d0);
 	free(df);
-	freeNs(g->nbVertices,N1,N2,N3);	
 	freeGraph(g);
 	free(g);
 }
