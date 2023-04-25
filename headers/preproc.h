@@ -15,6 +15,8 @@ void createN3(Graph *gd, int x, char **N1, char **N2, char **N3);
 int nullTab(int *tab, int taille);
 int fullTab(int * tab, int taille);
 void reduceGraph(Graph *gd, int x);
+void reduceGraphN3(Graph *gd, int x, int mem);
+void simplerules(Graph *g, int * cover);
 adjacencyListElement * undomlist(Graph *gd);
 void branchedf(Graph *g, int *df);
 char ** initMatC(int taille);
