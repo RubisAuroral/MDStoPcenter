@@ -4,6 +4,7 @@
 int bestToChoose(Graph *gd);
 int undomBy(Graph *g, int x);
 void domine(int x, Graph *gd);
+void dominesave(int x, Graph *gd);
 void domineliste(int *sol, Graph *g);
 int count(Graph *gd, int x);
 void afficheDom(Graph *gd);

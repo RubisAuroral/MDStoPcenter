@@ -19,6 +19,16 @@ int nbVoisin(Graph *g, int x){
   return z;
 }
 
+int degre(Graph *g, int x){
+  adjacencyListElement *temp = g->adjacencyLists[x];
+  int z=0;
+  while(temp!=NULL){
+    z++;
+    temp=temp->next;
+  }
+  return z;
+}
+
 void exemple(Graph *g, char *file){
 	int i=0;
   Edge edge;
@@ -108,6 +118,7 @@ Graph* cleanGraph(int x){
 	Graph *g = (Graph*)malloc(sizeof(*g));
     	int nbVertices=x;
     	g -> dom = (int*)malloc(nbVertices*sizeof(int));
+      g -> save = (int*)malloc(nbVertices*sizeof(int));
       g -> branched = (int*)malloc(nbVertices*sizeof(int));
     	g -> adjacencyLists = (adjacencyListElement**)malloc(nbVertices*sizeof(adjacencyListElement*));
         if (g-> adjacencyLists == NULL){exit(0);}
@@ -115,6 +126,7 @@ Graph* cleanGraph(int x){
         for (int i = 0; i < nbVertices; i++){
             g -> adjacencyLists[i] = NULL;
             g -> dom[i] = 0 ;
+            g -> save[i] = 0 ;
             g -> branched[i] = 0 ;
         }
         return g;
@@ -144,6 +156,16 @@ int listeSize(int *L, int taille){
   int count=0;
   for(int i=0; i<taille; i++) if(L[i]) count++;
   return count;
+}
+
+int listeSize2(adjacencyListElement *L){
+  int count = 0;
+  adjacencyListElement *temp=L;
+  while(temp!=NULL){
+    count++;
+    temp=temp->next;
+  }
+  return count; 
 }
 
 void Union(int * Liste1, adjacencyListElement * Liste2){

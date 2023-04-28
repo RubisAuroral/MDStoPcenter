@@ -276,13 +276,16 @@ Branche ReduceBranches(){
 
 int * BnB3(){
     if(br==0) for(int i=0; i<100; i++) Bwatch[i]=-1;
-    printf("B : ");
+    /*printf("B : ");
     int ac=0;
     while(Bwatch[ac]!=-1){
         printf("%d ", Bwatch[ac]);
         ac++;
     }
     printf("\n");
+    for(int i=0; i<g->nbVertices; i++) if(df[i]) printf("%d ", i);
+    printf("\n");
+    afficheDom(g);*/
     //for(int i=0; i<g->nbVertices; i++) printf("%d", g->branched[i]);
     //printf("\n");  
     if(fullTab(g->dom, g->nbVertices)){
@@ -314,7 +317,9 @@ int * BnB3(){
             if(listeSize(temp, g->nbVertices)<listeSize(d0, g->nbVertices)){
                 int yu=0;
                 for(int j=0; j<g->nbVertices; j++) d0[j]=temp[j];
-                for(int j=0; j<g->nbVertices; j++) if(d0[j]) yu++;
+                for(int j=0; j<g->nbVertices; j++) if(d0[j]){
+                    yu++;
+                } 
                 printf("d0 : %d\n", yu);
             }
             free(temp);

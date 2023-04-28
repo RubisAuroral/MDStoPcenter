@@ -38,9 +38,18 @@ void domine(int x, Graph *gd){
 	gd->dom[x]=1;
 }
 
+void dominesave(int x, Graph *gd){
+	adjacencyListElement *adj = gd->adjacencyLists[x];
+	while (adj != NULL){
+	    gd->save[adj->v]=1;
+	    adj = adj->next;
+	}
+	gd->save[x]=1;
+}
+
 void domineliste(int *sol, Graph *g){
 	for(int i=0; i<g->nbVertices; i++){
-		if(sol[i]==1 || g->adjacencyLists[i]==NULL){
+		if(sol[i]==1){
 			domine(i, g);
 		}
 	}
@@ -64,7 +73,7 @@ void afficheBranched(Graph *gd){
 }
 
 void unDom(Graph *g){
-	for(int i=0; i<g->nbVertices;i++) g->dom[i]=0;
+	for(int i=0; i<g->nbVertices;i++) if(!g->save[i]) g->dom[i]=0;
 }
 
 void createN1(Graph *gd, int x, int *N1){
@@ -140,32 +149,6 @@ int fullTab(int * tab, int taille){
 	return 1;
 }
 
-void rule1(Graph *g, int *cover){
-	/*int memory[g->nbVertices];
-	for(int i=0; i<g->nbVertices; i++){
-		for(int j=0; j<g->nbVertices; j++) memory[i]=0;
-		if(cover[i] && g->adjacencyLists!=NULL){
-			adjacencyListElement *temp = g->adjacencyLists[i];
-			while(temp!=NULL){
-				if(cover[temp->v]){
-					memory[temp->v]=1;
-					printf("\n%d - %d\n", i, temp->v);
-					afficherGraph(g);
-					deleteNode(&g->adjacencyLists[temp->v], i);
-					afficherGraph(g);
-					getchar();
-				}
-				temp=temp->next;
-			}
-		}
-		for(int j=0; j<g->nbVertices; j++) if(memory[j]) deleteNode(&g->adjacencyLists[i], j);
-	}*/
-}
-
-void simplerules(Graph *g, int * cover){
-	rule1(g, cover);
-}
-
 void reduceGraph(Graph *gd, int x) {
 	for(int i=0; i<gd->nbVertices;i++){
 		if(x==i){
@@ -176,6 +159,114 @@ void reduceGraph(Graph *gd, int x) {
 	}
 }
 
+void rule1(Graph *g){
+	int memory[g->nbVertices];
+	for(int i=0; i<g->nbVertices; i++){
+		if(g->dom[i]){
+			for(int j=0; j<g->nbVertices; j++) memory[j]=0;
+			adjacencyListElement *temp = g->adjacencyLists[i];
+			while(temp!=NULL){
+				memory[temp->v]=1;
+				temp=temp->next;
+			}
+			for(int j=0; j<g->nbVertices; j++){
+				if(memory[j] && g->dom[j] && j != i){
+					memory[j]=1;
+					deleteNode(&g->adjacencyLists[j], i);
+					deleteNode(&g->adjacencyLists[i], j);
+				}
+			}
+		}
+	}
+}
+
+void rule2(Graph *g){
+	for(int i=0; i<g->nbVertices; i++){
+		if(g->dom[i] && degre(g, i)==1){
+			reduceGraph(g,i);
+		}
+	}
+}
+
+void rule3v1(Graph *g){
+	for(int i=0; i<g->nbVertices; i++){
+		int firstV = 0;
+		if(g->dom[i] && nbVoisin(g, i)==2){
+			adjacencyListElement *temp =  g->adjacencyLists[i];
+			firstV = temp->v;
+			temp=temp->next;
+			adjacencyListElement *voisin2 = g->adjacencyLists[temp->v];
+			while(voisin2!=NULL){
+				if(voisin2->v==firstV) reduceGraph(g,i);
+				voisin2=voisin2->next;
+			}
+			temp=temp->next;
+		} 
+	}
+}
+
+void rule3v2(Graph *g){
+	for(int i=0; i<g->nbVertices; i++){
+		if(g->dom[i] && nbVoisin(g, i)==2){
+			int firstV[g->nbVertices], secondV[g->nbVertices];
+			for(int j=0; j<g->nbVertices; j++){
+				firstV[j]=0; secondV[j]=0;
+			}
+			adjacencyListElement *temp =  g->adjacencyLists[i];
+			adjacencyListElement *temp2 = g->adjacencyLists[temp->v];
+			while(temp2!=NULL){
+				firstV[temp2->v]=1;
+				temp2=temp2->next;
+			}
+			temp=temp->next;
+			adjacencyListElement *temp3 = g->adjacencyLists[temp->v];
+			while(temp3!=NULL){
+				secondV[temp3->v]=1;
+				temp3=temp3->next;
+			}
+			for(int j=0; j<g->nbVertices; j++) if(firstV[j] && secondV[j]) reduceGraph(g,i);
+		} 
+	}
+}
+
+
+void rule4(Graph *g){
+	for(int i=0; i<g->nbVertices; i++){
+		if(g->dom[i] && nbVoisin(g, i)==3){
+			int fv, sv, tv, test=0;
+			adjacencyListElement *list = g->adjacencyLists[i];
+			fv=list->v;
+			list=list->next;
+			sv=list->v;
+			list=list->next;
+			tv=list->v;
+			adjacencyListElement *temp = g->adjacencyLists[fv];
+			while(temp!=NULL){
+				if(temp->v==sv) test=1;
+				temp=temp->next;
+			}
+			if(test){
+				test=0;
+				adjacencyListElement *temp2 = g->adjacencyLists[sv];
+				while(temp2!=NULL){
+					if(temp2->v==tv) test=1;
+					temp2=temp2->next;
+				}
+				if(test) reduceGraph(g, i);
+			}
+		}
+	}
+}
+
+void simplerules(Graph *g){
+	rule1(g);
+	rule2(g);
+	rule3v1(g);
+	rule3v2(g);
+	rule4(g);
+}
+
+
 adjacencyListElement * undomlist(Graph *gd){
 	adjacencyListElement *U = NULL;
 	for(int i=0; i<gd->nbVertices; i++) if(gd->dom[i]==0 && gd->adjacencyLists[i]!=NULL) ajoute(&U, i);
@@ -183,7 +274,7 @@ adjacencyListElement * undomlist(Graph *gd){
 }
 
 void branchedf(Graph *g, int *df){
-	for(int i=0; i<g->nbVertices; i++) if(df[i] || g->adjacencyLists[i]==NULL) g->branched[i]=1;
+	for(int i=0; i<g->nbVertices; i++) if(df[i]) g->branched[i]=1;
 }
 
 char ** initMatC(int taille){

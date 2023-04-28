@@ -43,6 +43,7 @@ struct Graph{
     int nbVertices;
     int p;
     int* dom;
+    int* save;
     int* branched;
     adjacencyListElement** adjacencyLists;
     int** distanceMatrix;

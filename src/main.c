@@ -24,11 +24,16 @@ int main(int argc, char *argv[]){
 		d0[x]=1;
 		domine(x, g);
 	}
-	afficheDom(g);
-	int covered[g->nbVertices];
-	for(int j=0; j<g->nbVertices;j++){
-		covered[j]=0;
+	/*FILE *fp;
+    fp = fopen("test", "r");
+	char line[256];
+    while (fgets(line, sizeof(line), fp) != NULL){
+        int num = atoi(line);
+		domine(num, g);
 	}
+	afficheDom(g);
+	getchar();*/
+	unDom(g);
 	int inN3;
 	int rappel=-1;
 	//for(int i=0; i<g->nbVertices; i++) createN3(g, i, N1, N2, N3);
@@ -45,13 +50,10 @@ int main(int argc, char *argv[]){
 			createN1(g, i, N1);
 			createN2(g, i, N1, N2);
 			createN3(g, i, N1, N2, N3);
-			for(int j=0;j<g->nbVertices; j++) if(N3[j]==1 && !covered[j]) inN3=1;
+			for(int j=0;j<g->nbVertices; j++) if(N3[j]==1 && !g->dom[j]) inN3=1;
 			if(inN3==1){
-				adjacencyListElement *temp=g->adjacencyLists[i];
-				while(temp!=NULL){
-					covered[temp->v]=1;
-					temp=temp->next;
-				}
+				domine(i, g);
+				dominesave(i,g);
 				reduceGraph(g, i);
 				for(int j=0;j<g->nbVertices; j++){
 					if(N2[j] || N3[j]){
@@ -61,10 +63,10 @@ int main(int argc, char *argv[]){
 				df[i]=1;
 			}
 		}
-		simplerules(g, covered);
+		simplerules(g, g->dom);
 	}
-	
-	afficherGraph(g);
+	//simplerules(g, covered);
+	//afficherGraph(g);
 	branchedf(g,df);
 	//adjacencyListElement *final=BnB(g, df, d0);
 	int yu=0, yi=0;
@@ -77,9 +79,11 @@ int main(int argc, char *argv[]){
 		if(d0[i]) yi++;
 	}
 	printf("df : %d - d0 : %d\n", yu, yi);
+	afficheDom(g);
 	unDom(g);
 	domineliste(df, g);
-	BnBtest();
+	afficheDom(g);
+	BnB3();
 	//printf("\nFINAL (%d): ", listeSize(final));
 	/*for(int i=0; i<16; i++){
 		for(int j=i+1; j<16;j++){
