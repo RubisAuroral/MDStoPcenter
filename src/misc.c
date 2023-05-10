@@ -30,15 +30,15 @@ int degre(Graph *g, int x){
 }
 
 void exemple(Graph *g, char *file){
-	int i=0;
   Edge edge;
 	edge.weight=0;
 	FILE *f = fopen(file, "r");
     	while(fscanf(f, "%d %d", &edge.beginIdVertex, &edge.endIdVertex) !=  EOF){
-        addEdge(g,edge);
-    		addInverseEdge(g,edge);
-        edge.weight++;
-        i++;
+        if(edge.beginIdVertex != edge.endIdVertex){
+          addEdge(g,edge);
+          addInverseEdge(g,edge);
+          edge.weight++;
+        }
     	}
       fclose(f);
 }
@@ -121,6 +121,11 @@ Graph* cleanGraph(int x){
       g -> save = (int*)malloc(nbVertices*sizeof(int));
       g -> branched = (int*)malloc(nbVertices*sizeof(int));
     	g -> adjacencyLists = (adjacencyListElement**)malloc(nbVertices*sizeof(adjacencyListElement*));
+      g -> voisins = (int**) malloc(g->nbVertices * sizeof(int*));
+      for (int i = 0; i < 3; i++) {
+        g->voisins[i] = (int*) malloc(g->nbVertices * sizeof(int));
+      }
+      
         if (g-> adjacencyLists == NULL){exit(0);}
         g -> nbVertices = nbVertices;
         for (int i = 0; i < nbVertices; i++){

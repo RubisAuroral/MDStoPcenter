@@ -3,11 +3,14 @@
 #include "../headers/preproc.h"
 #include "../headers/BnB.h"
 #include <unistd.h>
+#include <time.h>
 
 extern int k;
 extern int *d0;
 extern int *df;
 extern Graph *g;
+extern clock_t begin;
+extern clock_t end;
 int br=0;
 int Bwatch[100];
 Branche LB[1000];
@@ -155,17 +158,6 @@ Branche ReduceBranches(){
 		}
 	}
 
-    int C[g->nbVertices];
-    int P[g->nbVertices];
-    int U[g->nbVertices];
-    for(int i=0; i<g->nbVertices;i++){ 
-        C[i]=0;
-        P[i]=0;
-        U[i]=0;
-    }
-    setS(g,S,C,U);
-    
-    //printAllS(g,S);
     int **I = (int **) malloc(k * sizeof(int*));
     for(int i=0; i<k; i++){
         I[i] = (int*) malloc(g->nbVertices * sizeof(int*));
@@ -177,35 +169,52 @@ Branche ReduceBranches(){
 		}
 	}
 
+    int C[g->nbVertices];
+    int P[g->nbVertices];
+    int U[g->nbVertices];
+    for(int i=0; i<g->nbVertices;i++){ 
+        C[i]=0;
+        P[i]=0;
+        U[i]=0;
+    }
+    setS(g,S,C,U);
+
     for(int i=g->nbVertices-1; i>-1; i--){
         if(U[i]){
+            /*for(int j=0; j<k; j++){
+                printf("\nI%d :", j);
+                for(int l=0; l<g->nbVertices; l++) if(I[j][l]) printf(" %d", l);
+            }
+            getchar();*/
             int scoretot=0;
-            
+            P[i]=1;
             for(int j=0; j<k; j++){ 
                 if(!nullTab(I[j], g->nbVertices)){
-                    scoretot=score(g, I[j],C, P, S, i);
+                    scoretot+=score(g, I[j],C, P, S, i);
                 }
             }
-            //printf("\n");
+            int memory=0;
             if(scoretot>=0){
-                P[i]=1;
                 for(int j=0; j<k; j++){
                     if(!nullTab(I[j], g->nbVertices)){
                         if(score(g, I[j],C, P, S, i)>0){
                             //printf("I%d\n", j);
+                            memory=1;
                             I[j][i]=1;
                         }
                         else{
                             if(score(g, I[j],C, P, S, i)<0) removeConflict(g, I[j], i);
                         }
                     }
-                    else{
-                        int z=0;
-                        while(z<k && !nullTab(I[z], g->nbVertices)) z++;
-                        if(z<k) I[z][i]=1;
-                    }
+                }
+                if(!memory){
+                    int z=0;
+                    while(z<k && !nullTab(I[z], g->nbVertices)) z++;
+                    if(z<k) I[z][i]=1;
+                    memory=0;
                 }
             }
+            else P[i]=0;
         }
     }
     
@@ -293,7 +302,6 @@ int * BnB3(){
         for(int i=0; i<g->nbVertices; i++) aenv[i]=df[i];
         return aenv;
     }
-
     Branche B = ReduceBranches();
     if(B.x==0){
         int * aenv = malloc(g->nbVertices * sizeof(int));
@@ -302,7 +310,7 @@ int * BnB3(){
         return aenv;
     }
     if(B.x>1) qsort(B.B, B.x, sizeof(int), myComp);
-    for(int i=0; i<B.x && listeSize(d0, g->nbVertices)-listeSize(df, g->nbVertices)>=1; i++){
+    for(int i=0; i<B.x && listeSize(d0, g->nbVertices)-listeSize(df, g->nbVertices)>1; i++){
         unDom(g);
         domineliste(df, g); 
         if((nbVoisin(g, B.B[i])>0 || !g->dom[B.B[i]]) && !g->branched[B.B[i]]){
@@ -336,13 +344,16 @@ int * BnB3(){
 }
 
 void BnBtest(){
-	iteratif mb[100];
+	iteratif mb[1000];
 	a :
+    if(listeSize(df, g->nbVertices)>=listeSize(d0, g->nbVertices)) goto b;
 	if(fullTab(g->dom, g->nbVertices)){
 		if(listeSize(df, g->nbVertices)<listeSize(d0, g->nbVertices)){
 			for(int i=0; i<g->nbVertices; i++) d0[i]=df[i];
             for(int i=0; i<g->nbVertices; i++) if(d0[i]) printf("%d ", i);
             printf("\nd0 : %d\n", listeSize(d0, g->nbVertices));
+            end = clock();
+            printf("time for upgrade : %fs\n", (double)(end - begin) / CLOCKS_PER_SEC);
 		}
 		goto b;
     }
@@ -350,7 +361,8 @@ void BnBtest(){
 	mb[br].last=0;
 	mb[br].etage = ReduceBranches();
 	if(mb[br].etage.x==0){
-		goto b;
+		free(mb[br].etage.B);
+        goto b;
 	}
     
 	if(mb[br].etage.x>1) qsort(mb[br].etage.B, mb[br].etage.x, sizeof(int), myComp);
