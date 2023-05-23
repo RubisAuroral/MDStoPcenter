@@ -66,6 +66,9 @@ int score(Graph *g, int * IS, int * C, int * P, int ** S, int sommet){
     int ISv[g->nbVertices];
     for(int i=0; i<g->nbVertices; i++) ISv[i]=0;
     IkNeighbors(g, ISv, IS);
+    /* printf("Voisins de l'IS : ");
+    for(int i=0; i<g->nbVertices; i++) if(ISv[i]) printf("%d ", i);
+    printf("\n"); */
     for(int i=0; i<g->nbVertices; i++){
         N1v[i]=0;
         if(C[i] && P[i] && ISv[i]) N2v[i]=1;
@@ -117,20 +120,22 @@ void printAllS(Graph *g, int ** S){
 
 void setS(Graph *g, int **S, int *C, int *U){
     for(int i=0; i<g->nbVertices; i++){
-        if(g->dom[i]){
-            if(!g->branched[i]){
-                S[1][i]=1;
-                C[i]=1;
+        if(g->ingraph[i]){
+            if(g->dom[i]){
+                if(!g->branched[i]){
+                    S[1][i]=1;
+                    C[i]=1;
+                }
             }
-        }
-        else{
-            U[i]=1;
-            if(g->branched[i]){
-                S[2][i]=1;
-            } 
             else{
-                C[i]=1;
-                S[0][i]=1;
+                U[i]=1;
+                if(g->branched[i]){
+                    S[2][i]=1;
+                } 
+                else{
+                    C[i]=1;
+                    S[0][i]=1;
+                }
             }
         }
     }
@@ -178,18 +183,24 @@ Branche ReduceBranches(){
         U[i]=0;
     }
     setS(g,S,C,U);
+    
+/*     printf("U : ");
+    for(int i=g->nbVertices-1; i>-1; i--) if(!g->dom[i]) printf("%d ", i);
+    printf("\n"); */
 
     for(int i=g->nbVertices-1; i>-1; i--){
-        if(U[i]){
-            /*for(int j=0; j<k; j++){
+        if(g->ingraph[i] && !g->dom[i]){
+            
+            /* printf("%d : ", i);
+            for(int j=0; j<k; j++){
                 printf("\nI%d :", j);
                 for(int l=0; l<g->nbVertices; l++) if(I[j][l]) printf(" %d", l);
             }
-            getchar();*/
+            getchar(); */
             int scoretot=0;
-            P[i]=1;
             for(int j=0; j<k; j++){ 
                 if(!nullTab(I[j], g->nbVertices)){
+                    /* printf("IS%d\n", j); */
                     scoretot+=score(g, I[j],C, P, S, i);
                 }
             }
@@ -198,7 +209,6 @@ Branche ReduceBranches(){
                 for(int j=0; j<k; j++){
                     if(!nullTab(I[j], g->nbVertices)){
                         if(score(g, I[j],C, P, S, i)>0){
-                            //printf("I%d\n", j);
                             memory=1;
                             I[j][i]=1;
                         }
@@ -213,6 +223,7 @@ Branche ReduceBranches(){
                     if(z<k) I[z][i]=1;
                     memory=0;
                 }
+                P[i]=1;
             }
             else P[i]=0;
         }
@@ -283,6 +294,25 @@ Branche ReduceBranches(){
     return B;
 }
 
+Branche ReduceBranches2(){
+    Branche B;
+    int C[g->nbVertices];
+    for(int i=0; i<g->nbVertices; i++){
+        if(!g->branched[i]) C[i]=1;
+        else C[i]=0;
+    }
+    int size=listeSize(C, g->nbVertices);
+        B.B = malloc(size * sizeof(int));
+        B.x = size;
+        //printf("size : %d\n", size);
+        int c=0;
+        for(int i=0; i<g->nbVertices; i++) if(C[i]){
+            B.B[c]=i;
+            c++;
+        }
+        return B;
+}
+
 int * BnB3(){
     if(br==0) for(int i=0; i<100; i++) Bwatch[i]=-1;
     /*printf("B : ");
@@ -313,7 +343,7 @@ int * BnB3(){
     for(int i=0; i<B.x && listeSize(d0, g->nbVertices)-listeSize(df, g->nbVertices)>1; i++){
         unDom(g);
         domineliste(df, g); 
-        if((nbVoisin(g, B.B[i])>0 || !g->dom[B.B[i]]) && !g->branched[B.B[i]]){
+        if((nbVoisin(g, B.B[i])>0 || !g->dom[B.B[i]])){
             g->branched[B.B[i]]=1;
             df[B.B[i]]=1;
             domine(B.B[i], g);
@@ -354,12 +384,13 @@ void BnBtest(){
             printf("\nd0 : %d\n", listeSize(d0, g->nbVertices));
             end = clock();
             printf("time for upgrade : %fs\n", (double)(end - begin) / CLOCKS_PER_SEC);
+            getchar();
 		}
 		goto b;
     }
 
 	mb[br].last=0;
-	mb[br].etage = ReduceBranches();
+	mb[br].etage = ReduceBranches2();
 	if(mb[br].etage.x==0){
 		free(mb[br].etage.B);
         goto b;
@@ -367,10 +398,18 @@ void BnBtest(){
     
 	if(mb[br].etage.x>1) qsort(mb[br].etage.B, mb[br].etage.x, sizeof(int), myComp);
 	for(int i=mb[br].last; i<mb[br].etage.x; i++){
-		g->branched[mb[br].etage.B[i]]=1;
+        g->branched[mb[br].etage.B[i]]=1;
         df[mb[br].etage.B[i]]=1;
         domine(mb[br].etage.B[i], g);
 		br++;
+        /* printf("U : ");
+        for(int j=0; j<g->nbVertices; j++) if(!g->dom[j]) printf("%d ",j);
+        printf("\n");
+        printf("B : ");
+        for(int j=0; j<g->nbVertices; j++) if(!g->branched[j]) printf("%d ",j);
+        printf("\n");
+        printf("Df : ");
+        for(int j=0; j<g->nbVertices; j++) if(df[j]) printf("%d ",j); */
 		goto a;
 		b :
 		br--;

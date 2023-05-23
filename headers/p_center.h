@@ -45,6 +45,7 @@ struct Graph{
     int* dom;
     int* save;
     int* branched;
+    int* ingraph;
     adjacencyListElement** adjacencyLists;
     int** voisins;
     int** distanceMatrix;

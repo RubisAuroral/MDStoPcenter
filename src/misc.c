@@ -116,10 +116,11 @@ adjacencyListElement* difference(adjacencyListElement * L1, adjacencyListElement
 
 Graph* cleanGraph(int x){
 	Graph *g = (Graph*)malloc(sizeof(*g));
-    	int nbVertices=x;
+      int nbVertices=x;
     	g -> dom = (int*)malloc(nbVertices*sizeof(int));
       g -> save = (int*)malloc(nbVertices*sizeof(int));
       g -> branched = (int*)malloc(nbVertices*sizeof(int));
+      g -> ingraph = (int*)malloc(nbVertices*sizeof(int));
     	g -> adjacencyLists = (adjacencyListElement**)malloc(nbVertices*sizeof(adjacencyListElement*));
       g -> voisins = (int**) malloc(g->nbVertices * sizeof(int*));
       for (int i = 0; i < 3; i++) {
@@ -133,6 +134,7 @@ Graph* cleanGraph(int x){
             g -> dom[i] = 0 ;
             g -> save[i] = 0 ;
             g -> branched[i] = 0 ;
+            g -> ingraph[i] = 1 ;
         }
         return g;
 }

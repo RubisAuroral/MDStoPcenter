@@ -21,13 +21,13 @@ int main(int argc, char *argv[]){
 	int N1[g->nbVertices];
 	int N2[g->nbVertices];
 	int N3[g->nbVertices];
-	
 	exemple(g, argv[2]);
 	while(count(g, g->nbVertices)==0){
 		int x=bestToChoose(g);
 		d0[x]=1;
 		domine(x, g);
 	}
+	for(int i=0;i<g->nbVertices; i++) printf("%d", d0[i]);
 	/*FILE *fp;
     fp = fopen("test", "r");
 	char line[256];
@@ -37,6 +37,7 @@ int main(int argc, char *argv[]){
 	}
 	afficheDom(g);
 	getchar();*/
+	
 	unDom(g);
 	int inN3;
 	int rappel=-1;
@@ -44,7 +45,7 @@ int main(int argc, char *argv[]){
 	while(rappel<listeSize(df, g->nbVertices)){
 		simplerules(g, g->dom);
 		rappel=listeSize(df, g->nbVertices);
-		printf("rappel : %d\n", rappel);
+		printf("\nrappel : %d\n", rappel);
 		for(int i=0; i<g->nbVertices; i++){
 			inN3=0;
 			for(int j=0; j<g->nbVertices;j++){
@@ -86,7 +87,9 @@ int main(int argc, char *argv[]){
 		if(d0[i]) yi++;
 	}
 	printf("\ndf : %d - d0 : %d\n", yu, yi);
-	afficheBranched(g); 
+	for(int i=0; i<g->nbVertices; i++) if(!g->branched[i]) printf("%d ", i);
+	printf("\n");
+	afficherGraph(g);
 	BnBtest();
 	int pitie=0;
 	for(int i=0; i<g->nbVertices; i++){

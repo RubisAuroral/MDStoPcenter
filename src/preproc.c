@@ -150,6 +150,7 @@ int fullTab(int * tab, int taille){
 }
 
 void reduceGraph(Graph *gd, int x) {
+	gd->ingraph[x]=0;
 	for(int i=0; i<gd->nbVertices;i++){
 		if(x==i){
 			freeList(gd->adjacencyLists[i]);
@@ -171,6 +172,7 @@ void rule1(Graph *g){
 			}
 			for(int j=0; j<g->nbVertices; j++){
 				if(memory[j] && g->dom[j]){
+					printf("suppr1 : %d-%d\n", i,j);
 					deleteNode(&g->adjacencyLists[j], i);
 					deleteNode(&g->adjacencyLists[i], j);
 				}
@@ -183,7 +185,7 @@ void rule2(Graph *g){
 	for(int i=0; i<g->nbVertices; i++){
 		if(g->dom[i] && degre(g, i)==1){
 			reduceGraph(g,i);
-			printf("supp : %d\n", i);
+			printf("suppr2 : %d\n", i);
 			g->branched[i]=1;
 		}
 	}
@@ -192,7 +194,7 @@ void rule2(Graph *g){
 void rule3v1(Graph *g){
 	for(int i=0; i<g->nbVertices; i++){
 		int firstV;
-		if(g->dom[i] && nbVoisin(g, i)==2){
+		if(g->dom[i] && nbVoisin(g, i)==2 && degre(g,i)==2){
 			adjacencyListElement *temp =  g->adjacencyLists[i];
 			firstV = temp->v;
 			temp=temp->next;
@@ -200,7 +202,7 @@ void rule3v1(Graph *g){
 			while(voisin2!=NULL){
 				if(voisin2->v==firstV){
 					reduceGraph(g,i);
-					printf("supp : %d\n", i);
+					printf("suppr3 : %d\n", i);
 					g->branched[i]=1;
 				}
 				voisin2=voisin2->next;
@@ -212,7 +214,7 @@ void rule3v1(Graph *g){
 
 void rule3v2(Graph *g){
 	for(int i=0; i<g->nbVertices; i++){
-		if(g->dom[i] && nbVoisin(g, i)==2){
+		if(g->dom[i] && nbVoisin(g, i)==2 && degre(g,i)==2){
 			int firstV[g->nbVertices], secondV[g->nbVertices];
 			for(int j=0; j<g->nbVertices; j++){
 				firstV[j]=0; secondV[j]=0;
@@ -229,8 +231,8 @@ void rule3v2(Graph *g){
 				secondV[temp3->v]=1;
 				temp3=temp3->next;
 			}
-			for(int j=0; j<g->nbVertices; j++) if(firstV[j] && secondV[j]){
-				printf("supp : %d\n", i);
+			for(int j=0; j<g->nbVertices; j++) if(firstV[j] && secondV[j] && i!=j){
+				printf("suppr3 : %d\n", i);
 				reduceGraph(g,i);
 				g->branched[i]=1;
 				break;
@@ -242,7 +244,7 @@ void rule3v2(Graph *g){
 
 void rule4(Graph *g){
 	for(int i=0; i<g->nbVertices; i++){
-		if(g->dom[i] && nbVoisin(g, i)==3){
+		if(g->dom[i] && nbVoisin(g, i)==3 && degre(g,i)==3){
 			int fv, sv, tv, test=0;
 			adjacencyListElement *list = g->adjacencyLists[i];
 			fv=list->v;
@@ -264,7 +266,7 @@ void rule4(Graph *g){
 				}
 				if(test){
 					reduceGraph(g, i);
-					printf("supp : %d\n", i);
+					printf("suppr4 : %d\n", i);
 					g->branched[i]=1;
 				}
 			}
