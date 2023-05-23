@@ -6,6 +6,7 @@
 typedef struct Branche Branche;
 
 struct Branche{
+    Graph *g;
     int * B;
     int x;
 };
