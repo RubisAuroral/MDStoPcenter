@@ -13,7 +13,7 @@ extern clock_t begin;
 extern clock_t end;
 int br=0;
 int Bwatch[100];
-Branche LB[1000];
+iteratif mb[1000];
 
 int myComp(const void * v1, const void * v2){
     int fI = * (const int *) v1;
@@ -65,7 +65,7 @@ int score(Graph *g, int * IS, /* int * C, */ int * P, /* int ** S, */ int sommet
     int N2v[g->nbVertices];
     int ISv[g->nbVertices];
     for(int i=0; i<g->nbVertices; i++) ISv[i]=0;
-    IkNeighbors(g, ISv, IS);
+    IkNeighbors(mb[br].g, ISv, IS);
     /* printf("Voisins de l'IS : ");
     for(int i=0; i<g->nbVertices; i++) if(ISv[i]) printf("%d ", i);
     printf("\n"); */
@@ -188,7 +188,7 @@ Branche ReduceBranches(){
     printf("\n"); */
 
     for(int i=g->nbVertices-1; i>-1; i--){
-        if(g->ingraph[i] && !g->dom[i]){
+        if(mb[br].g->ingraph[i] && !g->dom[i]){
             
             /* printf("%d : ", i);
             for(int j=0; j<k; j++){
@@ -216,7 +216,7 @@ Branche ReduceBranches(){
                             I[j][i]=1;
                         }
                         else{
-                            if(allscore[j]<0) removeConflict(g, I[j], i);
+                            if(allscore[j]<0) removeConflict(mb[br].g, I[j], i);
                         }
                     }
                 }
@@ -251,7 +251,7 @@ Branche ReduceBranches(){
         }
         return B;
     }
-    
+
     for(int i=g->nbVertices-1; i>-1; i--){
         if(g->dom[i] && !g->branched[i]){
             int **Itemp = (int **) malloc(k * sizeof(int*));
@@ -267,7 +267,7 @@ Branche ReduceBranches(){
             P[i]=1;
             for(int j=0; j<k; j++){ 
                 if(!nullTab(I[j], g->nbVertices)){
-                    if(score(g, I[j],/* C, */ P, /* S, */ i)<0) removeConflict(g, I[j], i);
+                    if(score(g, I[j],/* C, */ P, /* S, */ i)<0) removeConflict(mb[br].g, I[j], i);
                 }
             }
             int max2 = maxIS(I, g->nbVertices);
@@ -288,22 +288,15 @@ Branche ReduceBranches(){
     /* freeAllS(S, 3);
     free(S); */
     int size=0;
-    printf("Normalement : ");
-    for(int i=0; i<g->nbVertices; i++){
-        if(!g->branched[i]) printf("%d ", i);
-        if(!g->branched[i] && !P[i]) size++;
-    }
+    for(int i=0; i<g->nbVertices; i++) if(!g->branched[i] && !P[i]) size++;
     B.B = malloc(size * sizeof(int));
     B.x = size;
     //printf("size2 : %d\n", size);
     int c=0;
-    printf("\nEn vrai : ");
     for(int i=0; i<g->nbVertices; i++) if(!g->branched[i] && !P[i]){
-        printf("%d ", i);
         B.B[c]=i;
         c++;
     }
-    printf("\n");
     return B;
 }
 
@@ -324,6 +317,31 @@ Branche ReduceBranches2(){
             c++;
         }
         return B;
+}
+
+Graph * copyGraph(Graph *old){
+    Graph *new = (Graph*)malloc(sizeof(*new));
+    new->nbVertices=g->nbVertices;
+    new -> ingraph = (int*)malloc(new->nbVertices*sizeof(int));
+    new -> dom = (int*)malloc(new->nbVertices*sizeof(int));
+    new -> branched = (int*)malloc(new->nbVertices*sizeof(int));
+    new -> adjacencyLists = (adjacencyListElement**)malloc(new->nbVertices*sizeof(adjacencyListElement*));
+    for(int i=0; i<new->nbVertices; i++){
+        new->adjacencyLists[i]=NULL;
+        adjacencyListElement *temp = old->adjacencyLists[i];
+        Edge edge;
+        edge.beginIdVertex=i+1;
+        while(temp!=NULL){
+            edge.endIdVertex=temp->v+1;
+            edge.weight=temp->weight;
+            addEdge(new,edge);
+            temp=temp->next;
+        }
+        new->ingraph[i]=old->ingraph[i];
+        new->dom[i]=old->dom[i];
+        new->branched[i]=old->branched[i];
+    }
+    return new;
 }
 
 int * BnB3(){
@@ -387,8 +405,8 @@ int * BnB3(){
 }
 
 void BnBtest(){
-	iteratif mb[1000];
     int tdf=listeSize(df, g->nbVertices), td0=listeSize(d0, g->nbVertices);
+    mb[br].g=copyGraph(g);
 	a :
     if(tdf+br>=td0) goto b;
 	if(fullTab(g->dom, g->nbVertices)){
@@ -402,22 +420,34 @@ void BnBtest(){
 		}
 		goto b;
     }
-
 	mb[br].last=0;
+    printf("%d\n", br);
 	mb[br].etage = ReduceBranches();
 	if(mb[br].etage.x==0){
 		free(mb[br].etage.B);
         goto b;
 	}
-    
 	if(mb[br].etage.x>1) qsort(mb[br].etage.B, mb[br].etage.x, sizeof(int), myComp);
 	for(int i=mb[br].last; i<mb[br].etage.x; i++){
         g->branched[mb[br].etage.B[i]]=1;
         df[mb[br].etage.B[i]]=1;
         domine(mb[br].etage.B[i], g);
 		br++;
+        mb[br].g=copyGraph(mb[br-1].g);
+        int rappel=-1;
+        while(rappel<listeSize(df, g->nbVertices)){
+            rappel=listeSize(df, g->nbVertices);
+            printf("\nrappel : %d\n", rappel);
+            simplerules(mb[br].g, g);
+            Albertrule1(mb[br].g, g, df, 0);
+        }
 		goto a;
 		b :
+        for(int j=0; j<g->nbVertices; j++){
+            g->branched[j]=mb[br].g->branched[j];
+        }
+        freeGraph(mb[br].g);
+        
 		br--;
 		df[mb[br].etage.B[mb[br].last]]=0;
 		unDom(g);

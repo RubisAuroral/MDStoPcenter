@@ -18,9 +18,6 @@ int main(int argc, char *argv[]){
 	d0=(int*)malloc(g->nbVertices*sizeof(int));
 	df=(int*)malloc(g->nbVertices*sizeof(int));
 	int *final;
-	int N1[g->nbVertices];
-	int N2[g->nbVertices];
-	int N3[g->nbVertices];
 	exemple(g, argv[2]);
 	while(count(g, g->nbVertices)==0){
 		int x=bestToChoose(g);
@@ -39,37 +36,13 @@ int main(int argc, char *argv[]){
 	getchar();*/
 	
 	unDom(g);
-	int inN3;
 	int rappel=-1;
 	//for(int i=0; i<g->nbVertices; i++) createN3(g, i, N1, N2, N3);
 	while(rappel<listeSize(df, g->nbVertices)){
-		simplerules(g, g->dom);
 		rappel=listeSize(df, g->nbVertices);
 		printf("\nrappel : %d\n", rappel);
-		for(int i=0; i<g->nbVertices; i++){
-			inN3=0;
-			for(int j=0; j<g->nbVertices;j++){
-				N1[j]=0;
-				N2[j]=0;
-				N3[j]=0;
-			}
-			createN1(g, i, N1);
-			createN2(g, i, N1, N2);
-			createN3(g, i, N1, N2, N3);
-			for(int j=0;j<g->nbVertices; j++) if(N3[j]==1 && !g->dom[j]) inN3=1;
-			if(inN3==1){
-				domine(i, g);
-				dominesave(i,g);
-				reduceGraph(g, i);
-				for(int j=0;j<g->nbVertices; j++){
-					if(N2[j] || N3[j]){
-						reduceGraph(g,j);
-						g->branched[j]=1;
-					} 
-				}
-				df[i]=1;
-			}
-		}
+		simplerules(g, g);
+		Albertrule1(g, g, df, 1);
 	}
 	branchedf(g,df);
 	int yu=0, yi=0;
@@ -90,6 +63,7 @@ int main(int argc, char *argv[]){
 	for(int i=0; i<g->nbVertices; i++) if(!g->branched[i]) printf("%d ", i);
 	printf("\n");
 	afficherGraph(g);
+	getchar();
 	BnBtest();
 	int pitie=0;
 	for(int i=0; i<g->nbVertices; i++){
@@ -102,7 +76,7 @@ int main(int argc, char *argv[]){
 	free(d0);
 	free(df);
 	end = clock();
-    printf("time for upgrade : %fs\n", (double)(end - begin) / CLOCKS_PER_SEC);
+    printf("time for end : %fs\n", (double)(end - begin) / CLOCKS_PER_SEC);
 	//free(final);
 	freeGraph(g);
 	free(g);
