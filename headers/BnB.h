@@ -6,6 +6,7 @@
 typedef struct Branche Branche;
 
 struct Branche{
+    Graph *g;
     int * B;
     int x;
 };
@@ -13,7 +14,6 @@ struct Branche{
 typedef struct iteratif iteratif;
 
 struct iteratif{
-    Graph *g;
     Branche etage;
     int last;
 };
