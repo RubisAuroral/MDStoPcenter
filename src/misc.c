@@ -19,6 +19,17 @@ int nbVoisin(Graph *g, int x){
   return z;
 }
 
+int nbVoisinv2(Graph *g, int x){
+  adjacencyListElement *temp = g->adjacencyLists[x];
+  int z=0;
+  if(!g->dom[x]) z++;
+  while(temp!=NULL){
+    if(!g->dom[temp->v]) z++;
+    temp=temp->next;
+  }
+  return z;
+}
+
 int degre(Graph *g, int x){
   adjacencyListElement *temp = g->adjacencyLists[x];
   int z=0;
@@ -161,7 +172,7 @@ int inLv2(adjacencyListElement *adj, adjacencyListElement *L){
 
 int listeSize(int *L, int taille){
   int count=0;
-  for(int i=0; i<taille; i++) if(L[i]) count++;
+  for(int i=0; i<taille; i++) count+=L[i];
   return count;
 }
 
@@ -193,26 +204,6 @@ void Intersection(int *tab, adjacencyListElement *Liste1, int *Liste2){
   }
   freeList(temp);
 }
-
-/*void trierListe(Graph *g, adjacencyListElement** liste) {
-    int trie = 0;
-    while (!trie) {
-        trie = 1;
-        adjacencyListElement* current = liste;
-        adjacencyListElement* previous = NULL;
-        while (current != NULL && current->next != NULL) {
-            if (undomBy(g,current->v) < undomBy(g,current->next->v)) {
-                // Échange les valeurs des noeuds actuel et suivant
-                int temp = current->v;
-                current->v = current->next->v;
-                current->next->v = temp;
-                trie = 0;
-            }
-            previous = current;
-            current = current->next;
-        }
-    }
-}*/
 
 void freeGraph(Graph *g){
   for(int i=0; i<g->nbVertices; i++) freeList(g->adjacencyLists[i]);

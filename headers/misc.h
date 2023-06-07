@@ -17,3 +17,4 @@ void Intersection(int *tab, adjacencyListElement *Liste1, int *Liste2);
 void trierListe(Graph *g, adjacencyListElement** liste);
 void freeList(adjacencyListElement *node);
 void freeGraph(Graph *g);
+int nbVoisinv2(Graph *g, int x);

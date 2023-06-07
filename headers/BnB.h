@@ -6,7 +6,6 @@
 typedef struct Branche Branche;
 
 struct Branche{
-    Graph *g;
     int * B;
     int x;
 };
@@ -22,3 +21,5 @@ adjacencyListElement * BnB(Graph *g, adjacencyListElement *D, adjacencyListEleme
 void BnB2(Graph *g);
 int * BnB3();
 void BnBtest();
+void removeConflict(Graph *g, int *IS, int sommet);
+void IkNeighbors(Graph* g, int * ISv, int * IS);

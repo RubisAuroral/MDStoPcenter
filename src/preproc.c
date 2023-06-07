@@ -4,13 +4,7 @@
 int bestToChoose(Graph *gd){
 	int r,zb=0, b=0;
 	for (int i = 0; i < gd->nbVertices; i++){
-		r=0;
-		if(gd -> dom[i] == 0) r++;
-	    adjacencyListElement *adj = gd->adjacencyLists[i];
-	    while (adj != NULL){
-	        if(gd->dom[adj->v] == 0) r++;
-	        adj = adj->next;
-	    }
+		r=nbVoisinv2(gd, i);
 	    if(r>=zb){
 			zb=r; 
 			b=i;
@@ -112,7 +106,7 @@ void createN2(Graph *gd, int x, int *N1, int *N2){
 	
 	for(int i=0; i<gd->nbVertices; i++){
 		if(adjtab[i]){
-	        if(N1[i]==0){
+	        if(!N1[i]){
 	        	adjacencyListElement *adj2 = gd->adjacencyLists[i];
 				int adjtab2[gd->nbVertices];
 				for(int j=0; j<gd->nbVertices; j++) adjtab2[j]=0;
@@ -145,8 +139,9 @@ int nullTab(int * tab, int taille){
 }
 
 int fullTab(int * tab, int taille){
-	for(int i=0; i<taille; i++) if(tab[i]==0) return 0;
-	return 1;
+	int x=listeSize(tab, taille);
+	if(x==taille) return 1;
+	else return 0;
 }
 
 void reduceGraph(Graph *gd, int x) {
@@ -186,7 +181,6 @@ void rule2(Graph *g){
 		if(g->dom[i] && degre(g, i)==1){
 			reduceGraph(g,i);
 			printf("suppr2 : %d\n", i);
-			g->branched[i]=1;
 		}
 	}
 }
@@ -203,7 +197,6 @@ void rule3v1(Graph *g){
 				if(voisin2->v==firstV){
 					reduceGraph(g,i);
 					printf("suppr3 : %d\n", i);
-					g->branched[i]=1;
 				}
 				voisin2=voisin2->next;
 			}
@@ -234,7 +227,6 @@ void rule3v2(Graph *g){
 			for(int j=0; j<g->nbVertices; j++) if(firstV[j] && secondV[j] && i!=j){
 				printf("suppr3 : %d\n", i);
 				reduceGraph(g,i);
-				g->branched[i]=1;
 				break;
 			}
 		} 
@@ -267,7 +259,6 @@ void rule4(Graph *g){
 				if(test){
 					reduceGraph(g, i);
 					printf("suppr4 : %d\n", i);
-					g->branched[i]=1;
 				}
 			}
 		}
