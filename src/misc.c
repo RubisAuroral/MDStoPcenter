@@ -1,5 +1,11 @@
 #include "../headers/p_center.h"
 
+void inittab(int *tab, int size){
+  for(int i=0; i<size; i++){
+    tab[i]=0;
+  }
+}
+
 void freeList(adjacencyListElement *node) {
   adjacencyListElement *temp;
   while (node != NULL) {

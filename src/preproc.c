@@ -167,7 +167,7 @@ void rule1(Graph *g){
 			}
 			for(int j=0; j<g->nbVertices; j++){
 				if(memory[j] && g->dom[j]){
-					printf("suppr1 : %d-%d\n", i,j);
+					//printf("suppr1 : %d-%d\n", i,j);
 					deleteNode(&g->adjacencyLists[j], i);
 					deleteNode(&g->adjacencyLists[i], j);
 				}
@@ -180,7 +180,7 @@ void rule2(Graph *g){
 	for(int i=0; i<g->nbVertices; i++){
 		if(g->dom[i] && degre(g, i)==1){
 			reduceGraph(g,i);
-			printf("suppr2 : %d\n", i);
+			//printf("suppr2 : %d\n", i);
 		}
 	}
 }
@@ -196,7 +196,7 @@ void rule3v1(Graph *g){
 			while(voisin2!=NULL){
 				if(voisin2->v==firstV){
 					reduceGraph(g,i);
-					printf("suppr3 : %d\n", i);
+					//printf("suppr3 : %d\n", i);
 				}
 				voisin2=voisin2->next;
 			}
@@ -225,7 +225,7 @@ void rule3v2(Graph *g){
 				temp3=temp3->next;
 			}
 			for(int j=0; j<g->nbVertices; j++) if(firstV[j] && secondV[j] && i!=j){
-				printf("suppr3 : %d\n", i);
+				//printf("suppr3 : %d\n", i);
 				reduceGraph(g,i);
 				break;
 			}
@@ -258,7 +258,7 @@ void rule4(Graph *g){
 				}
 				if(test){
 					reduceGraph(g, i);
-					printf("suppr4 : %d\n", i);
+					//printf("suppr4 : %d\n", i);
 				}
 			}
 		}

@@ -20,7 +20,7 @@ Branche LB[1000];
 int myComp(const void * v1, const void * v2){
     int fI = * (const int *) v1;
     int sI = * (const int *) v2;
-    return nbVoisin(g, sI) - nbVoisin(g, fI); 
+    return nbVoisinv2(g, sI) - nbVoisinv2(g, fI); 
 }
 
 void freeAllS(int **S, int nb){
@@ -52,6 +52,32 @@ int maxIS(int I[][g->nbVertices], int taille){
     return max;
 }
 
+void rvoisins(int sommet, int *listevoisin){
+    adjacencyListElement *temp = g->adjacencyLists[sommet];
+    while(temp!=NULL){
+        listevoisin[temp->v]=1;;
+        temp=temp->next;
+    }
+}
+
+int hop_2_adj(int sommet1, int sommet2, int *ingraph){
+    int voisins[g->nbVertices];
+    inittab(voisins, g->nbVertices);
+    rvoisins(sommet1, voisins);
+    adjacencyListElement *temp = g->adjacencyLists[sommet2];
+    while(temp!=NULL){
+        if(sommet1==temp->v){
+            if(!g->branched[sommet2] && g->branched[sommet1])
+                return 1;
+        }
+        else if(ingraph[temp->v] && !g->branched[temp->v] && voisins[temp->v])
+            return 1;
+
+        temp=temp->next;
+    }
+    return 0;
+}
+
 void IkNeighbors(Graph* g, int * ISv, int * IS) {
     for(int i=0; i<g->nbVertices; i++){
         if(IS[i]){
@@ -62,54 +88,29 @@ void IkNeighbors(Graph* g, int * ISv, int * IS) {
 }
 
 int score(Graph *g, int * IS, /* int * C, */ int * P, /* int ** S, */ int sommet){
-    int save=0;
-    int N1v[g->nbVertices];
-    int N2v[g->nbVertices];
-    int ISv[g->nbVertices];
-    for(int i=0; i<g->nbVertices; i++) ISv[i]=0;
-    IkNeighbors(g, ISv, IS);
-    /* printf("Voisins de l'IS : ");
-    for(int i=0; i<g->nbVertices; i++) if(ISv[i]) printf("%d ", i);
-    printf("\n"); */
-    for(int i=0; i<g->nbVertices; i++){
-        N1v[i]=0;
-        if(!g->branched[i] && P[i] && ISv[i]) N2v[i]=1;
-        else N2v[i]=0;
-    }
-    Intersection(N1v, g->adjacencyLists[sommet], IS);
-    if(N2v[sommet]) save=1;
-    Intersection(N2v, g->adjacencyLists[sommet], N2v);
-    if(save==1) N2v[sommet]=1;
-    int N1vn=nullTab(N1v, g->nbVertices), N2vn=nullTab(N2v, g->nbVertices);
-
-    if (!g->branched[sommet]) {
-        if (!g->dom[sommet]) {
-            if (N1vn && N2vn) {
-                return 1;
-            }
-            if (N1vn && !N2vn) {
-                return 0;
-            }   
-            if (!N1vn) {
-                if(listeSize(N1v, g->nbVertices)>1) printf("désespoir\n");
-                return 1 - listeSize(N1v, g->nbVertices);
-            }
-        } 
-        else {
-            if (N1vn) {
-                return 0;
+    if(g->branched[sommet]){
+        for(int i=0; i<g->nbVertices; i++){
+            if(IS[i]){
+                if(hop_2_adj(sommet,i,P)) return 0;
             }
         }
+        return 1;
     }
-    else {
-        if (!g->dom[sommet]) {
-            if (!N2vn) {
-                return 0;
-            }
-            return 1;
-        }
+    int n1size=0;
+    int voisins[g->nbVertices];
+    inittab(voisins, g->nbVertices);
+    rvoisins(sommet, voisins);
+    for(int i=0; i<g->nbVertices; i++)
+        if(IS[i] && voisins[i]) n1size++;
+    if(n1size) return 1-n1size;
+    else if(n1size==0){
+        for(int i=0; i<g->nbVertices; i++)
+            if(IS[i])
+                if(hop_2_adj(sommet,i,P)) return 0;
+            
+        return 1;
     }
-    return 0;
+    return 0;            
 }
 
 void printAllS(Graph *g, int ** S){
@@ -394,7 +395,7 @@ void BnBtest(){
 	if(fullTab(g->dom, g->nbVertices)){
 		if(tdf+br<td0){
 			for(int i=0; i<g->nbVertices; i++) d0[i]=df[i];
-            for(int i=0; i<g->nbVertices; i++) if(d0[i]) printf("%d ", i);
+            //for(int i=0; i<g->nbVertices; i++) if(d0[i]) printf("%d ", i);
             td0=tdf+br;
             printf("\nd0 : %d\n", td0);
             end = clock();
@@ -423,6 +424,7 @@ void BnBtest(){
 		goto a;
 		b :
 		br--;
+        if(br==-1) return;
 		df[mb[br].etage.B[mb[br].last]]=0;
 		unDom(g);
     	domineliste(df, g); 

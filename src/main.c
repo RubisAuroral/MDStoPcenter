@@ -13,7 +13,8 @@ clock_t end;
 
 int main(int argc, char *argv[]){
 	begin = clock();
-	if(argc>1)k=atoi(argv[1]);
+	if(argc>1) k=atoi(argv[1]);
+	printf("Instance : %s\n", argv[2]);
 	g = cleanGraph(atoi(argv[3]));
 	d0=(int*)malloc(g->nbVertices*sizeof(int));
 	df=(int*)malloc(g->nbVertices*sizeof(int));
@@ -35,15 +36,15 @@ int main(int argc, char *argv[]){
 	}
 	afficheDom(g);
 	getchar();*/
-	
-	for(int i=0; i<g->nbVertices;i++) g->dom[i]=0;
+	for(int i=0; i<g->nbVertices;i++) g->dom[i]=0; 
 	int inN3;
+	
 	int rappel=-1;
-	//for(int i=0; i<g->nbVertices; i++) createN3(g, i, N1, N2, N3);
+	for(int i=0; i<g->nbVertices; i++) createN3(g, i, N1, N2, N3);
 	while(rappel<listeSize(df, g->nbVertices)){
 		simplerules(g, g->dom);
 		rappel=listeSize(df, g->nbVertices);
-		printf("\nrappel : %d\n", rappel);
+		//printf("\nrappel : %d\n", rappel);
 		for(int i=0; i<g->nbVertices; i++){
 			inN3=0;
 			for(int j=0; j<g->nbVertices;j++){
@@ -66,9 +67,10 @@ int main(int argc, char *argv[]){
 				}
 				df[i]=1;
 			}
-		}
+		}    
 	}
-	afficherGraph(g);
+
+	//afficherGraph(g);
 	int yu=0, yi=0;
 	for(int i=0; i<g->nbVertices; i++){
 		if(!g->dom[i] && g->adjacencyLists[i]==NULL){
@@ -79,24 +81,31 @@ int main(int argc, char *argv[]){
 		yu+=df[i];
 		yi+=d0[i];
 	}
-	printf("\ndf : %d - d0 : %d\n", yu, yi);
-	printf("\n");
-	afficherGraph(g);
-	afficheDom(g);
-	printf("\n");
+	int remaining=0;
+	//printf("Sommets fixés : ");
+	for(int i=0; i<g->nbVertices; i++){
+		if(g->ingraph[i]) remaining++;
+		/* if(df[i]){
+			printf("%d ", i+1);
+		}  */
+	}
+	
+	printf("Il reste %d sommets potentiels\n", remaining);
+	printf("Nombre de sommets fixés: %d - Best actuel : %d\n", yu, yi);
+	
 	BnBtest();
-	int pitie=0;
+	/* int pitie=0;
 	for(int i=0; i<g->nbVertices; i++){
 		if(d0[i]){
 			pitie++;
 			printf("%d ", i);
 		} 
-	}
-	printf(" (%d)", pitie);
+	} 
+	printf(" (%d)", pitie);*/
 	free(d0);
 	free(df);
 	end = clock();
-    printf("time for upgrade : %fs\n", (double)(end - begin) / CLOCKS_PER_SEC);
+    printf("time for end : %fs\n", (double)(end - begin) / CLOCKS_PER_SEC);
 	//free(final);
 	freeGraph(g);
 	free(g);
