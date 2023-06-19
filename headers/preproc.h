@@ -20,3 +20,4 @@ void simplerules(Graph *g);
 void created0(Graph *g, int * d0);
 void branchedf(Graph *g, int *df);
 void unDom(Graph *g);
+void printpreproc(Graph *g, int *df, int *d0);

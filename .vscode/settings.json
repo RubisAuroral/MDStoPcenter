@@ -5,6 +5,7 @@
         "preproc.h": "c",
         "misc.h": "c",
         "bnb.h": "c",
-        "resource.h": "c"
+        "resource.h": "c",
+        "unistd.h": "c"
     }
 }

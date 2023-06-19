@@ -272,6 +272,25 @@ void created0(Graph *g, int * d0){
 	}
 }
 
+void printpreproc(Graph *g, int *df, int *d0){
+	int tailledf=0, tailled0=0;
+	for(int i=0; i<g->nbVertices; i++){
+		if(!g->dom[i] && g->adjacencyLists[i]==NULL){
+			df[i]=1;
+			domine(i, g);
+			dominesave(i, g);
+			g->ingraph[i]=1;
+		}
+		tailledf+=df[i];
+		tailled0+=d0[i];
+	}
+	int remaining=0;
+	for(int i=0; i<g->nbVertices; i++) if(g->ingraph[i]) remaining++;
+	
+	printf("Il reste %d sommets potentiels\n", remaining);
+	printf("Nombre de sommets fixés: %d - Best actuel : %d\n", tailledf, tailled0);
+}
+
 void alber(Graph *g, int * df){
 	int inN3;
 	int N1[g->nbVertices];

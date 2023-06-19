@@ -20,28 +20,10 @@ int main(int argc, char *argv[]){
 	df=(int*)malloc(g->nbVertices*sizeof(int));
 	exemple(g, argv[2]);
 	created0(g, d0);
-
-	for(int i=0; i<g->nbVertices;i++) g->dom[i]=0; 
+	unDom(g);
 	alber(g, df);
-
-	int tailledf=0, tailled0=0;
-	for(int i=0; i<g->nbVertices; i++){
-		if(!g->dom[i] && g->adjacencyLists[i]==NULL){
-			df[i]=1;
-			domine(i, g);
-			dominesave(i, g);
-			g->ingraph[i]=1;
-		}
-		tailledf+=df[i];
-		tailled0+=d0[i];
-	}
-	int remaining=0;
-	for(int i=0; i<g->nbVertices; i++) if(g->ingraph[i]) remaining++;
-	
-	printf("Il reste %d sommets potentiels\n", remaining);
-	printf("Nombre de sommets fixés: %d - Best actuel : %d\n", tailledf, tailled0);
-	
-	BnBtest();
+	printpreproc(g, df, d0);
+	BnB(g);
 
 	free(d0);
 	free(df);

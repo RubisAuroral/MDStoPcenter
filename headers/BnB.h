@@ -17,9 +17,6 @@ struct iteratif{
     int last;
 };
 
-adjacencyListElement * BnB(Graph *g, adjacencyListElement *D, adjacencyListElement *Dnow);
-void BnB2(Graph *g);
-int * BnB3();
-void BnBtest();
+void BnB(Graph *gd);
 void removeConflict(Graph *g, int *IS, int sommet);
 void IkNeighbors(Graph* g, int * ISv, int * IS);

@@ -238,18 +238,18 @@ Branche ReduceBranches2(){
         return B;
 }
 
-void BnBtest(){
+void BnB(Graph *gd){
 	iteratif mb[1000];
-    tdf=listeSize(df, g->nbVertices), td0=listeSize(d0, g->nbVertices);
+    tdf=listeSize(df, gd->nbVertices), td0=listeSize(d0, gd->nbVertices);
 	a :
 
     if(tdf+br>=td0){
         goto b;
     }
     
-	if(fullTab(g->dom, g->nbVertices)){
+	if(fullTab(gd->dom, gd->nbVertices)){
 		if(tdf+br<td0){
-			for(int i=0; i<g->nbVertices; i++) d0[i]=df[i];
+			for(int i=0; i<gd->nbVertices; i++) d0[i]=df[i];
             td0=tdf+br;
             printf("\nd0 : %d\n", td0);
             end = clock();
@@ -268,21 +268,21 @@ void BnBtest(){
     
 	if(mb[br].etage.x>1) qsort(mb[br].etage.B, mb[br].etage.x, sizeof(int), myComp);
 	for(int i=mb[br].last; i<mb[br].etage.x && tdf+br<td0-1; i++){
-        g->branched[mb[br].etage.B[i]]=1;
+        gd->branched[mb[br].etage.B[i]]=1;
         df[mb[br].etage.B[i]]=1;
-        domine(mb[br].etage.B[i], g);
+        domine(mb[br].etage.B[i], gd);
 		br++;
 		goto a;
 		b :
 		br--;
         if(br==-1) return;
 		df[mb[br].etage.B[mb[br].last]]=0;
-		unDom(g);
-    	domineliste(df, g); 
+		unDom(gd);
+    	domineliste(df, gd); 
 		i=mb[br].last;
 		mb[br].last++;
 	}
-    for(int i=0; i<mb[br].etage.x; i++) g->branched[mb[br].etage.B[i]]=0;
+    for(int i=0; i<mb[br].etage.x; i++) gd->branched[mb[br].etage.B[i]]=0;
 	free(mb[br].etage.B);
 	if(br==0) return;
 	else{
