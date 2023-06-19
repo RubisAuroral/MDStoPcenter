@@ -13,16 +13,6 @@ int bestToChoose(Graph *gd){
 	return b;
 }
 
-int undomBy(Graph *g, int x){
-	int count=0;
-	adjacencyListElement *temp = g->adjacencyLists[x];
-	while(temp!=NULL){
-		if(g->dom[temp->v]==0) count++;
-		temp=temp->next;
-	}
-	return count;
-}
-
 void domine(int x, Graph *gd){
 	adjacencyListElement *adj = gd->adjacencyLists[x];
 	while (adj != NULL){
@@ -49,7 +39,7 @@ void domineliste(int *sol, Graph *g){
 	}
 }
 
-int count(Graph *gd, int x){
+int alldom(Graph *gd, int x){
 	for(int i=0; i<x; i++){
 		if(gd->dom[i]==0) return 0;
 	}
@@ -256,10 +246,7 @@ void rule4(Graph *g){
 					if(temp2->v==tv) test=1;
 					temp2=temp2->next;
 				}
-				if(test){
-					reduceGraph(g, i);
-					//printf("suppr4 : %d\n", i);
-				}
+				if(test) reduceGraph(g, i);
 			}
 		}
 	}
@@ -273,27 +260,50 @@ void simplerules(Graph *g){
 	rule4(g);
 }
 
-
-adjacencyListElement * undomlist(Graph *gd){
-	adjacencyListElement *U = NULL;
-	for(int i=0; i<gd->nbVertices; i++) if(gd->dom[i]==0 && gd->adjacencyLists[i]!=NULL) ajoute(&U, i);
-	return U;
-}
-
 void branchedf(Graph *g, int *df){
 	for(int i=0; i<g->nbVertices; i++) if(df[i]) g->branched[i]=1;
 }
 
-char ** initMatC(int taille){
-	char ** M = (char**) malloc(taille * sizeof(char*));
-	for (int i = 0; i < taille; i++) {
-  		M[i] = (char*) malloc(taille * sizeof(char));
+void created0(Graph *g, int * d0){
+	while(!fullTab(g->dom, g->nbVertices)){
+		int x=bestToChoose(g);
+		d0[x]=1;
+		domine(x, g);
 	}
-	return M;
 }
 
-void freeNs(int * N1,int * N2,int * N3){
-	free(N1);
-	free(N2);
-	free(N3);
+void alber(Graph *g, int * df){
+	int inN3;
+	int N1[g->nbVertices];
+	int N2[g->nbVertices];
+	int N3[g->nbVertices];
+	int rappel=-1;
+	while(rappel<listeSize(df, g->nbVertices)){
+		simplerules(g);
+		rappel=listeSize(df, g->nbVertices);
+		//printf("\nrappel : %d\n", rappel);
+		for(int i=0; i<g->nbVertices; i++){
+			inN3=0;
+			for(int j=0; j<g->nbVertices;j++){
+				N1[j]=0;
+				N2[j]=0;
+				N3[j]=0;
+			}
+			createN1(g, i, N1);
+			createN2(g, i, N1, N2);
+			createN3(g, i, N1, N2, N3);
+			for(int j=0;j<g->nbVertices; j++) if(N3[j]==1 && !g->dom[j]) inN3=1;
+			if(inN3==1){
+				domine(i, g);
+				dominesave(i,g);
+				reduceGraph(g, i);
+				for(int j=0;j<g->nbVertices; j++){
+					if(N2[j] || N3[j]){
+						reduceGraph(g,j);
+					} 
+				}
+				df[i]=1;
+			}
+		}    
+	}
 }

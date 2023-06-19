@@ -18,95 +18,36 @@ int main(int argc, char *argv[]){
 	g = cleanGraph(atoi(argv[3]));
 	d0=(int*)malloc(g->nbVertices*sizeof(int));
 	df=(int*)malloc(g->nbVertices*sizeof(int));
-	int N1[g->nbVertices];
-	int N2[g->nbVertices];
-	int N3[g->nbVertices];
 	exemple(g, argv[2]);
-	while(count(g, g->nbVertices)==0){
-		int x=bestToChoose(g);
-		d0[x]=1;
-		domine(x, g);
-	}
-	/*FILE *fp;
-    fp = fopen("test", "r");
-	char line[256];
-    while (fgets(line, sizeof(line), fp) != NULL){
-        int num = atoi(line);
-		domine(num, g);
-	}
-	afficheDom(g);
-	getchar();*/
-	for(int i=0; i<g->nbVertices;i++) g->dom[i]=0; 
-	int inN3;
-	
-	int rappel=-1;
-	for(int i=0; i<g->nbVertices; i++) createN3(g, i, N1, N2, N3);
-	while(rappel<listeSize(df, g->nbVertices)){
-		simplerules(g, g->dom);
-		rappel=listeSize(df, g->nbVertices);
-		//printf("\nrappel : %d\n", rappel);
-		for(int i=0; i<g->nbVertices; i++){
-			inN3=0;
-			for(int j=0; j<g->nbVertices;j++){
-				N1[j]=0;
-				N2[j]=0;
-				N3[j]=0;
-			}
-			createN1(g, i, N1);
-			createN2(g, i, N1, N2);
-			createN3(g, i, N1, N2, N3);
-			for(int j=0;j<g->nbVertices; j++) if(N3[j]==1 && !g->dom[j]) inN3=1;
-			if(inN3==1){
-				domine(i, g);
-				dominesave(i,g);
-				reduceGraph(g, i);
-				for(int j=0;j<g->nbVertices; j++){
-					if(N2[j] || N3[j]){
-						reduceGraph(g,j);
-					} 
-				}
-				df[i]=1;
-			}
-		}    
-	}
+	created0(g, d0);
 
-	//afficherGraph(g);
-	int yu=0, yi=0;
+	for(int i=0; i<g->nbVertices;i++) g->dom[i]=0; 
+	alber(g, df);
+
+	int tailledf=0, tailled0=0;
 	for(int i=0; i<g->nbVertices; i++){
 		if(!g->dom[i] && g->adjacencyLists[i]==NULL){
 			df[i]=1;
 			domine(i, g);
 			dominesave(i, g);
+			g->ingraph[i]=1;
 		}
-		yu+=df[i];
-		yi+=d0[i];
+		tailledf+=df[i];
+		tailled0+=d0[i];
 	}
 	int remaining=0;
-	//printf("Sommets fixés : ");
-	for(int i=0; i<g->nbVertices; i++){
-		if(g->ingraph[i]) remaining++;
-		/* if(df[i]){
-			printf("%d ", i+1);
-		}  */
-	}
+	for(int i=0; i<g->nbVertices; i++) if(g->ingraph[i]) remaining++;
 	
 	printf("Il reste %d sommets potentiels\n", remaining);
-	printf("Nombre de sommets fixés: %d - Best actuel : %d\n", yu, yi);
+	printf("Nombre de sommets fixés: %d - Best actuel : %d\n", tailledf, tailled0);
 	
 	BnBtest();
-	/* int pitie=0;
-	for(int i=0; i<g->nbVertices; i++){
-		if(d0[i]){
-			pitie++;
-			printf("%d ", i);
-		} 
-	} 
-	printf(" (%d)", pitie);*/
+
 	free(d0);
 	free(df);
 	end = clock();
     printf("time for end : %fs\n", (double)(end - begin) / CLOCKS_PER_SEC);
-	//free(final);
+
 	freeGraph(g);
 	free(g);
 }

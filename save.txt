@@ -1,0 +1,45 @@
+-----------------------------------------------------------
+hostname                     =   34068
+SLURM_JOB_NAME               =   
+SLURM_SUBMIT_DIR             =   
+SLURM_JOBID                  =   
+SLURM_JOB_ID                 =   
+SLURM_NODELIST               =   
+SLURM_JOB_NODELIST           =   
+SLURM_TASKS_PER_NODE         =   
+SLURM_JOB_CPUS_PER_NODE      =   
+SLURM_TOPOLOGY_ADDR_PATTERN  = 
+SLURM_TOPOLOGY_ADDR          =   
+SLURM_CPUS_ON_NODE           =   
+SLURM_NNODES                 =   
+SLURM_JOB_NUM_NODES          =   
+SLURMD_NODENAME              =   
+SLURM_NTASKS                 =   
+SLURM_NPROCS                 =   
+SLURM_MEM_PER_NODE           =   
+SLURM_PRIO_PROCESS           =   
+-----------------------------------------------------------
+Instance : instances/ENZYMES118.edges
+Il reste 84 sommets potentiels
+Nombre de sommets fixés: 5 - Best actuel : 32
+
+d0 : 31
+time for upgrade : 0.126691s
+
+d0 : 30
+time for upgrade : 0.424870s
+time for end : 56.545227s
+Instance : instances/ENZYMES123.edges
+Il reste 5 sommets potentiels
+Nombre de sommets fixés: 26 - Best actuel : 31
+
+d0 : 26
+time for upgrade : 0.001253s
+time for end : 0.001271s
+Instance : instances/ENZYMES295.edges
+Il reste 1 sommets potentiels
+Nombre de sommets fixés: 42 - Best actuel : 46
+
+d0 : 42
+time for upgrade : 0.002903s
+time for end : 0.002917s
