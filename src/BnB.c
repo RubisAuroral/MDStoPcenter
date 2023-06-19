@@ -40,7 +40,6 @@ int maxIS(int I[][g->nbVertices], int taille){
     int max=0;
     for(int i=0; i<k;i++){
         int temp=listeSize(I[i], taille);
-        //printf("taille I : %d\n", temp);
         if(temp>max) max=temp;
     }
     return max;
@@ -124,7 +123,7 @@ Branche ReduceBranches(){
     for(int i=0; i<g->nbVertices;i++){ 
         P[i]=0;
     }
-
+    int nbISnotVide=0;
     for(int i=g->nbVertices-1; i>-1; i--){
         if(g->ingraph[i] && !g->dom[i]){
             
@@ -152,11 +151,10 @@ Branche ReduceBranches(){
                     }
                 }
                 if(!memory){
-                    int z=0;
-                    while(z<k && allscore[z]!=2) z++;
-                    if(z<k){ 
-                        I[z][i]=1;
-                        I[z][g->nbVertices]=0;
+                    if(nbISnotVide<k){ 
+                        I[nbISnotVide][i]=1;
+                        I[nbISnotVide][g->nbVertices]=0;
+                        nbISnotVide++;
                     }
                     memory=0;
                 }
