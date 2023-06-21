@@ -139,10 +139,6 @@ Graph* cleanGraph(int x){
       g -> branched = (int*)malloc(nbVertices*sizeof(int));
       g -> ingraph = (int*)malloc(nbVertices*sizeof(int));
     	g -> adjacencyLists = (adjacencyListElement**)malloc(nbVertices*sizeof(adjacencyListElement*));
-      g -> voisins = (int**) malloc(g->nbVertices * sizeof(int*));
-      for (int i = 0; i < 3; i++) {
-        g->voisins[i] = (int*) malloc(g->nbVertices * sizeof(int));
-      }
       
         if (g-> adjacencyLists == NULL){exit(0);}
         g -> nbVertices = nbVertices;

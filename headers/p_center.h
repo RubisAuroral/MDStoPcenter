@@ -47,7 +47,6 @@ struct Graph{
     int* branched;
     int* ingraph;
     adjacencyListElement** adjacencyLists;
-    int** voisins;
     int** distanceMatrix;
 };
 

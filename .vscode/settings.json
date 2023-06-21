@@ -6,6 +6,9 @@
         "misc.h": "c",
         "bnb.h": "c",
         "resource.h": "c",
-        "unistd.h": "c"
-    }
+        "unistd.h": "c",
+        "limits": "c",
+        "pcenter-to-mds.h": "c"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
 }

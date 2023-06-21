@@ -60,9 +60,16 @@ Graph* initializeGraph(char const *nom_instance){
         if (g-> adjacencyLists == NULL){exit(0);}
         g -> nbVertices = nbVertices;
         g -> p = p;
-
+        g -> dom = (int*)malloc(nbVertices*sizeof(int));
+        g -> save = (int*)malloc(nbVertices*sizeof(int));
+        g -> branched = (int*)malloc(nbVertices*sizeof(int));
+        g -> ingraph = (int*)malloc(nbVertices*sizeof(int));
         for (int i = 0; i < nbVertices; i++){
             g -> adjacencyLists[i] = NULL;
+            g -> dom[i]=0;
+            g -> save[i]=0;
+            g -> branched[i]=0;
+            g -> ingraph[i]=1;
         }
 
         for (int i = 0; i < nbEdge; i++){
