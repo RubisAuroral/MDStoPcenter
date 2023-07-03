@@ -1,12 +1,12 @@
 #!/bin/sh
-#SBATCH --job-name=job
+#SBATCH --job-name=EMOS-pmed
 #SBATCH --partition=normal            # submission queue (normal or long or bigmem or bigpu or quadgpu)
-#SBATCH --time=1-1:00:00            # 1-1 means one day and one hour
+#SBATCH --time=7-0:00:00            # 1-1 means one day and one hour
 #SBATCH --mail-type=ALL    # Type can be BEGIN, END, FAIL, ALL(any statchange).
 #SBATCH --output=job_seq-%j.out        # if --error is absent, includes also the errors
 #SBATCH --mem=8G    # T-tera, G-giga, M-mega
 #SBATCH --nodes=4   # 4 cpus CPU Numbers
-#SBATCH --mail-user=votre_mail@domain.precis
+#SBATCH --mail-user=alan.menet@etud.u-picardie.fr
 echo "-----------------------------------------------------------"
 echo "hostname                     =   $(hostname)"
 echo "SLURM_JOB_NAME               =   $SLURM_JOB_NAME"
@@ -30,18 +30,8 @@ echo "SLURM_PRIO_PROCESS           =   $SLURM_PRIO_PROCESS"
 echo "-----------------------------------------------------------"
 
 
-instances="instances"
+instances="instances/pcentre"
 
 for fichier in "$instances"/*; do
-  
-  max=0
-  while read -r line; do
-    for x in $line; do
-      if [ "$x" -gt "$max" ]; then
-        max="$x"
-      fi
-    done
-  done < "$fichier"
-  ./main "16" "$fichier" "$max"
-  max=0
+  ./main "16" "$fichier"
 done

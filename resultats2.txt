@@ -1,0 +1,96 @@
+-----------------------------------------------------------
+hostname                     =   34068
+SLURM_JOB_NAME               =   
+SLURM_SUBMIT_DIR             =   
+SLURM_JOBID                  =   
+SLURM_JOB_ID                 =   
+SLURM_NODELIST               =   
+SLURM_JOB_NODELIST           =   
+SLURM_TASKS_PER_NODE         =   
+SLURM_JOB_CPUS_PER_NODE      =   
+SLURM_TOPOLOGY_ADDR_PATTERN  = 
+SLURM_TOPOLOGY_ADDR          =   
+SLURM_CPUS_ON_NODE           =   
+SLURM_NNODES                 =   
+SLURM_JOB_NUM_NODES          =   
+SLURMD_NODENAME              =   
+SLURM_NTASKS                 =   
+SLURM_NPROCS                 =   
+SLURM_MEM_PER_NODE           =   
+SLURM_PRIO_PROCESS           =   
+-----------------------------------------------------------
+Instance : instances/pcentre/pmed1.txt
+299 - 1 - 0.003869s
+150 - 1 - 0.005526s
+150 - 76 - 0.006298s
+150 - 114 - 5.146372s
+132 - 114 - 5.147113s
+132 - 124 - 6.967696s
+128 - 124 - 6.968367s
+128 - 127 - 8.943748s
+Opti : 127
+time for end : 8.944408s
+Instance : instances/pcentre/pmed10.txt
+169 - 1 - 0.024453s
+85 - 1 - 0.053693s
+43 - 1 - 0.056236s
+22 - 1 - 0.056698s
+22 - 12 - 0.057778s
+22 - 18 - 0.157938s
+20 - 18 - 0.158311s
+Opti : 20
+time for end : 0.177178s
+Instance : instances/pcentre/pmed11.txt
+134 - 1 - 0.066694s
+67 - 1 - 0.155680s
+67 - 35 - 0.180071s
+67 - 52 - 50.745299s
+59 - 52 - 52.415416s
+time expire
+nombre branche total créées 27171203, nombre branche coupées 26982675, nombre de branche réel 188528  avec 133660 appels
+Instance : instances/pcentre/pmed12.txt
+167 - 1 - 0.065974s
+84 - 1 - 0.190147s
+time expire
+nombre branche total créées 76057998, nombre branche coupées 75676594, nombre de branche réel 381404  avec 380459 appels
+Instance : instances/pcentre/pmed13.txt
+150 - 1 - 0.065668s
+75 - 1 - 0.171185s
+38 - 1 - 0.180880s
+38 - 20 - 0.186059s
+time expire
+nombre branche total créées 43482871, nombre branche coupées 43281941, nombre de branche réel 200930  avec 200489 appels
+Instance : instances/pcentre/pmed14.txt
+179 - 1 - 0.067104s
+90 - 1 - 0.192927s
+45 - 1 - 0.207106s
+time expire
+nombre branche total créées 57017020, nombre branche coupées 56518722, nombre de branche réel 498298  avec 497018 appels
+Instance : instances/pcentre/pmed15.txt
+136 - 1 - 0.067186s
+68 - 1 - 0.164862s
+34 - 1 - 0.171110s
+34 - 18 - 0.350638s
+26 - 18 - 0.352905s
+22 - 18 - 0.354542s
+20 - 18 - 0.355760s
+19 - 18 - 0.356833s
+Opti : 18
+time for end : 0.357811s
+Instance : instances/pcentre/pmed16.txt
+107 - 1 - 0.142814s
+54 - 1 - 0.397554s
+54 - 28 - 0.460468s
+time expire
+nombre branche total créées 33325543, nombre branche coupées 33228978, nombre de branche réel 96565  avec 95506 appels
+Instance : instances/pcentre/pmed17.txt
+105 - 1 - 0.139854s
+53 - 1 - 0.375082s
+time expire
+nombre branche total créées 65906931, nombre branche coupées 65712921, nombre de branche réel 194010  avec 193019 appels
+Instance : instances/pcentre/pmed18.txt
+141 - 1 - 0.144258s
+71 - 1 - 0.474474s
+36 - 1 - 0.503816s
+time expire
+nombre branche total créées 55258411, nombre branche coupées 54844994, nombre de branche réel 413417  avec 411984 appels

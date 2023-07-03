@@ -19,3 +19,5 @@ void freeList(adjacencyListElement *node);
 void freeGraph(Graph *g);
 int nbVoisinv2(Graph *g, int x);
 void inittab(int *tab, int size);
+void print_graph_status(Graph *g);
+void instanceHua(Graph *g);

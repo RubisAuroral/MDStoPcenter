@@ -207,9 +207,43 @@ void Intersection(int *tab, adjacencyListElement *Liste1, int *Liste2){
   freeList(temp);
 }
 
+void print_graph_status(Graph *g){
+  printf("Nombre se sommets : %d\n", g->nbVertices);
+  printf("Sommets du graph : ");
+  for(int i=0; i<g->nbVertices; i++) printf("%d", g->ingraph[i]);
+  printf("\nEtat branché : ");
+  for(int i=0; i<g->nbVertices; i++) printf("%d", g->branched[i]);
+  printf("\nEtat dominé : ");
+  for(int i=0; i<g->nbVertices; i++) printf("%d", g->dom[i]);
+  printf("\nDominés par défaut : ");
+  for(int i=0; i<g->nbVertices; i++) printf("%d", g->save[i]);
+  printf("\n");
+}
+
+void instanceHua(Graph *g){
+  int nbedge=0;
+  for(int i=0; i<g->nbVertices; i++){
+    adjacencyListElement *temp = g->adjacencyLists[i];
+    while(temp!=NULL){
+      nbedge++;
+      temp=temp->next;
+    }
+  }
+  printf("p edge %d %d", g->nbVertices, nbedge);
+  for(int i=0; i<g->nbVertices; i++){
+    adjacencyListElement *temp = g->adjacencyLists[i];
+    while(temp!=NULL){
+      if(temp->v > i) printf("\ne %d %d", i+1, temp->v+1);
+      temp=temp->next;
+    }
+  }
+}
+
 void freeGraph(Graph *g){
   for(int i=0; i<g->nbVertices; i++) freeList(g->adjacencyLists[i]);
   free(g->adjacencyLists);
   free(g->branched);
   free(g->dom);
+  free(g->save);
+  free(g->ingraph);
 }

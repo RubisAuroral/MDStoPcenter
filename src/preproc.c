@@ -5,7 +5,7 @@ int bestToChoose(Graph *gd){
 	int r,zb=0, b=0;
 	for (int i = 0; i < gd->nbVertices; i++){
 		r=nbVoisinv2(gd, i);
-	    if(r>=zb){
+	    if(r>zb){
 			zb=r; 
 			b=i;
 		}
