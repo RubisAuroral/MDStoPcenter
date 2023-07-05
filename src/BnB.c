@@ -21,7 +21,7 @@ Graph *gstate;
 int myComp(const void * v1, const void * v2){
     int fI = * (const int *) v1;
     int sI = * (const int *) v2;
-    return nbVoisin(gstate, sI) - nbVoisin(gstate, fI); 
+    return nbVoisinv2(gstate, sI) - nbVoisinv2(gstate, fI); 
 }
 
 void removeConflict(Graph *g, int *IS, int sommet){
@@ -237,7 +237,6 @@ Branche ReduceBranches2(){
 
 void BnB(Graph *gd){
     br=0;
-    int zlkzed=0;
     iteratif mb[1000];
     gstate=gd;
     tdf=listeSize(df, gstate->nbVertices), td0=listeSize(d0, gstate->nbVertices);
@@ -252,16 +251,20 @@ void BnB(Graph *gd){
     if(tdf+br>=td0){
         goto b;
     }
-    
-	if(fullTab(gstate->dom, gstate->nbVertices)){
+    int c=0;
+    for(int i=0; i<gd->nbVertices; i++){
+        if(!gd->dom[i]) c++;
+    }
+	if(gd->adom==0){
 		if(tdf+br<td0){
             end = clock();
             printf("\ntime for upgrade : %fs\n", (double)(end - begin) / CLOCKS_PER_SEC);
 			for(int i=0; i<gstate->nbVertices; i++) d0[i]=df[i];
             td0=tdf+br;
-            printf("\nd0 : %d\n", td0);
+            printf("d0 : %d\n", td0);
             if(td0<=gstate->p) return;
             for(int i=0; i<gstate->nbVertices; i++) if(df[i]) printf("%d ", i);
+            printf("\n");
 		}
 		goto b;
     }
@@ -277,23 +280,17 @@ void BnB(Graph *gd){
 	}
     
 	if(mb[br].etage.x>1) qsort(mb[br].etage.B, mb[br].etage.x, sizeof(int), myComp);
-    if(br==1){
-        //printf("%d - ", zlkzed++);
-        for(int j=0; j<mb[br].etage.x; j++){ 
-            //printf("%d ", mb[br].etage.B[j]);
-        }
-        //printf("\n");
-    }
+    //for(int i=0; i<mb[br].etage.x || i<td0-tdf;i++);
 	for(int i=mb[br].last; i<mb[br].etage.x && tdf+br<td0-1; i++){
         gstate->branched[mb[br].etage.B[i]]=1;
         df[mb[br].etage.B[i]]=1;
-        printf("--> branching on %d...\n", mb[br].etage.B[i]);
+        //printf("--> branching on %d...\n", mb[br].etage.B[i]);
         domine(mb[br].etage.B[i], gstate);
 		br++;
 		goto a;
 		b :
 		br--;
-        printf("--> backtrack to level %d...\n", br);
+        //printf("--> backtrack to level %d...\n", br);
         if(br<0){ 
             return;
         }

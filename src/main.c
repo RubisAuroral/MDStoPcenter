@@ -2,7 +2,6 @@
 #include "../headers/preproc.h"
 #include "../headers/BnB.h"
 #include "../headers/pcenter-to-mds.h"
-#include "../headers/main-emos-mds.h"
 #include <sys/resource.h>
 #include <time.h>
 
@@ -27,9 +26,8 @@ int main(int argc, char *argv[]){
 	//exemple(g, argv[2]);
 	int min = distmax(g), max = distmin(g);
 	int scoring[min];
-	for(int i=0; i<min; i++) scoring[i]=-1;
-	
-	
+	printf("%d\n", min);
+	for(int i=0; i<min; i++)scoring[i]=-1;
 	while(min!=max){
 		if(scoring[min]!=-1 && scoring[min]==scoring[max]) break;
 		end = clock();
@@ -39,6 +37,7 @@ int main(int argc, char *argv[]){
 			df[i]=0;
 			g->save[i]=0;
 		}
+		g->adom=g->nbVertices;
 		int actuel=(min+max)/2;
 		Graph *gtemp = cleanGraph(g->nbVertices);
 		mdsgraph(gtemp, g, actuel);
@@ -55,8 +54,7 @@ int main(int argc, char *argv[]){
 				scoring[max]=listeSize(df, g->nbVertices);
 			}
 			else{
-				instanceHua(gtemp);
-				int temp = final(argc, "insttemp")
+				BnB(gtemp);
 				if(listeSize(d0, g->nbVertices) <= g -> p){
 					min=actuel;
 					scoring[min]=listeSize(d0, g->nbVertices);
@@ -68,7 +66,7 @@ int main(int argc, char *argv[]){
 			}
 		}
 	}
-
+ 
 	/*Graph *gtemp = cleanGraph(g->nbVertices);
 	mdsgraph(gtemp, g, 56);
 	created0(gtemp, d0);

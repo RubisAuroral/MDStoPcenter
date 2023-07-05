@@ -16,9 +16,11 @@ int bestToChoose(Graph *gd){
 void domine(int x, Graph *gd){
 	adjacencyListElement *adj = gd->adjacencyLists[x];
 	while (adj != NULL){
-	    gd->dom[adj->v]=1;
+	    if(!gd->dom[adj->v]) gd->adom--;
+		gd->dom[adj->v]=1;
 	    adj = adj->next;
 	}
+	if(!gd->dom[x]) gd->adom--;
 	gd->dom[x]=1;
 }
 
@@ -57,7 +59,10 @@ void afficheBranched(Graph *gd){
 }
 
 void unDom(Graph *g){
-	for(int i=0; i<g->nbVertices;i++) if(!g->save[i]) g->dom[i]=0;
+	for(int i=0; i<g->nbVertices;i++) if(!g->save[i] && g->dom[i]){
+		g->dom[i]=0;
+		g->adom++;
+	}
 }
 
 void createN1(Graph *gd, int x, int *N1){
@@ -265,7 +270,7 @@ void branchedf(Graph *g, int *df){
 }
 
 void created0(Graph *g, int * d0){
-	while(!fullTab(g->dom, g->nbVertices)){
+	while(g->adom!=0){
 		int x=bestToChoose(g);
 		d0[x]=1;
 		domine(x, g);

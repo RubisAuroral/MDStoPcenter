@@ -42,6 +42,7 @@ typedef struct Graph Graph;
 struct Graph{
     int nbVertices;
     int p;
+    int adom;
     int* dom;
     int* save;
     int* branched;

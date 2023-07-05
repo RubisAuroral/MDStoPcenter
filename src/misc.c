@@ -142,6 +142,7 @@ Graph* cleanGraph(int x){
       
         if (g-> adjacencyLists == NULL){exit(0);}
         g -> nbVertices = nbVertices;
+        g -> adom = nbVertices;
         for (int i = 0; i < nbVertices; i++){
             g -> adjacencyLists[i] = NULL;
             g -> dom[i] = 0 ;

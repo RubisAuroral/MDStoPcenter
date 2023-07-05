@@ -1,0 +1,33 @@
+(** Calculate the length of the longest proper suffix of [x]
+    which is a proper prefix of [y]. *)
+let maxlen_suffix_prefix x y =
+  assert (x <> "" && y <> "");
+
+  let lx = String.length x in
+  let ly = String.length y in
+  let len_xy = if lx < ly then lx else ly in
+
+  let rec match_suffix_prefix iter size =
+    if iter >= size then
+      true
+    else if x.[lx - size + iter] = y.[iter] then
+      match_suffix_prefix (iter+1) size
+    else
+      false in
+
+  let rec aux iter maxlen =
+    if iter >= len_xy - 1 then
+      maxlen
+    else if match_suffix_prefix 0 (iter+1) then
+      aux (iter+1) (iter+1)
+    else
+      aux (iter+1) maxlen in
+  aux 0 0
+
+let () =
+  if Array.length Sys.argv != 3 then
+    Printf.printf "%s x y\n" Sys.argv.(0)
+  else
+    print_int (maxlen_suffix_prefix Sys.argv.(1) Sys.argv.(2));
+    print_newline ()
+```

@@ -60,6 +60,7 @@ Graph* initializeGraph(char const *nom_instance){
         if (g-> adjacencyLists == NULL){exit(0);}
         g -> nbVertices = nbVertices;
         g -> p = p;
+        g -> adom = nbVertices;
         g -> dom = (int*)malloc(nbVertices*sizeof(int));
         g -> save = (int*)malloc(nbVertices*sizeof(int));
         g -> branched = (int*)malloc(nbVertices*sizeof(int));
