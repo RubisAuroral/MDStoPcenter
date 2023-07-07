@@ -24,47 +24,57 @@ int main(int argc, char *argv[]){
 	d0=(int*)malloc(g->nbVertices*sizeof(int));
 	df=(int*)malloc(g->nbVertices*sizeof(int));
 	//exemple(g, argv[2]);
-	int min = distmax(g), max = distmin(g);
-	int scoring[min];
-	printf("%d\n", min);
-	for(int i=0; i<min; i++)scoring[i]=-1;
-	while(min!=max){
-		if(scoring[min]!=-1 && scoring[min]==scoring[max]) break;
+	int max = distmax(g), min = distmin(g);
+	int scoring[max];
+	printf("%d\n", max);
+	for(int i=0; i<=max; i++)scoring[i]=-1;
+	int savetd0=INT_MAX, saved0[g->nbVertices];
+	while(max!=min){
+		if(scoring[max]!=-1 && scoring[max]==scoring[min]) break;
 		end = clock();
-		printf("%d - %d - %fs\n", min, max, (double)(end - begin) / CLOCKS_PER_SEC);
+		printf("%d - %d - %fs\n", max, min, (double)(end - begin) / CLOCKS_PER_SEC);
 		for(int i=0; i<g->nbVertices; i++){
 			d0[i]=0;
 			df[i]=0;
 			g->save[i]=0;
 		}
 		g->adom=g->nbVertices;
-		int actuel=(min+max)/2;
+		int actuel=(max+min)/2;
 		Graph *gtemp = cleanGraph(g->nbVertices);
 		mdsgraph(gtemp, g, actuel);
 		created0(gtemp, d0);
+		
+		if(listeSize(d0, g->nbVertices)> savetd0){
+			for(int i=0; i<g->nbVertices; i++) d0[i]=saved0[i];
+			printf("sometimes?\n");
+		}
+
 		if(listeSize(d0, g->nbVertices) <= g -> p){ 
-			min=actuel;
-			scoring[min]=listeSize(d0, g->nbVertices);
+			max=actuel;
+			scoring[max]=listeSize(d0, g->nbVertices);
 		}
 		else{
 			unDom(gtemp);
 			alber(gtemp, df);
 			if(listeSize(df, g->nbVertices) > g -> p){
-				max=actuel+1;
-				scoring[max]=listeSize(df, g->nbVertices);
+				min=actuel+1;
+				scoring[min]=listeSize(df, g->nbVertices);
 			}
 			else{
 				BnB(gtemp);
 				if(listeSize(d0, g->nbVertices) <= g -> p){
-					min=actuel;
-					scoring[min]=listeSize(d0, g->nbVertices);
+					max=actuel;
+					scoring[max]=listeSize(d0, g->nbVertices);
 				}
 				else{
-					max=actuel+1;
-					scoring[max]=listeSize(d0, g->nbVertices);
+					min=actuel+1;
+					scoring[min]=listeSize(d0, g->nbVertices);
+					savetd0=scoring[min];
+					for(int i=0; i<g->nbVertices; i++) saved0[i]=d0[i];
 				}
 			}
 		}
+		freeGraph(gtemp);
 	}
  
 	/*Graph *gtemp = cleanGraph(g->nbVertices);
@@ -76,7 +86,7 @@ int main(int argc, char *argv[]){
 	//afficherGraph(gtemp);
 	//instanceHua(gtemp);
 
-	printf("Opti : %d\n", max);
+	printf("Opti : %d\n", min);
 	/*created0(gtemp, d0);
 	unDom(gtemp);
 	alber(gtemp, df);

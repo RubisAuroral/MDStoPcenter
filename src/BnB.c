@@ -13,9 +13,10 @@ extern clock_t end;
 int cuted;
 int overall;
 int nb=0;
-int br;
-int tdf;
-int td0;
+int level;
+int tailledf;
+int tailled0;
+int backtrack;
 Graph *gstate;
 
 int myComp(const void * v1, const void * v2){
@@ -156,7 +157,7 @@ Branche ReduceBranches(){
     }
     int max = maxIS(I, gstate->nbVertices);
     
-    if(max<td0-(tdf+br)){
+    if(max<tailled0-(tailledf+level)){
         int size=0;
         for(int i=0; i<gstate->nbVertices; i++){
             if(gstate->ingraph[i] && !gstate->branched[i] && nbVoisinv2(gstate, i)!=0) size++;
@@ -187,7 +188,7 @@ Branche ReduceBranches(){
                 }
             }
             max = maxIS(I, gstate->nbVertices);
-            if(max<td0-(tdf+br)){
+            if(max<tailled0-(tailledf+level)){
                 P[i]=0;
                 for(int j=0; j<k; j++){
                     for(int z=0; z<gstate->nbVertices+1; z++){
@@ -221,7 +222,7 @@ Branche ReduceBranches2(){
     Branche B;
     int C[gstate->nbVertices];
     for(int i=0; i<gstate->nbVertices; i++){
-        if(!gstate->branched[i]) C[i]=1;
+        if(gstate->ingraph[i] && !gstate->branched[i]) C[i]=1;
         else C[i]=0;
     }
     int size=listeSize(C, gstate->nbVertices);
@@ -236,78 +237,81 @@ Branche ReduceBranches2(){
 }
 
 void BnB(Graph *gd){
-    br=0;
-    iteratif mb[1000];
+    level=0, backtrack=0;
+    iteratif sauvegarde[1000];
     gstate=gd;
-    tdf=listeSize(df, gstate->nbVertices), td0=listeSize(d0, gstate->nbVertices);
-	a :
-    end = clock();
-    if(((double)(end - begin) / CLOCKS_PER_SEC) >= 540.0){
-        printf("time expire\n");
-        printf("nombre branche total créées %d, nombre branche coupées %d, nombre de branche réel %d  avec %d appels\n", overall, cuted, overall-cuted, nb);
-        exit(-1);
-    }
-
-    if(tdf+br>=td0){
-        goto b;
-    }
-    int c=0;
-    for(int i=0; i<gd->nbVertices; i++){
-        if(!gd->dom[i]) c++;
-    }
-	if(gd->adom==0){
-		if(tdf+br<td0){
+    tailledf=listeSize(df, gstate->nbVertices), tailled0=listeSize(d0, gstate->nbVertices);
+    
+    while(1){
+        if(tailledf+level>=tailled0) backtrack=1;            
+        
+        if(!backtrack && gstate->adom==0){
             end = clock();
+            backtrack=1;
             printf("\ntime for upgrade : %fs\n", (double)(end - begin) / CLOCKS_PER_SEC);
 			for(int i=0; i<gstate->nbVertices; i++) d0[i]=df[i];
-            td0=tdf+br;
-            printf("d0 : %d\n", td0);
-            if(td0<=gstate->p) return;
+            tailled0=tailledf+level;
+            printf("d0 : %d\n", tailled0);
+            if(tailled0<=gstate->p) return;
             for(int i=0; i<gstate->nbVertices; i++) if(df[i]) printf("%d ", i);
             printf("\n");
-		}
-		goto b;
-    }
-
-	mb[br].last=0;
-    nb++;
-	mb[br].etage = ReduceBranches();
-
-
-	if(mb[br].etage.x<=0){
-		free(mb[br].etage.B);
-        goto b;
-	}
-    
-	if(mb[br].etage.x>1) qsort(mb[br].etage.B, mb[br].etage.x, sizeof(int), myComp);
-    //for(int i=0; i<mb[br].etage.x || i<td0-tdf;i++);
-	for(int i=mb[br].last; i<mb[br].etage.x && tdf+br<td0-1; i++){
-        gstate->branched[mb[br].etage.B[i]]=1;
-        df[mb[br].etage.B[i]]=1;
-        //printf("--> branching on %d...\n", mb[br].etage.B[i]);
-        domine(mb[br].etage.B[i], gstate);
-		br++;
-		goto a;
-		b :
-		br--;
-        //printf("--> backtrack to level %d...\n", br);
-        if(br<0){ 
-            return;
         }
-		df[mb[br].etage.B[mb[br].last]]=0;
-		unDom(gstate);
-    	domineliste(df, gstate); 
-		i=mb[br].last;
-		mb[br].last++;
-	}
-    for(int i=0; i<mb[br].etage.x; i++) gstate->branched[mb[br].etage.B[i]]=0;
-	free(mb[br].etage.B);
-	if(br==0){
-        return;
-        printf("time expire\n");
-        printf("nombre branche total créées %d, nombre branche coupées %d, nombre de branche réel %d  avec %d appels\n", overall, cuted, overall-cuted, nb);
-    }
-	else{
-        goto b;
+
+	    if(!backtrack){
+            Branche maxassign = ReduceBranches2();
+            if(maxassign.x>1) qsort(maxassign.B, maxassign.x, sizeof(int), myComp);
+            int current = gstate->adom;
+            int i;
+            for(i=0; current>0 && i<maxassign.x; i++) current -= nbVoisinv2(gstate, maxassign.B[i]);
+            free(maxassign.B);
+            if(i>=tailled0-tailledf) backtrack=1;
+            else{
+                sauvegarde[level].last=0;
+                sauvegarde[level].etage = ReduceBranches();
+
+                if(sauvegarde[level].etage.x<=0){
+                    free(sauvegarde[level].etage.B);
+                    backtrack=1; 
+                } 
+                
+                else{
+                    if(sauvegarde[level].etage.x>1) qsort(sauvegarde[level].etage.B, sauvegarde[level].etage.x, sizeof(int), myComp);
+                    gstate->branched[sauvegarde[level].etage.B[sauvegarde[level].last]]=1;
+                    df[sauvegarde[level].etage.B[sauvegarde[level].last]]=1;
+                    domine(sauvegarde[level].etage.B[sauvegarde[level].last], gstate);
+                    level++;
+                }
+            }
+        }
+
+        if(backtrack){
+            level--;
+            if(level<0) return;
+            df[sauvegarde[level].etage.B[sauvegarde[level].last]]=0;
+            unDom(gstate);
+            domineliste(df, gstate); 
+            sauvegarde[level].last++;
+            while(sauvegarde[level].last>sauvegarde[level].etage.x-1){
+                for(int i=0; i<sauvegarde[level].etage.x; i++){
+                    //printf("%d/%d - %d\n", i, sauvegarde[level].etage.x, sauvegarde[level].etage.B[i]);
+                    gstate->branched[sauvegarde[level].etage.B[i]]=0;
+                }
+                free(sauvegarde[level].etage.B);
+                level--;
+                if(level<0){
+                    return;
+                }
+                //printf("%d - %d/%d\n", level, sauvegarde[level].last, sauvegarde[level].etage.x);
+                df[sauvegarde[level].etage.B[sauvegarde[level].last]]=0;
+                unDom(gstate);
+                domineliste(df, gstate); 
+                sauvegarde[level].last++;
+            }
+            gstate->branched[sauvegarde[level].etage.B[sauvegarde[level].last]]=1;
+            df[sauvegarde[level].etage.B[sauvegarde[level].last]]=1;
+            domine(sauvegarde[level].etage.B[sauvegarde[level].last], gstate);
+            level++;
+        }
+        backtrack=0;
     }
 }
