@@ -10,8 +10,9 @@ extern int *d0;
 extern int *df;
 extern clock_t begin;
 extern clock_t end;
-int cuted;
-int overall;
+extern int cuted;
+extern int all;
+extern int p;
 int nb=0;
 int level;
 int tailledf;
@@ -164,7 +165,6 @@ Branche ReduceBranches(){
         }
         B.B = malloc(size * sizeof(int));
         B.x = size;
-        overall+=size;
         int c=0;
         for(int i=0; i<gstate->nbVertices; i++) if(gstate->ingraph[i] && !gstate->branched[i] && nbVoisinv2(gstate, i)!=0){
             B.B[c]=i;
@@ -208,8 +208,6 @@ Branche ReduceBranches(){
     }
     B.B = malloc(size * sizeof(int));
     B.x = size;
-    overall+=size2;
-    cuted+=size2-size;
     int c=0;
     for(int i=0; i<gstate->nbVertices; i++) if(gstate->ingraph[i] && !gstate->branched[i] && nbVoisinv2(gstate, i)!=0 && !P[i]){
         B.B[c]=i;
@@ -241,9 +239,16 @@ void BnB(Graph *gd){
     iteratif sauvegarde[1000];
     gstate=gd;
     tailledf=listeSize(df, gstate->nbVertices), tailled0=listeSize(d0, gstate->nbVertices);
-    
+    printf("%d-%d\n", p, tailled0);
     while(1){
-        if(tailledf+level>=tailled0) backtrack=1;            
+        for(int i=0; i<gstate->nbVertices; i++){
+            if(df[i]) printf("%d ",i);
+        }
+        printf("\n");
+        all++;
+        if(tailledf+level>p){
+            backtrack=1;
+        }            
         
         if(!backtrack && gstate->adom==0){
             end = clock();
@@ -264,7 +269,10 @@ void BnB(Graph *gd){
             int i;
             for(i=0; current>0 && i<maxassign.x; i++) current -= nbVoisinv2(gstate, maxassign.B[i]);
             free(maxassign.B);
-            if(i>=tailled0-tailledf) backtrack=1;
+            if(i>=tailled0-tailledf){
+                cuted++;
+                backtrack=1;
+            } 
             else{
                 sauvegarde[level].last=0;
                 sauvegarde[level].etage = ReduceBranches();
@@ -285,28 +293,24 @@ void BnB(Graph *gd){
         }
 
         if(backtrack){
-            level--;
-            if(level<0) return;
-            df[sauvegarde[level].etage.B[sauvegarde[level].last]]=0;
-            unDom(gstate);
-            domineliste(df, gstate); 
-            sauvegarde[level].last++;
-            while(sauvegarde[level].last>sauvegarde[level].etage.x-1){
-                for(int i=0; i<sauvegarde[level].etage.x; i++){
-                    //printf("%d/%d - %d\n", i, sauvegarde[level].etage.x, sauvegarde[level].etage.B[i]);
-                    gstate->branched[sauvegarde[level].etage.B[i]]=0;
-                }
-                free(sauvegarde[level].etage.B);
+            do{
                 level--;
-                if(level<0){
-                    return;
-                }
-                //printf("%d - %d/%d\n", level, sauvegarde[level].last, sauvegarde[level].etage.x);
+                if(level < 0) return;
+                
                 df[sauvegarde[level].etage.B[sauvegarde[level].last]]=0;
                 unDom(gstate);
                 domineliste(df, gstate); 
+                
                 sauvegarde[level].last++;
-            }
+                
+                if (sauvegarde[level].last>sauvegarde[level].etage.x-1){
+                    for (int i=0; i<sauvegarde[level].etage.x; i++) {
+                        gstate->branched[sauvegarde[level].etage.B[i]]=0;
+                    }
+                    free(sauvegarde[level].etage.B);
+                }
+                else break;
+            }while (1);
             gstate->branched[sauvegarde[level].etage.B[sauvegarde[level].last]]=1;
             df[sauvegarde[level].etage.B[sauvegarde[level].last]]=1;
             domine(sauvegarde[level].etage.B[sauvegarde[level].last], gstate);

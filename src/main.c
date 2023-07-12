@@ -6,8 +6,11 @@
 #include <time.h>
 
 int k=0;
+int all=0;
+int cuted=0;
 int *d0;
 int *df;
+int p;
 Graph *g;
 clock_t begin;
 clock_t end;
@@ -19,6 +22,7 @@ int main(int argc, char *argv[]){
 	//printf("Instance : %s\n", argv[2]);
 	Graph *g = (Graph*)malloc(sizeof(*g));
 	g = initializeGraph(argv[2]);
+	p=g->p;
 	//afficherGraph(g);
 	//g = cleanGraph(atoi(argv[3]));
 	d0=(int*)malloc(g->nbVertices*sizeof(int));
@@ -26,7 +30,7 @@ int main(int argc, char *argv[]){
 	//exemple(g, argv[2]);
 	int max = distmax(g), min = distmin(g);
 	int scoring[max];
-	printf("%d\n", max);
+	//printf("%d\n", max);
 	for(int i=0; i<=max; i++)scoring[i]=-1;
 	int savetd0=INT_MAX, saved0[g->nbVertices];
 	while(max!=min){
@@ -43,10 +47,9 @@ int main(int argc, char *argv[]){
 		Graph *gtemp = cleanGraph(g->nbVertices);
 		mdsgraph(gtemp, g, actuel);
 		created0(gtemp, d0);
-		
 		if(listeSize(d0, g->nbVertices)> savetd0){
 			for(int i=0; i<g->nbVertices; i++) d0[i]=saved0[i];
-			printf("sometimes?\n");
+			//printf("sometimes?\n");
 		}
 
 		if(listeSize(d0, g->nbVertices) <= g -> p){ 
@@ -76,7 +79,7 @@ int main(int argc, char *argv[]){
 		}
 		freeGraph(gtemp);
 	}
- 
+	//printf("\n%d/%d\n",all-cuted, all);
 	/*Graph *gtemp = cleanGraph(g->nbVertices);
 	mdsgraph(gtemp, g, 56);
 	created0(gtemp, d0);
