@@ -158,7 +158,7 @@ Branche ReduceBranches(){
     }
     int max = maxIS(I, gstate->nbVertices);
     
-    if(max<tailled0-(tailledf+level)){
+    if(max<=p-(tailledf+level)){
         int size=0;
         for(int i=0; i<gstate->nbVertices; i++){
             if(gstate->ingraph[i] && !gstate->branched[i] && nbVoisinv2(gstate, i)!=0) size++;
@@ -188,7 +188,7 @@ Branche ReduceBranches(){
                 }
             }
             max = maxIS(I, gstate->nbVertices);
-            if(max<tailled0-(tailledf+level)){
+            if(max<=p-(tailledf+level)){
                 P[i]=0;
                 for(int j=0; j<k; j++){
                     for(int z=0; z<gstate->nbVertices+1; z++){
@@ -239,27 +239,27 @@ void BnB(Graph *gd){
     iteratif sauvegarde[1000];
     gstate=gd;
     tailledf=listeSize(df, gstate->nbVertices), tailled0=listeSize(d0, gstate->nbVertices);
-    printf("%d-%d\n", p, tailled0);
     while(1){
-        for(int i=0; i<gstate->nbVertices; i++){
-            if(df[i]) printf("%d ",i);
+        end = clock();
+        if((double)(end - begin)/CLOCKS_PER_SEC>=1800){
+            printf("time out\n");
+            exit(0);
         }
-        printf("\n");
         all++;
         if(tailledf+level>p){
             backtrack=1;
         }            
         
         if(!backtrack && gstate->adom==0){
-            end = clock();
+            /*end = clock();
             backtrack=1;
-            printf("\ntime for upgrade : %fs\n", (double)(end - begin) / CLOCKS_PER_SEC);
+            printf("\ntime for upgrade : %fs\n", (double)(end - begin) / CLOCKS_PER_SEC);*/
 			for(int i=0; i<gstate->nbVertices; i++) d0[i]=df[i];
             tailled0=tailledf+level;
-            printf("d0 : %d\n", tailled0);
+            //printf("d0 : %d\n", tailled0);
             if(tailled0<=gstate->p) return;
-            for(int i=0; i<gstate->nbVertices; i++) if(df[i]) printf("%d ", i);
-            printf("\n");
+            //for(int i=0; i<gstate->nbVertices; i++) if(df[i]) printf("%d ", i);
+            //printf("\n");
         }
 
 	    if(!backtrack){
@@ -269,7 +269,7 @@ void BnB(Graph *gd){
             int i;
             for(i=0; current>0 && i<maxassign.x; i++) current -= nbVoisinv2(gstate, maxassign.B[i]);
             free(maxassign.B);
-            if(i>=tailled0-tailledf){
+            if(i>p-(tailledf+level)){
                 cuted++;
                 backtrack=1;
             } 

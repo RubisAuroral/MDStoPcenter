@@ -33,5 +33,5 @@ echo "-----------------------------------------------------------"
 instances="instances/pcentre"
 
 for fichier in "$instances"/*; do
-  ./main "16" "$fichier"
+  ./main "4" "$fichier"
 done

@@ -24,6 +24,20 @@ int distmin(Graph *g){
     return min;
 }
 
+
+/*int distmin(Graph *g, int p){
+    int valeurs[g->nbVertices * (g->nbVertices - 1) / 2]; // Tableau pour stocker les valeurs de distance
+    int index = 0;
+    for(int i=0; i<g->nbVertices-1; i++){
+        for(int j=i+1; j<g->nbVertices; j++){
+            valeurs[index] = g->distanceMatrix[i][j];
+            index++;
+        }
+    }
+    qsort(valeurs, g->nbVertices * (g->nbVertices - 1) / 2, sizeof(int), compare);
+    return valeurs[p];
+}*/
+
 void mdsgraph(Graph *gtemp, Graph *origine, int dist){
     Edge edge;
     edge.weight=0;

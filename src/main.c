@@ -22,6 +22,7 @@ int main(int argc, char *argv[]){
 	//printf("Instance : %s\n", argv[2]);
 	Graph *g = (Graph*)malloc(sizeof(*g));
 	g = initializeGraph(argv[2]);
+	printf("Instance : \n%s\n", argv[2]);
 	p=g->p;
 	//afficherGraph(g);
 	//g = cleanGraph(atoi(argv[3]));
@@ -33,7 +34,7 @@ int main(int argc, char *argv[]){
 	//printf("%d\n", max);
 	for(int i=0; i<=max; i++)scoring[i]=-1;
 	int savetd0=INT_MAX, saved0[g->nbVertices];
-	while(max!=min){
+	while(max!=min && scoring[min]!=p){
 		if(scoring[max]!=-1 && scoring[max]==scoring[min]) break;
 		end = clock();
 		printf("%d - %d - %fs\n", max, min, (double)(end - begin) / CLOCKS_PER_SEC);
