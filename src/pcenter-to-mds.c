@@ -38,7 +38,8 @@ int distmin(Graph *g){
     return valeurs[p];
 }*/
 
-void mdsgraph(Graph *gtemp, Graph *origine, int dist){
+int mdsgraph(Graph *gtemp, Graph *origine, int dist){
+    int nbedge=0;
     Edge edge;
     edge.weight=0;
     gtemp->p=origine->p;
@@ -49,7 +50,9 @@ void mdsgraph(Graph *gtemp, Graph *origine, int dist){
                 edge.endIdVertex=j+1;
                 addEdge(gtemp, edge);
                 addInverseEdge(gtemp, edge);
+                nbedge++;
             }
         }
     }
+    return nbedge;
 }

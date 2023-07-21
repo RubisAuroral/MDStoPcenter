@@ -5,6 +5,8 @@
 #include <sys/resource.h>
 #include <time.h>
 
+#define GET_FILENAME(path) (strrchr(path, '/') ? strrchr(path, '/') + 1 : path)
+
 int k=0;
 int all=0;
 int cuted=0;
@@ -17,86 +19,86 @@ clock_t end;
 
 int main(int argc, char *argv[]){
 	begin = clock();
-	if(argc!=3) return -1;
-	k=atoi(argv[1]);
-	//printf("Instance : %s\n", argv[2]);
+	char *file=NULL;
+	if(argc>5){
+		fprintf(stderr,"Problème d'arguments : ./main (-k k) -f chemin_vers_instance\n");
+		exit(EXIT_FAILURE);
+	}
+	
+	for(int i=1; i<argc-1; i+=2){
+		if(!strcmp(argv[i], "-f")){
+			file = (char *) malloc(strlen(argv[i+1])*sizeof(char));
+        	strcpy(file, argv[i+1]);
+		}
+		if(!strcmp(argv[i], "-k")) k=atoi(argv[i+1]);
+	}
+	
+	if (access(file, F_OK) == -1) {
+        fprintf(stderr, "Le fichier %s n'existe pas ou vous n'avez pas les permissions pour y accéder.\n", file);
+		exit(EXIT_FAILURE);
+    }
+
+	printf("Instance lue: %s\n", GET_FILENAME(file));
+	if(!k) k=8;
+	printf("k nombre d'IS : %d\n", k);
+
 	Graph *g = (Graph*)malloc(sizeof(*g));
-	g = initializeGraph(argv[2]);
-	printf("Instance : \n%s\n", argv[2]);
+	g = initializeGraph(file);
+	printf("Nombre de sommet du graphe d'origine : %d\n", g->nbVertices);
 	p=g->p;
-	//afficherGraph(g);
-	//g = cleanGraph(atoi(argv[3]));
-	d0=(int*)malloc(g->nbVertices*sizeof(int));
-	df=(int*)malloc(g->nbVertices*sizeof(int));
-	//exemple(g, argv[2]);
-	int max = distmax(g), min = distmin(g);
-	int scoring[max];
-	//printf("%d\n", max);
-	for(int i=0; i<=max; i++)scoring[i]=-1;
-	int savetd0=INT_MAX, saved0[g->nbVertices];
-	while(max!=min && scoring[min]!=p){
-		if(scoring[max]!=-1 && scoring[max]==scoring[min]) break;
+	printf("Taille de solution recherchée : %d\n", p);
+
+	d0 = (int *) malloc(g->nbVertices * sizeof(int));
+	df = (int *) malloc(g->nbVertices * sizeof(int));
+
+	int max = distmax(g);
+	int min = distmin(g);
+
+	while(max!=min){
 		end = clock();
-		printf("%d - %d - %fs\n", max, min, (double)(end - begin) / CLOCKS_PER_SEC);
+		printf("\nBornes : %d - %d | %fs\n", max, min, (double)(end - begin) / CLOCKS_PER_SEC);
 		for(int i=0; i<g->nbVertices; i++){
 			d0[i]=0;
 			df[i]=0;
-			g->save[i]=0;
-		}
-		g->adom=g->nbVertices;
-		int actuel=(max+min)/2;
-		Graph *gtemp = cleanGraph(g->nbVertices);
-		mdsgraph(gtemp, g, actuel);
-		created0(gtemp, d0);
-		if(listeSize(d0, g->nbVertices)> savetd0){
-			for(int i=0; i<g->nbVertices; i++) d0[i]=saved0[i];
-			//printf("sometimes?\n");
 		}
 
+		g->adom=g->nbVertices;
+		int actuel=(max+min)/2;
+		printf("Génération du graphe pour la distance %d", actuel);
+		Graph *gtemp = cleanGraph(g->nbVertices);
+		int nbedge = mdsgraph(gtemp, g, actuel);
+		printf(" -> %d arcs\n", nbedge);
+		created0(gtemp, d0);
+
 		if(listeSize(d0, g->nbVertices) <= g -> p){ 
+			printf("Glouton suffisant\n");
 			max=actuel;
-			scoring[max]=listeSize(d0, g->nbVertices);
-		}
-		else{
+		} else{
 			unDom(gtemp);
-			alber(gtemp, df);
-			if(listeSize(df, g->nbVertices) > g -> p){
+			int newnbedge=nbedge-alber(gtemp, df);
+			int solutionPartielle=listeSize(df, gtemp->nbVertices);
+			if(solutionPartielle!=0) printf("Alber : Nombre de sommets fixés : %d | arcs restants : %d/%d | sommets restants : %d/%d\n", solutionPartielle, newnbedge,nbedge, listeSize(gtemp->ingraph, gtemp->nbVertices), gtemp->nbVertices);
+			else printf("Alber : Pas de réduction\n");
+
+			if(solutionPartielle > g -> p){
+				printf("df est trop grand\n");
 				min=actuel+1;
-				scoring[min]=listeSize(df, g->nbVertices);
-			}
-			else{
+			} else{
 				BnB(gtemp);
 				if(listeSize(d0, g->nbVertices) <= g -> p){
+					printf("Solution trouvée\n");
 					max=actuel;
-					scoring[max]=listeSize(d0, g->nbVertices);
 				}
 				else{
+					printf("Aucune solution trouvée\n");
 					min=actuel+1;
-					scoring[min]=listeSize(d0, g->nbVertices);
-					savetd0=scoring[min];
-					for(int i=0; i<g->nbVertices; i++) saved0[i]=d0[i];
 				}
 			}
 		}
 		freeGraph(gtemp);
 	}
-	//printf("\n%d/%d\n",all-cuted, all);
-	/*Graph *gtemp = cleanGraph(g->nbVertices);
-	mdsgraph(gtemp, g, 56);
-	created0(gtemp, d0);
-	unDom(gtemp);
-	alber(gtemp, df);
-	BnB(gtemp);*/
-	//afficherGraph(gtemp);
-	//instanceHua(gtemp);
 
-	printf("Opti : %d\n", min);
-	/*created0(gtemp, d0);
-	unDom(gtemp);
-	alber(gtemp, df);
-	printpreproc(gtemp, df, d0);
-	BnB(gtemp);*/
-
+	printf("\nOpti : %d\n", min);
 	free(d0);
 	free(df);
 	end = clock();
@@ -106,6 +108,7 @@ int main(int argc, char *argv[]){
     for (int i = 0; i < g->nbVertices; i++) {
       free(g->distanceMatrix[i]);
     }
+	
     free(g->distanceMatrix);
 	free(g);
 }

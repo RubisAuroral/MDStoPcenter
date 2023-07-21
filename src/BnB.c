@@ -26,9 +26,13 @@ int myComp(const void * v1, const void * v2){
     return nbVoisinv2(gstate, sI) - nbVoisinv2(gstate, fI); 
 }
 
+/*
+Retire un nombre de sommets dit "conflictuels" à l'insertion de "sommet" dans un IS.
+*/
+
 void removeConflict(Graph *g, int *IS, int sommet){
     int temp[g->nbVertices];
-    for(int i=0; i<g->nbVertices; i++) temp[i]=0;
+    memset(temp, 0, g->nbVertices * sizeof(int));
     Intersection(temp,g->adjacencyLists[sommet], IS);
     int nb=listeSize(temp, g->nbVertices)-1;
     for(int i=0; i<g->nbVertices && nb>0; i++){
@@ -39,6 +43,10 @@ void removeConflict(Graph *g, int *IS, int sommet){
     }
 }
 
+/*
+Renvoie la taille du plus grand IS
+*/
+
 int maxIS(int I[][gstate->nbVertices], int taille){
     int max=0;
     for(int i=0; i<k;i++){
@@ -48,6 +56,10 @@ int maxIS(int I[][gstate->nbVertices], int taille){
     return max;
 }
 
+/*
+Donne la liste des voisins d'un sommet
+*/
+
 void rvoisins(int sommet, int *listevoisin){
     adjacencyListElement *temp = gstate->adjacencyLists[sommet];
     while(temp!=NULL){
@@ -55,6 +67,10 @@ void rvoisins(int sommet, int *listevoisin){
         temp=temp->next;
     }
 }
+
+/*
+Renvoie un booléen qui dit si deux sommets sont 2-hop adjacents dans un graph donné.
+*/
 
 int hop_2_adj(int sommet1, int sommet2, int *ingraph){
     int voisins[gstate->nbVertices];
@@ -73,6 +89,10 @@ int hop_2_adj(int sommet1, int sommet2, int *ingraph){
     }
     return 0;
 }
+
+/*
+Fonction qui permet de donner le score d'insertion d'un sommet dans un IS 
+*/
 
 int score(Graph *gstate, int * IS, int * P, int sommet){
     if(gstate->branched[sommet]){
@@ -112,6 +132,11 @@ void printAllS(Graph *gstate){
     printf("\n");
 }
 
+/*
+Fonction qui renvoie l'ensemble des sommets pouvant être branchés pour un niveau donné
+Elle est la fonction utilisée par Hua.
+*/
+
 Branche ReduceBranches(){
     Branche B;
     int I[k][gstate->nbVertices+1];
@@ -120,6 +145,10 @@ Branche ReduceBranches(){
     int P[gstate->nbVertices];
     memset(P, 0, sizeof(P));
     int nbISnotVide=0;
+    
+    /*
+    Première partie : Identification d'un ensemble P
+    */
     for(int i=gstate->nbVertices-1; i>-1; i--){
         if(gstate->ingraph[i] && !gstate->dom[i]){
             int scoretot=0;
@@ -173,6 +202,9 @@ Branche ReduceBranches(){
         return B;
     }
 
+    /*
+    Deuxième partie : Enrichissement de l'ensemble P
+    */
     for(int i=gstate->nbVertices-1; i>-1; i--){
         if(gstate->ingraph[i] && gstate->dom[i] && !gstate->branched[i]){
             int Itemp[k][gstate->nbVertices+1];
@@ -216,6 +248,9 @@ Branche ReduceBranches(){
     return B;
 }
 
+/*
+Permet de renvoyer l'ensemble des sommets non fixés. -> Correspond à une absence de réduction
+*/
 Branche ReduceBranches2(){
     Branche B;
     int C[gstate->nbVertices];
@@ -238,39 +273,42 @@ void BnB(Graph *gd){
     level=0, backtrack=0;
     iteratif sauvegarde[1000];
     gstate=gd;
-    tailledf=listeSize(df, gstate->nbVertices), tailled0=listeSize(d0, gstate->nbVertices);
+    tailledf=listeSize(df, gstate->nbVertices);
     while(1){
         end = clock();
         if((double)(end - begin)/CLOCKS_PER_SEC>=1800){
             printf("time out\n");
             exit(0);
         }
-        all++;
-        if(tailledf+level>p){
-            backtrack=1;
-        }            
         
+        /*
+        Df est plus grand que p alors on coupe la branche
+        */
+        if(tailledf+level>p)backtrack=1;
+        
+        /*
+        Si Df est de taille plus petite ou égale à p, et que G est entièrement couvert par Df, on a trouvé notre solution, on quitte le branch and bound 
+        */
         if(!backtrack && gstate->adom==0){
-            /*end = clock();
-            backtrack=1;
-            printf("\ntime for upgrade : %fs\n", (double)(end - begin) / CLOCKS_PER_SEC);*/
 			for(int i=0; i<gstate->nbVertices; i++) d0[i]=df[i];
-            tailled0=tailledf+level;
-            //printf("d0 : %d\n", tailled0);
-            if(tailled0<=gstate->p) return;
-            //for(int i=0; i<gstate->nbVertices; i++) if(df[i]) printf("%d ", i);
-            //printf("\n");
+            return;
         }
 
 	    if(!backtrack){
+            /*
+            MaxAssignation
+            */
             Branche maxassign = ReduceBranches2();
             if(maxassign.x>1) qsort(maxassign.B, maxassign.x, sizeof(int), myComp);
             int current = gstate->adom;
-            int i;
-            for(i=0; current>0 && i<maxassign.x; i++) current -= nbVoisinv2(gstate, maxassign.B[i]);
+            int lowerBound;
+            for(lowerBound=0; current>0 && lowerBound<maxassign.x; lowerBound++) current -= nbVoisinv2(gstate, maxassign.B[lowerBound]);
             free(maxassign.B);
-            if(i>p-(tailledf+level)){
-                cuted++;
+            
+            /*
+            Si la LowerBound qu'on a obtenu à la suite de la MaxAssignation est trop grande, il faut couper
+            */
+            if(lowerBound>p-(tailledf+level)){
                 backtrack=1;
             } 
             else{
@@ -303,7 +341,7 @@ void BnB(Graph *gd){
                 
                 sauvegarde[level].last++;
                 
-                if (sauvegarde[level].last>sauvegarde[level].etage.x-1){
+                if (sauvegarde[level].last>=sauvegarde[level].etage.x){
                     for (int i=0; i<sauvegarde[level].etage.x; i++) {
                         gstate->branched[sauvegarde[level].etage.B[i]]=0;
                     }

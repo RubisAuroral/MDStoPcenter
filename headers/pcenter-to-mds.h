@@ -4,4 +4,4 @@
 
 int distmax(Graph *g);
 int distmin(Graph *g);
-void mdsgraph(Graph *gtemp, Graph *origine, int dist);
+int mdsgraph(Graph *gtemp, Graph *origine, int dist);
