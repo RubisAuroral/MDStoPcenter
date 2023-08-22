@@ -50,12 +50,17 @@ int *calcbornes(Graph *g){
     int *tab = malloc(t2 * sizeof(int));
     tab[0]=t2;
     int n=1;
-    for(int j=0; j<taille; j++){
+    printf("sommets skip : ");
+    for(int j=1; j<taille; j++){
         if(tabtemp[j]){
             tab[n]=j;
             n++;
         }
+        else{
+            printf("%d ", j);
+        }
     }
+    printf("\n");
     return tab;
 }
 

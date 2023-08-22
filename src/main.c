@@ -57,8 +57,6 @@ int main(int argc, char *argv[]){
 
 	int *bornes = NULL;
 	bornes = calcbornes(g);
-	printf("oui\n");
-	for(int i=0; i<bornes[0]; i++) printf("%d ", bornes[i]);
 	int max = bornes[0]-1;
 	int min = 1;
 	min = dichotomie(g, bornes, max, min);
