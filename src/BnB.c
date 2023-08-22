@@ -296,7 +296,7 @@ void BnB(Graph *gd){
 
 	    if(!backtrack){
             /*
-            MaxAssignation
+            MinAssignation
             */
             Branche maxassign = ReduceBranches2();
             if(maxassign.x>1) qsort(maxassign.B, maxassign.x, sizeof(int), myComp);

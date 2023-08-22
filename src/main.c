@@ -20,8 +20,9 @@ clock_t end;
 int main(int argc, char *argv[]){
 	begin = clock();
 	char *file=NULL;
-	if(argc>5){
-		fprintf(stderr,"Problème d'arguments : ./main (-k k) -f chemin_vers_instance\n");
+	double d=0;
+	if(argc>7){
+		fprintf(stderr,"Problème d'arguments : ./main (-k k) (-d coupeDichotomie) -f chemin_vers_instance\n");
 		exit(EXIT_FAILURE);
 	}
 	
@@ -31,6 +32,7 @@ int main(int argc, char *argv[]){
         	strcpy(file, argv[i+1]);
 		}
 		if(!strcmp(argv[i], "-k")) k=atoi(argv[i+1]);
+		if(!strcmp(argv[i], "-d")) d=atoi(argv[i+1]);
 	}
 	
 	if (access(file, F_OK) == -1) {
@@ -40,6 +42,8 @@ int main(int argc, char *argv[]){
 
 	printf("Instance lue: %s\n", GET_FILENAME(file));
 	if(!k) k=8;
+	if(!d) d=50;
+	d/=100;
 	printf("k nombre d'IS : %d\n", k);
 
 	Graph *g = (Graph*)malloc(sizeof(*g));
@@ -51,54 +55,14 @@ int main(int argc, char *argv[]){
 	d0 = (int *) malloc(g->nbVertices * sizeof(int));
 	df = (int *) malloc(g->nbVertices * sizeof(int));
 
-	int max = distmax(g);
-	int min = distmin(g);
-
-	while(max!=min){
-		end = clock();
-		printf("\nBornes : %d - %d | %fs\n", max, min, (double)(end - begin) / CLOCKS_PER_SEC);
-		for(int i=0; i<g->nbVertices; i++){
-			d0[i]=0;
-			df[i]=0;
-		}
-
-		g->adom=g->nbVertices;
-		int actuel=(max+min)/2;
-		printf("Génération du graphe pour la distance %d", actuel);
-		Graph *gtemp = cleanGraph(g->nbVertices);
-		int nbedge = mdsgraph(gtemp, g, actuel);
-		printf(" -> %d arcs\n", nbedge);
-		created0(gtemp, d0);
-
-		if(listeSize(d0, g->nbVertices) <= g -> p){ 
-			printf("Glouton suffisant\n");
-			max=actuel;
-		} else{
-			unDom(gtemp);
-			int newnbedge=nbedge-alber(gtemp, df);
-			int solutionPartielle=listeSize(df, gtemp->nbVertices);
-			if(solutionPartielle!=0) printf("Alber : Nombre de sommets fixés : %d | arcs restants : %d/%d | sommets restants : %d/%d\n", solutionPartielle, newnbedge,nbedge, listeSize(gtemp->ingraph, gtemp->nbVertices), gtemp->nbVertices);
-			else printf("Alber : Pas de réduction\n");
-
-			if(solutionPartielle > g -> p){
-				printf("df est trop grand\n");
-				min=actuel+1;
-			} else{
-				BnB(gtemp);
-				if(listeSize(d0, g->nbVertices) <= g -> p){
-					printf("Solution trouvée\n");
-					max=actuel;
-				}
-				else{
-					printf("Aucune solution trouvée\n");
-					min=actuel+1;
-				}
-			}
-		}
-		freeGraph(gtemp);
-	}
-
-	printf("\nOpti : %d\n", min);
+	int *bornes = NULL;
+	bornes = calcbornes(g);
+	printf("oui\n");
+	for(int i=0; i<bornes[0]; i++) printf("%d ", bornes[i]);
+	int max = bornes[0]-1;
+	int min = 1;
+	min = dichotomie(g, bornes, max, min);
+	printf("\nIndice : %d - Opti : %d\n", min, bornes[min]);
 	free(d0);
 	free(df);
 	end = clock();
