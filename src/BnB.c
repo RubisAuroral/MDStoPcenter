@@ -276,7 +276,7 @@ void BnB(Graph *gd){
     tailledf=listeSize(df, gstate->nbVertices);
     while(1){
         end = clock();
-        if((double)(end - begin)/CLOCKS_PER_SEC>=1800){
+        if((double)(end - begin)/CLOCKS_PER_SEC>=5140){
             printf("time out\n");
             exit(0);
         }

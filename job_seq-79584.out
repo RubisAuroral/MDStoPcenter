@@ -1,0 +1,1169 @@
+-----------------------------------------------------------
+hostname                     =   node021.matricsi.u-picardie.fr
+SLURM_JOB_NAME               =   EMOS-pmed1
+SLURM_SUBMIT_DIR             =   /users/amenet/Bonjour
+SLURM_JOBID                  =   79584
+SLURM_JOB_ID                 =   79584
+SLURM_NODELIST               =   node[021-022]
+SLURM_JOB_NODELIST           =   node[021-022]
+SLURM_TASKS_PER_NODE         =   1(x2)
+SLURM_JOB_CPUS_PER_NODE      =   1(x2)
+SLURM_TOPOLOGY_ADDR_PATTERN  = node
+SLURM_TOPOLOGY_ADDR          =   node021
+SLURM_CPUS_ON_NODE           =   1
+SLURM_NNODES                 =   2
+SLURM_JOB_NUM_NODES          =   2
+SLURMD_NODENAME              =   node021
+SLURM_NTASKS                 =   
+SLURM_NPROCS                 =   
+SLURM_MEM_PER_NODE           =   4096
+SLURM_PRIO_PROCESS           =   0
+-----------------------------------------------------------
+Instance lue: pmed10.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 200
+Taille de solution recherchée : 67
+sommets skip : 156 157 163 164 165 166 167 
+
+Bornes indices: 161(d=168) - 1(d=1) | 0.011795s
+Génération du graphe pour la distance 81 (indice 81) -> 16007 arcs
+Glouton suffisant
+
+Bornes indices: 81(d=81) - 1(d=1) | 0.037608s
+Génération du graphe pour la distance 41 (indice 41) -> 3227 arcs
+Glouton suffisant
+
+Bornes indices: 41(d=41) - 1(d=1) | 0.039809s
+Génération du graphe pour la distance 21 (indice 21) -> 636 arcs
+Glouton suffisant
+
+Bornes indices: 21(d=21) - 1(d=1) | 0.040149s
+Génération du graphe pour la distance 11 (indice 11) -> 188 arcs
+Alber : Nombre de sommets fixés : 43 | arcs restants : 180/188 | sommets restants : 73/200
+Aucune solution trouvée
+
+Bornes indices: 21(d=21) - 12(d=12) | 0.040798s
+Génération du graphe pour la distance 16 (indice 16) -> 376 arcs
+Alber : Nombre de sommets fixés : 43 | arcs restants : 283/376 | sommets restants : 49/200
+Aucune solution trouvée
+
+Bornes indices: 21(d=21) - 17(d=17) | 0.041800s
+Génération du graphe pour la distance 19 (indice 19) -> 514 arcs
+Alber : Nombre de sommets fixés : 37 | arcs restants : 381/514 | sommets restants : 36/200
+Aucune solution trouvée
+
+Bornes indices: 21(d=21) - 20(d=20) | 0.042881s
+Génération du graphe pour la distance 20 (indice 20) -> 576 arcs
+Glouton suffisant
+
+Indice : 20 - Opti : 20
+time for end : 0.043144s
+Instance lue: pmed11.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 300
+Taille de solution recherchée : 5
+sommets skip : 126 127 128 130 132 
+
+Bornes indices: 128(d=133) - 1(d=1) | 0.037572s
+Génération du graphe pour la distance 64 (indice 64) -> 32979 arcs
+Glouton suffisant
+
+Bornes indices: 64(d=64) - 1(d=1) | 0.117361s
+Génération du graphe pour la distance 32 (indice 32) -> 5454 arcs
+Alber : Nombre de sommets fixés : 5 | arcs restants : 4072/5454 | sommets restants : 285/300
+Aucune solution trouvée
+
+Bornes indices: 64(d=64) - 33(d=33) | 0.136690s
+Génération du graphe pour la distance 48 (indice 48) -> 17822 arcs
+Alber : Pas de réduction
+Aucune solution trouvée
+
+Bornes indices: 64(d=64) - 49(d=49) | 189.437320s
+Génération du graphe pour la distance 56 (indice 56) -> 25790 arcs
+Alber : Pas de réduction
+Aucune solution trouvée
+
+Bornes indices: 64(d=64) - 57(d=57) | 726.411505s
+Génération du graphe pour la distance 60 (indice 60) -> 29494 arcs
+Alber : Pas de réduction
+Solution trouvée
+
+Bornes indices: 60(d=60) - 57(d=57) | 726.795452s
+Génération du graphe pour la distance 58 (indice 58) -> 27659 arcs
+Alber : Pas de réduction
+Aucune solution trouvée
+
+Bornes indices: 60(d=60) - 59(d=59) | 1314.051164s
+Génération du graphe pour la distance 59 (indice 59) -> 28614 arcs
+Alber : Pas de réduction
+Solution trouvée
+
+Indice : 59 - Opti : 59
+time for end : 1317.218701s
+Instance lue: pmed12.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 300
+Taille de solution recherchée : 10
+sommets skip : 136 144 152 155 158 159 160 161 162 163 164 165 166 
+
+Bornes indices: 153(d=157) - 1(d=1) | 0.036447s
+Génération du graphe pour la distance 77 (indice 77) -> 39627 arcs
+Glouton suffisant
+
+Bornes indices: 77(d=77) - 1(d=1) | 0.148059s
+Génération du graphe pour la distance 39 (indice 39) -> 7274 arcs
+Alber : Nombre de sommets fixés : 5 | arcs restants : 3771/7274 | sommets restants : 272/300
+Aucune solution trouvée
+
+Bornes indices: 77(d=77) - 40(d=40) | 1.462398s
+Génération du graphe pour la distance 58 (indice 58) -> 25772 arcs
+Glouton suffisant
+
+Bornes indices: 58(d=58) - 40(d=40) | 1.515570s
+Génération du graphe pour la distance 49 (indice 49) -> 15928 arcs
+Alber : Pas de réduction
+time out
+Instance lue: pmed13.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 300
+Taille de solution recherchée : 30
+sommets skip : 130 135 137 139 140 141 143 144 145 147 149 
+
+Bornes indices: 138(d=148) - 1(d=1) | 0.033624s
+Génération du graphe pour la distance 69 (indice 69) -> 35175 arcs
+Glouton suffisant
+
+Bornes indices: 69(d=69) - 1(d=1) | 0.118045s
+Génération du graphe pour la distance 35 (indice 35) -> 6265 arcs
+Alber : Nombre de sommets fixés : 8 | arcs restants : 4168/6265 | sommets restants : 276/300
+time out
+Instance lue: pmed14.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 300
+Taille de solution recherchée : 60
+sommets skip : 156 158 159 160 162 163 164 166 167 169 170 171 172 173 174 175 176 177 178 
+
+Bornes indices: 159(d=168) - 1(d=1) | 0.034224s
+Génération du graphe pour la distance 80 (indice 80) -> 39557 arcs
+Glouton suffisant
+
+Bornes indices: 80(d=80) - 1(d=1) | 0.136496s
+Génération du graphe pour la distance 40 (indice 40) -> 7560 arcs
+Glouton suffisant
+
+Bornes indices: 40(d=40) - 1(d=1) | 0.143923s
+Génération du graphe pour la distance 20 (indice 20) -> 1025 arcs
+Alber : Nombre de sommets fixés : 36 | arcs restants : 666/1025 | sommets restants : 147/300
+Aucune solution trouvée
+
+Bornes indices: 40(d=40) - 21(d=21) | 0.258083s
+Génération du graphe pour la distance 30 (indice 30) -> 2950 arcs
+Glouton suffisant
+
+Bornes indices: 30(d=30) - 21(d=21) | 0.260068s
+Génération du graphe pour la distance 25 (indice 25) -> 1782 arcs
+Alber : Nombre de sommets fixés : 21 | arcs restants : 1308/1782 | sommets restants : 223/300
+time out
+Instance lue: pmed15.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 300
+Taille de solution recherchée : 100
+sommets skip : 122 128 130 132 133 134 
+
+Bornes indices: 129(d=135) - 1(d=1) | 0.034089s
+Génération du graphe pour la distance 65 (indice 65) -> 34731 arcs
+Glouton suffisant
+
+Bornes indices: 65(d=65) - 1(d=1) | 0.115649s
+Génération du graphe pour la distance 33 (indice 33) -> 5418 arcs
+Glouton suffisant
+
+Bornes indices: 33(d=33) - 1(d=1) | 0.120857s
+Génération du graphe pour la distance 17 (indice 17) -> 855 arcs
+Alber : Nombre de sommets fixés : 62 | arcs restants : 485/855 | sommets restants : 66/300
+Aucune solution trouvée
+
+Bornes indices: 33(d=33) - 18(d=18) | 0.123670s
+Génération du graphe pour la distance 25 (indice 25) -> 2295 arcs
+Glouton suffisant
+
+Bornes indices: 25(d=25) - 18(d=18) | 0.125224s
+Génération du graphe pour la distance 21 (indice 21) -> 1452 arcs
+Glouton suffisant
+
+Bornes indices: 21(d=21) - 18(d=18) | 0.126229s
+Génération du graphe pour la distance 19 (indice 19) -> 1109 arcs
+Glouton suffisant
+
+Bornes indices: 19(d=19) - 18(d=18) | 0.126975s
+Génération du graphe pour la distance 18 (indice 18) -> 969 arcs
+Glouton suffisant
+
+Indice : 18 - Opti : 18
+time for end : 0.127597s
+Instance lue: pmed16.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 400
+Taille de solution recherchée : 5
+sommets skip : 100 101 104 106 
+
+Bornes indices: 102(d=105) - 1(d=1) | 0.078613s
+Génération du graphe pour la distance 51 (indice 51) -> 62216 arcs
+Glouton suffisant
+
+Bornes indices: 51(d=51) - 1(d=1) | 0.281787s
+Génération du graphe pour la distance 26 (indice 26) -> 10091 arcs
+Alber : Nombre de sommets fixés : 10 | arcs restants : 4122/10091 | sommets restants : 357/400
+df est trop grand
+
+Bornes indices: 51(d=51) - 27(d=27) | 0.325308s
+Génération du graphe pour la distance 39 (indice 39) -> 36585 arcs
+Alber : Nombre de sommets fixés : 2 | arcs restants : 29818/36585 | sommets restants : 396/400
+Aucune solution trouvée
+
+Bornes indices: 51(d=51) - 40(d=40) | 30.048011s
+Génération du graphe pour la distance 45 (indice 45) -> 50835 arcs
+Alber : Pas de réduction
+time out
+Instance lue: pmed17.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 400
+Taille de solution recherchée : 10
+sommets skip : 98 104 
+
+Bornes indices: 102(d=103) - 1(d=1) | 0.076575s
+Génération du graphe pour la distance 51 (indice 51) -> 59959 arcs
+Glouton suffisant
+
+Bornes indices: 51(d=51) - 1(d=1) | 0.263574s
+Génération du graphe pour la distance 26 (indice 26) -> 8227 arcs
+Alber : Nombre de sommets fixés : 9 | arcs restants : 4736/8227 | sommets restants : 365/400
+Aucune solution trouvée
+
+Bornes indices: 51(d=51) - 27(d=27) | 0.295263s
+Génération du graphe pour la distance 39 (indice 39) -> 32067 arcs
+Alber : Pas de réduction
+Solution trouvée
+
+Bornes indices: 39(d=39) - 27(d=27) | 66.144235s
+Génération du graphe pour la distance 33 (indice 33) -> 18667 arcs
+Alber : Pas de réduction
+time out
+Instance lue: pmed18.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 400
+Taille de solution recherchée : 40
+sommets skip : 115 116 117 119 120 121 123 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 
+
+Bornes indices: 117(d=124) - 1(d=1) | 0.078812s
+Génération du graphe pour la distance 59 (indice 59) -> 65567 arcs
+Glouton suffisant
+
+Bornes indices: 59(d=59) - 1(d=1) | 0.299969s
+Génération du graphe pour la distance 30 (indice 30) -> 9322 arcs
+Alber : Nombre de sommets fixés : 5 | arcs restants : 8729/9322 | sommets restants : 389/400
+Solution trouvée
+
+Bornes indices: 30(d=30) - 1(d=1) | 3.246804s
+Génération du graphe pour la distance 15 (indice 15) -> 1209 arcs
+Alber : Nombre de sommets fixés : 68 | arcs restants : 629/1209 | sommets restants : 143/400
+df est trop grand
+
+Bornes indices: 30(d=30) - 16(d=16) | 3.252801s
+Génération du graphe pour la distance 23 (indice 23) -> 3887 arcs
+Alber : Nombre de sommets fixés : 16 | arcs restants : 2349/3887 | sommets restants : 341/400
+time out
+Instance lue: pmed19.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 400
+Taille de solution recherchée : 80
+sommets skip : 100 
+
+Bornes indices: 99(d=99) - 1(d=1) | 0.077496s
+Génération du graphe pour la distance 50 (indice 50) -> 54428 arcs
+Glouton suffisant
+
+Bornes indices: 50(d=50) - 1(d=1) | 0.236929s
+Génération du graphe pour la distance 25 (indice 25) -> 6163 arcs
+Glouton suffisant
+
+Bornes indices: 25(d=25) - 1(d=1) | 0.244829s
+Génération du graphe pour la distance 13 (indice 13) -> 1056 arcs
+Alber : Nombre de sommets fixés : 70 | arcs restants : 735/1056 | sommets restants : 162/400
+Aucune solution trouvée
+
+Bornes indices: 25(d=25) - 14(d=14) | 0.248987s
+Génération du graphe pour la distance 19 (indice 19) -> 2674 arcs
+Alber : Nombre de sommets fixés : 22 | arcs restants : 1925/2674 | sommets restants : 321/400
+Solution trouvée
+
+Bornes indices: 19(d=19) - 14(d=14) | 1.295357s
+Génération du graphe pour la distance 16 (indice 16) -> 1706 arcs
+Alber : Nombre de sommets fixés : 38 | arcs restants : 1046/1706 | sommets restants : 245/400
+Aucune solution trouvée
+
+Bornes indices: 19(d=19) - 17(d=17) | 7.853874s
+Génération du graphe pour la distance 18 (indice 18) -> 2304 arcs
+Alber : Nombre de sommets fixés : 24 | arcs restants : 1789/2304 | sommets restants : 315/400
+time out
+Instance lue: pmed1.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 100
+Taille de solution recherchée : 5
+sommets skip : 23 274 275 276 279 284 286 287 289 291 293 294 295 296 297 
+
+Bornes indices: 283(d=298) - 1(d=1) | 0.001437s
+Génération du graphe pour la distance 143 (indice 142) -> 2496 arcs
+Glouton suffisant
+
+Bornes indices: 142(d=143) - 1(d=1) | 0.002289s
+Génération du graphe pour la distance 72 (indice 71) -> 438 arcs
+Alber : Nombre de sommets fixés : 11 | arcs restants : 316/438 | sommets restants : 56/100
+df est trop grand
+
+Bornes indices: 142(d=143) - 72(d=73) | 0.002785s
+Génération du graphe pour la distance 108 (indice 107) -> 1229 arcs
+Alber : Pas de réduction
+Aucune solution trouvée
+
+Bornes indices: 142(d=143) - 108(d=109) | 0.186623s
+Génération du graphe pour la distance 126 (indice 125) -> 1824 arcs
+Alber : Pas de réduction
+Aucune solution trouvée
+
+Bornes indices: 142(d=143) - 126(d=127) | 0.732710s
+Génération du graphe pour la distance 135 (indice 134) -> 2159 arcs
+Glouton suffisant
+
+Bornes indices: 134(d=135) - 126(d=127) | 0.733227s
+Génération du graphe pour la distance 131 (indice 130) -> 1986 arcs
+Glouton suffisant
+
+Bornes indices: 130(d=131) - 126(d=127) | 0.733687s
+Génération du graphe pour la distance 129 (indice 128) -> 1930 arcs
+Alber : Pas de réduction
+Solution trouvée
+
+Bornes indices: 128(d=129) - 126(d=127) | 0.737451s
+Génération du graphe pour la distance 128 (indice 127) -> 1905 arcs
+Alber : Pas de réduction
+Solution trouvée
+
+Bornes indices: 127(d=128) - 126(d=127) | 0.741032s
+Génération du graphe pour la distance 127 (indice 126) -> 1867 arcs
+Alber : Pas de réduction
+Solution trouvée
+
+Indice : 126 - Opti : 127
+time for end : 0.745582s
+Instance lue: pmed20.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 400
+Taille de solution recherchée : 133
+sommets skip : 111 112 
+
+Bornes indices: 110(d=110) - 1(d=1) | 0.077790s
+Génération du graphe pour la distance 55 (indice 55) -> 60893 arcs
+Glouton suffisant
+
+Bornes indices: 55(d=55) - 1(d=1) | 0.273488s
+Génération du graphe pour la distance 28 (indice 28) -> 7630 arcs
+Glouton suffisant
+
+Bornes indices: 28(d=28) - 1(d=1) | 0.283351s
+Génération du graphe pour la distance 14 (indice 14) -> 1050 arcs
+Glouton suffisant
+
+Bornes indices: 14(d=14) - 1(d=1) | 0.284356s
+Génération du graphe pour la distance 7 (indice 7) -> 302 arcs
+Alber : Nombre de sommets fixés : 90 | arcs restants : 281/302 | sommets restants : 141/400
+Aucune solution trouvée
+
+Bornes indices: 14(d=14) - 8(d=8) | 0.286277s
+Génération du graphe pour la distance 11 (indice 11) -> 639 arcs
+Alber : Nombre de sommets fixés : 82 | arcs restants : 498/639 | sommets restants : 119/400
+Aucune solution trouvée
+
+Bornes indices: 14(d=14) - 12(d=12) | 0.289612s
+Génération du graphe pour la distance 13 (indice 13) -> 869 arcs
+Alber : Nombre de sommets fixés : 79 | arcs restants : 526/869 | sommets restants : 103/400
+Solution trouvée
+
+Bornes indices: 13(d=13) - 12(d=12) | 0.295373s
+Génération du graphe pour la distance 12 (indice 12) -> 732 arcs
+Alber : Nombre de sommets fixés : 86 | arcs restants : 527/732 | sommets restants : 98/400
+Aucune solution trouvée
+
+Indice : 13 - Opti : 13
+time for end : 0.299204s
+Instance lue: pmed21.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 500
+Taille de solution recherchée : 5
+sommets skip : 84 88 89 
+
+Bornes indices: 87(d=90) - 1(d=1) | 0.148637s
+Génération du graphe pour la distance 44 (indice 44) -> 96580 arcs
+Glouton suffisant
+
+Bornes indices: 44(d=44) - 1(d=1) | 0.545272s
+Génération du graphe pour la distance 22 (indice 22) -> 11060 arcs
+Alber : Nombre de sommets fixés : 6 | arcs restants : 9226/11060 | sommets restants : 484/500
+df est trop grand
+
+Bornes indices: 44(d=44) - 23(d=23) | 0.599790s
+Génération du graphe pour la distance 33 (indice 33) -> 47069 arcs
+Alber : Nombre de sommets fixés : 1 | arcs restants : 31597/47069 | sommets restants : 497/500
+Aucune solution trouvée
+
+Bornes indices: 44(d=44) - 34(d=34) | 752.960050s
+Génération du graphe pour la distance 39 (indice 39) -> 76097 arcs
+Alber : Pas de réduction
+time out
+Instance lue: pmed22.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 500
+Taille de solution recherchée : 10
+sommets skip : 105 111 
+
+Bornes indices: 110(d=112) - 1(d=1) | 0.148020s
+Génération du graphe pour la distance 55 (indice 55) -> 114284 arcs
+Glouton suffisant
+
+Bornes indices: 55(d=55) - 1(d=1) | 0.682869s
+Génération du graphe pour la distance 28 (indice 28) -> 20732 arcs
+Alber : Nombre de sommets fixés : 3 | arcs restants : 20241/20732 | sommets restants : 494/500
+time out
+Instance lue: pmed23.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 500
+Taille de solution recherchée : 50
+sommets skip : 
+
+Bornes indices: 93(d=93) - 1(d=1) | 0.147138s
+Génération du graphe pour la distance 47 (indice 47) -> 99391 arcs
+Glouton suffisant
+
+Bornes indices: 47(d=47) - 1(d=1) | 0.574997s
+Génération du graphe pour la distance 24 (indice 24) -> 13310 arcs
+Glouton suffisant
+
+Bornes indices: 24(d=24) - 1(d=1) | 0.597808s
+Génération du graphe pour la distance 12 (indice 12) -> 1687 arcs
+Alber : Nombre de sommets fixés : 69 | arcs restants : 1120/1687 | sommets restants : 263/500
+df est trop grand
+
+Bornes indices: 24(d=24) - 13(d=13) | 0.605472s
+Génération du graphe pour la distance 18 (indice 18) -> 5030 arcs
+Alber : Nombre de sommets fixés : 22 | arcs restants : 3316/5030 | sommets restants : 428/500
+time out
+Instance lue: pmed24.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 500
+Taille de solution recherchée : 100
+sommets skip : 91 95 96 97 99 
+
+Bornes indices: 94(d=98) - 1(d=1) | 0.146484s
+Génération du graphe pour la distance 47 (indice 47) -> 102650 arcs
+Glouton suffisant
+
+Bornes indices: 47(d=47) - 1(d=1) | 0.591144s
+Génération du graphe pour la distance 24 (indice 24) -> 13060 arcs
+Glouton suffisant
+
+Bornes indices: 24(d=24) - 1(d=1) | 0.611363s
+Génération du graphe pour la distance 12 (indice 12) -> 1748 arcs
+Alber : Nombre de sommets fixés : 86 | arcs restants : 891/1748 | sommets restants : 156/500
+Aucune solution trouvée
+
+Bornes indices: 24(d=24) - 13(d=13) | 0.623322s
+Génération du graphe pour la distance 18 (indice 18) -> 5121 arcs
+Glouton suffisant
+
+Bornes indices: 18(d=18) - 13(d=13) | 0.629592s
+Génération du graphe pour la distance 15 (indice 15) -> 3059 arcs
+Alber : Nombre de sommets fixés : 39 | arcs restants : 1759/3059 | sommets restants : 344/500
+time out
+Instance lue: pmed25.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 500
+Taille de solution recherchée : 167
+sommets skip : 98 99 100 
+
+Bornes indices: 98(d=101) - 1(d=1) | 0.148917s
+Génération du graphe pour la distance 49 (indice 49) -> 107669 arcs
+Glouton suffisant
+
+Bornes indices: 49(d=49) - 1(d=1) | 0.634564s
+Génération du graphe pour la distance 25 (indice 25) -> 18733 arcs
+Glouton suffisant
+
+Bornes indices: 25(d=25) - 1(d=1) | 0.670215s
+Génération du graphe pour la distance 13 (indice 13) -> 2405 arcs
+Glouton suffisant
+
+Bornes indices: 13(d=13) - 1(d=1) | 0.673778s
+Génération du graphe pour la distance 7 (indice 7) -> 650 arcs
+Alber : Nombre de sommets fixés : 109 | arcs restants : 506/650 | sommets restants : 156/500
+Aucune solution trouvée
+
+Bornes indices: 13(d=13) - 8(d=8) | 0.677342s
+Génération du graphe pour la distance 10 (indice 10) -> 1289 arcs
+Alber : Nombre de sommets fixés : 89 | arcs restants : 797/1289 | sommets restants : 175/500
+Aucune solution trouvée
+
+Bornes indices: 13(d=13) - 11(d=11) | 0.689042s
+Génération du graphe pour la distance 12 (indice 12) -> 1993 arcs
+Glouton suffisant
+
+Bornes indices: 12(d=12) - 11(d=11) | 0.691578s
+Génération du graphe pour la distance 11 (indice 11) -> 1628 arcs
+Alber : Nombre de sommets fixés : 81 | arcs restants : 876/1628 | sommets restants : 208/500
+Solution trouvée
+
+Indice : 11 - Opti : 11
+time for end : 0.714184s
+Instance lue: pmed26.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 600
+Taille de solution recherchée : 5
+sommets skip : 82 83 84 85 86 
+
+Bornes indices: 81(d=81) - 1(d=1) | 0.249526s
+Génération du graphe pour la distance 41 (indice 41) -> 150966 arcs
+Glouton suffisant
+
+Bornes indices: 41(d=41) - 1(d=1) | 1.068876s
+Génération du graphe pour la distance 21 (indice 21) -> 22538 arcs
+Alber : Nombre de sommets fixés : 4 | arcs restants : 19875/22538 | sommets restants : 590/600
+Aucune solution trouvée
+
+Bornes indices: 41(d=41) - 22(d=22) | 1.250085s
+Génération du graphe pour la distance 31 (indice 31) -> 87503 arcs
+Alber : Pas de réduction
+time out
+Instance lue: pmed27.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 600
+Taille de solution recherchée : 10
+sommets skip : 87 
+
+Bornes indices: 89(d=90) - 1(d=1) | 0.262477s
+Génération du graphe pour la distance 45 (indice 45) -> 165414 arcs
+Glouton suffisant
+
+Bornes indices: 45(d=45) - 1(d=1) | 1.217276s
+Génération du graphe pour la distance 23 (indice 23) -> 34225 arcs
+Alber : Nombre de sommets fixés : 5 | arcs restants : 23039/34225 | sommets restants : 587/600
+time out
+Instance lue: pmed28.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 600
+Taille de solution recherchée : 60
+sommets skip : 104 107 108 109 
+
+Bornes indices: 105(d=106) - 1(d=1) | 0.261427s
+Génération du graphe pour la distance 53 (indice 53) -> 176718 arcs
+Glouton suffisant
+
+Bornes indices: 53(d=53) - 1(d=1) | 1.341424s
+Génération du graphe pour la distance 27 (indice 27) -> 63056 arcs
+Glouton suffisant
+
+Bornes indices: 27(d=27) - 1(d=1) | 1.533801s
+Génération du graphe pour la distance 14 (indice 14) -> 6129 arcs
+Alber : Nombre de sommets fixés : 37 | arcs restants : 2587/6129 | sommets restants : 449/600
+time out
+Instance lue: pmed29.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 600
+Taille de solution recherchée : 120
+sommets skip : 85 
+
+Bornes indices: 86(d=87) - 1(d=1) | 0.247916s
+Génération du graphe pour la distance 43 (indice 43) -> 159136 arcs
+Glouton suffisant
+
+Bornes indices: 43(d=43) - 1(d=1) | 1.144042s
+Génération du graphe pour la distance 22 (indice 22) -> 25994 arcs
+Glouton suffisant
+
+Bornes indices: 22(d=22) - 1(d=1) | 1.200574s
+Génération du graphe pour la distance 11 (indice 11) -> 2798 arcs
+Alber : Nombre de sommets fixés : 54 | arcs restants : 1618/2798 | sommets restants : 406/600
+time out
+Instance lue: pmed2.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 100
+Taille de solution recherchée : 10
+sommets skip : 13 16 259 269 270 271 277 283 288 289 290 291 292 293 294 295 296 297 299 300 301 303 304 305 306 307 308 309 310 311 312 313 314 315 
+
+Bornes indices: 281(d=302) - 1(d=1) | 0.001478s
+Génération du graphe pour la distance 143 (indice 141) -> 2608 arcs
+Glouton suffisant
+
+Bornes indices: 141(d=143) - 1(d=1) | 0.002319s
+Génération du graphe pour la distance 73 (indice 71) -> 535 arcs
+Alber : Nombre de sommets fixés : 7 | arcs restants : 320/535 | sommets restants : 72/100
+Aucune solution trouvée
+
+Bornes indices: 141(d=143) - 72(d=74) | 0.002909s
+Génération du graphe pour la distance 108 (indice 106) -> 1400 arcs
+Glouton suffisant
+
+Bornes indices: 106(d=108) - 72(d=74) | 0.003249s
+Génération du graphe pour la distance 91 (indice 89) -> 904 arcs
+Alber : Nombre de sommets fixés : 1 | arcs restants : 901/904 | sommets restants : 98/100
+Aucune solution trouvée
+
+Bornes indices: 106(d=108) - 90(d=92) | 2.363819s
+Génération du graphe pour la distance 100 (indice 98) -> 1156 arcs
+Alber : Pas de réduction
+Solution trouvée
+
+Bornes indices: 98(d=100) - 90(d=92) | 2.826398s
+Génération du graphe pour la distance 96 (indice 94) -> 1037 arcs
+Alber : Nombre de sommets fixés : 2 | arcs restants : 585/1037 | sommets restants : 85/100
+Aucune solution trouvée
+
+Bornes indices: 98(d=100) - 95(d=97) | 3.120614s
+Génération du graphe pour la distance 98 (indice 96) -> 1092 arcs
+Alber : Pas de réduction
+Solution trouvée
+
+Bornes indices: 96(d=98) - 95(d=97) | 5.301002s
+Génération du graphe pour la distance 97 (indice 95) -> 1062 arcs
+Alber : Nombre de sommets fixés : 2 | arcs restants : 594/1062 | sommets restants : 83/100
+Aucune solution trouvée
+
+Indice : 96 - Opti : 98
+time for end : 6.005247s
+Instance lue: pmed30.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 600
+Taille de solution recherchée : 200
+sommets skip : 95 
+
+Bornes indices: 94(d=94) - 1(d=1) | 0.273507s
+Génération du graphe pour la distance 47 (indice 47) -> 163754 arcs
+Glouton suffisant
+
+Bornes indices: 47(d=47) - 1(d=1) | 1.214441s
+Génération du graphe pour la distance 24 (indice 24) -> 26099 arcs
+Glouton suffisant
+
+Bornes indices: 24(d=24) - 1(d=1) | 1.266445s
+Génération du graphe pour la distance 12 (indice 12) -> 2827 arcs
+Glouton suffisant
+
+Bornes indices: 12(d=12) - 1(d=1) | 1.270879s
+Génération du graphe pour la distance 6 (indice 6) -> 657 arcs
+Alber : Nombre de sommets fixés : 145 | arcs restants : 566/657 | sommets restants : 179/600
+Aucune solution trouvée
+
+Bornes indices: 12(d=12) - 7(d=7) | 1.276340s
+Génération du graphe pour la distance 9 (indice 9) -> 1452 arcs
+Alber : Nombre de sommets fixés : 114 | arcs restants : 858/1452 | sommets restants : 173/600
+Solution trouvée
+
+Bornes indices: 9(d=9) - 7(d=7) | 1.303209s
+Génération du graphe pour la distance 8 (indice 8) -> 1122 arcs
+Alber : Nombre de sommets fixés : 137 | arcs restants : 726/1122 | sommets restants : 147/600
+Aucune solution trouvée
+
+Indice : 9 - Opti : 9
+time for end : 1.312345s
+Instance lue: pmed31.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 700
+Taille de solution recherchée : 5
+sommets skip : 
+
+Bornes indices: 64(d=64) - 1(d=1) | 0.393140s
+Génération du graphe pour la distance 32 (indice 32) -> 177717 arcs
+Glouton suffisant
+
+Bornes indices: 32(d=32) - 1(d=1) | 1.414850s
+Génération du graphe pour la distance 16 (indice 16) -> 17267 arcs
+Alber : Nombre de sommets fixés : 9 | arcs restants : 13947/17267 | sommets restants : 677/700
+df est trop grand
+
+Bornes indices: 32(d=32) - 17(d=17) | 1.525942s
+Génération du graphe pour la distance 24 (indice 24) -> 80013 arcs
+Alber : Pas de réduction
+time out
+Instance lue: pmed32.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 700
+Taille de solution recherchée : 10
+sommets skip : 75 77 80 117 119 121 123 
+
+Bornes indices: 116(d=122) - 1(d=1) | 0.391916s
+Génération du graphe pour la distance 58 (indice 58) -> 243722 arcs
+Glouton suffisant
+
+Bornes indices: 58(d=58) - 1(d=1) | 2.187699s
+Génération du graphe pour la distance 29 (indice 29) -> 124254 arcs
+Alber : Pas de réduction
+Solution trouvée
+
+Bornes indices: 29(d=29) - 1(d=1) | 741.212096s
+Génération du graphe pour la distance 15 (indice 15) -> 10978 arcs
+Alber : Nombre de sommets fixés : 19 | arcs restants : 6453/10978 | sommets restants : 635/700
+df est trop grand
+
+Bornes indices: 29(d=29) - 16(d=16) | 741.270605s
+Génération du graphe pour la distance 22 (indice 22) -> 46463 arcs
+Alber : Nombre de sommets fixés : 3 | arcs restants : 40395/46463 | sommets restants : 694/700
+time out
+Instance lue: pmed33.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 700
+Taille de solution recherchée : 70
+sommets skip : 71 72 73 
+
+Bornes indices: 70(d=70) - 1(d=1) | 0.396147s
+Génération du graphe pour la distance 35 (indice 35) -> 194548 arcs
+Glouton suffisant
+
+Bornes indices: 35(d=35) - 1(d=1) | 1.596175s
+Génération du graphe pour la distance 18 (indice 18) -> 20590 arcs
+Glouton suffisant
+
+Bornes indices: 18(d=18) - 1(d=1) | 1.640726s
+Génération du graphe pour la distance 9 (indice 9) -> 2459 arcs
+Alber : Nombre de sommets fixés : 87 | arcs restants : 1491/2459 | sommets restants : 336/700
+df est trop grand
+
+Bornes indices: 18(d=18) - 10(d=10) | 1.658982s
+Génération du graphe pour la distance 14 (indice 14) -> 8397 arcs
+Alber : Nombre de sommets fixés : 22 | arcs restants : 5081/8397 | sommets restants : 621/700
+time out
+Instance lue: pmed34.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 700
+Taille de solution recherchée : 140
+sommets skip : 93 94 96 97 
+
+Bornes indices: 93(d=95) - 1(d=1) | 0.388356s
+Génération du graphe pour la distance 47 (indice 47) -> 239397 arcs
+Glouton suffisant
+
+Bornes indices: 47(d=47) - 1(d=1) | 2.121953s
+Génération du graphe pour la distance 24 (indice 24) -> 74666 arcs
+Glouton suffisant
+
+Bornes indices: 24(d=24) - 1(d=1) | 2.369557s
+Génération du graphe pour la distance 12 (indice 12) -> 6116 arcs
+Glouton suffisant
+
+Bornes indices: 12(d=12) - 1(d=1) | 2.383989s
+Génération du graphe pour la distance 6 (indice 6) -> 1196 arcs
+Alber : Nombre de sommets fixés : 154 | arcs restants : 802/1196 | sommets restants : 189/700
+df est trop grand
+
+Bornes indices: 12(d=12) - 7(d=7) | 2.395341s
+Génération du graphe pour la distance 9 (indice 9) -> 2826 arcs
+Alber : Nombre de sommets fixés : 77 | arcs restants : 1743/2826 | sommets restants : 413/700
+time out
+Instance lue: pmed35.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 800
+Taille de solution recherchée : 5
+sommets skip : 69 70 71 72 73 
+
+Bornes indices: 68(d=68) - 1(d=1) | 0.592871s
+Génération du graphe pour la distance 34 (indice 34) -> 292919 arcs
+Glouton suffisant
+
+Bornes indices: 34(d=34) - 1(d=1) | 2.941348s
+Génération du graphe pour la distance 17 (indice 17) -> 46867 arcs
+Alber : Nombre de sommets fixés : 6 | arcs restants : 36555/46867 | sommets restants : 786/800
+df est trop grand
+
+Bornes indices: 34(d=34) - 18(d=18) | 3.459509s
+Génération du graphe pour la distance 26 (indice 26) -> 200266 arcs
+Alber : Pas de réduction
+time out
+Instance lue: pmed36.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 800
+Taille de solution recherchée : 10
+sommets skip : 
+
+Bornes indices: 86(d=86) - 1(d=1) | 0.569835s
+Génération du graphe pour la distance 43 (indice 43) -> 312320 arcs
+Glouton suffisant
+
+Bornes indices: 43(d=43) - 1(d=1) | 3.194581s
+Génération du graphe pour la distance 22 (indice 22) -> 84553 arcs
+Alber : Pas de réduction
+time out
+Instance lue: pmed37.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 800
+Taille de solution recherchée : 80
+sommets skip : 77 
+
+Bornes indices: 76(d=76) - 1(d=1) | 0.584025s
+Génération du graphe pour la distance 38 (indice 38) -> 293405 arcs
+Glouton suffisant
+
+Bornes indices: 38(d=38) - 1(d=1) | 2.924870s
+Génération du graphe pour la distance 19 (indice 19) -> 36902 arcs
+Glouton suffisant
+
+Bornes indices: 19(d=19) - 1(d=1) | 3.013578s
+Génération du graphe pour la distance 10 (indice 10) -> 4136 arcs
+Alber : Nombre de sommets fixés : 58 | arcs restants : 2665/4136 | sommets restants : 575/800
+Aucune solution trouvée
+
+Bornes indices: 19(d=19) - 11(d=11) | 3.039428s
+Génération du graphe pour la distance 15 (indice 15) -> 14670 arcs
+Alber : Nombre de sommets fixés : 14 | arcs restants : 10734/14670 | sommets restants : 760/800
+time out
+Instance lue: pmed38.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 900
+Taille de solution recherchée : 5
+sommets skip : 76 79 82 83 
+
+Bornes indices: 79(d=81) - 1(d=1) | 0.821934s
+Génération du graphe pour la distance 40 (indice 40) -> 399932 arcs
+Glouton suffisant
+
+Bornes indices: 40(d=40) - 1(d=1) | 4.706162s
+Génération du graphe pour la distance 20 (indice 20) -> 137809 arcs
+Alber : Pas de réduction
+time out
+Instance lue: pmed39.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 900
+Taille de solution recherchée : 10
+sommets skip : 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 75 76 77 78 112 
+
+Bornes indices: 94(d=114) - 1(d=1) | 0.826921s
+Génération du graphe pour la distance 47 (indice 47) -> 403529 arcs
+Glouton suffisant
+
+Bornes indices: 47(d=47) - 1(d=1) | 4.774251s
+Génération du graphe pour la distance 24 (indice 24) -> 246061 arcs
+Glouton suffisant
+
+Bornes indices: 24(d=24) - 1(d=1) | 6.431522s
+Génération du graphe pour la distance 12 (indice 12) -> 18938 arcs
+Alber : Nombre de sommets fixés : 16 | arcs restants : 10939/18938 | sommets restants : 846/900
+df est trop grand
+
+Bornes indices: 24(d=24) - 13(d=13) | 6.565629s
+Génération du graphe pour la distance 18 (indice 18) -> 93780 arcs
+Alber : Pas de réduction
+time out
+Instance lue: pmed3.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 100
+Taille de solution recherchée : 10
+sommets skip : 2 258 267 271 280 284 292 298 300 302 306 309 311 312 319 323 325 326 327 328 331 333 334 336 338 339 340 341 342 343 345 346 347 348 349 350 351 352 353 354 355 356 357 358 359 360 361 362 363 364 365 366 367 369 370 371 372 373 374 375 376 377 378 379 380 381 382 383 384 385 386 387 
+
+Bornes indices: 315(d=368) - 1(d=1) | 0.001463s
+Génération du graphe pour la distance 159 (indice 158) -> 3095 arcs
+Glouton suffisant
+
+Bornes indices: 158(d=159) - 1(d=1) | 0.002595s
+Génération du graphe pour la distance 80 (indice 79) -> 564 arcs
+Alber : Nombre de sommets fixés : 6 | arcs restants : 364/564 | sommets restants : 74/100
+Aucune solution trouvée
+
+Bornes indices: 158(d=159) - 80(d=81) | 0.004094s
+Génération du graphe pour la distance 120 (indice 119) -> 1621 arcs
+Glouton suffisant
+
+Bornes indices: 119(d=120) - 80(d=81) | 0.004499s
+Génération du graphe pour la distance 100 (indice 99) -> 983 arcs
+Glouton suffisant
+
+Bornes indices: 99(d=100) - 80(d=81) | 0.004716s
+Génération du graphe pour la distance 90 (indice 89) -> 747 arcs
+Alber : Nombre de sommets fixés : 1 | arcs restants : 727/747 | sommets restants : 98/100
+Aucune solution trouvée
+
+Bornes indices: 99(d=100) - 90(d=91) | 5.491767s
+Génération du graphe pour la distance 95 (indice 94) -> 865 arcs
+Alber : Nombre de sommets fixés : 1 | arcs restants : 863/865 | sommets restants : 97/100
+Solution trouvée
+
+Bornes indices: 94(d=95) - 90(d=91) | 8.127561s
+Génération du graphe pour la distance 93 (indice 92) -> 816 arcs
+Alber : Nombre de sommets fixés : 1 | arcs restants : 815/816 | sommets restants : 97/100
+Solution trouvée
+
+Bornes indices: 92(d=93) - 90(d=91) | 11.845705s
+Génération du graphe pour la distance 92 (indice 91) -> 790 arcs
+Alber : Nombre de sommets fixés : 1 | arcs restants : 790/790 | sommets restants : 98/100
+Aucune solution trouvée
+
+Indice : 92 - Opti : 93
+time for end : 31.880042s
+Instance lue: pmed40.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 900
+Taille de solution recherchée : 90
+sommets skip : 67 
+
+Bornes indices: 67(d=68) - 1(d=1) | 0.806998s
+Génération du graphe pour la distance 34 (indice 34) -> 369145 arcs
+Glouton suffisant
+
+Bornes indices: 34(d=34) - 1(d=1) | 4.137643s
+Génération du graphe pour la distance 17 (indice 17) -> 44927 arcs
+Glouton suffisant
+
+Bornes indices: 17(d=17) - 1(d=1) | 4.253770s
+Génération du graphe pour la distance 9 (indice 9) -> 5066 arcs
+Alber : Nombre de sommets fixés : 62 | arcs restants : 3216/5066 | sommets restants : 650/900
+time out
+Instance lue: pmed4.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 100
+Taille de solution recherchée : 20
+sommets skip : 1 2 4 21 26 32 283 290 291 293 295 296 298 299 300 301 302 303 304 305 306 308 309 310 311 312 313 314 315 316 317 318 319 320 321 322 323 324 325 326 328 329 330 331 333 334 
+
+Bornes indices: 288(d=332) - 1(d=3) | 0.001542s
+Génération du graphe pour la distance 150 (indice 144) -> 2228 arcs
+Glouton suffisant
+
+Bornes indices: 144(d=150) - 1(d=3) | 0.002226s
+Génération du graphe pour la distance 78 (indice 72) -> 421 arcs
+Glouton suffisant
+
+Bornes indices: 72(d=78) - 1(d=3) | 0.002322s
+Génération du graphe pour la distance 42 (indice 36) -> 116 arcs
+Alber : Nombre de sommets fixés : 26 | arcs restants : 109/116 | sommets restants : 25/100
+df est trop grand
+
+Bornes indices: 72(d=78) - 37(d=43) | 0.002503s
+Génération du graphe pour la distance 60 (indice 54) -> 221 arcs
+Alber : Nombre de sommets fixés : 17 | arcs restants : 188/221 | sommets restants : 43/100
+Aucune solution trouvée
+
+Bornes indices: 72(d=78) - 55(d=61) | 0.002819s
+Génération du graphe pour la distance 69 (indice 63) -> 307 arcs
+Alber : Nombre de sommets fixés : 11 | arcs restants : 225/307 | sommets restants : 61/100
+Aucune solution trouvée
+
+Bornes indices: 72(d=78) - 64(d=70) | 0.004021s
+Génération du graphe pour la distance 74 (indice 68) -> 366 arcs
+Alber : Nombre de sommets fixés : 11 | arcs restants : 235/366 | sommets restants : 41/100
+Solution trouvée
+
+Bornes indices: 68(d=74) - 64(d=70) | 0.005779s
+Génération du graphe pour la distance 72 (indice 66) -> 348 arcs
+Alber : Nombre de sommets fixés : 8 | arcs restants : 220/348 | sommets restants : 53/100
+Aucune solution trouvée
+
+Bornes indices: 68(d=74) - 67(d=73) | 0.019920s
+Génération du graphe pour la distance 73 (indice 67) -> 362 arcs
+Alber : Nombre de sommets fixés : 10 | arcs restants : 221/362 | sommets restants : 47/100
+Aucune solution trouvée
+
+Indice : 68 - Opti : 74
+time for end : 0.036694s
+Instance lue: pmed5.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 100
+Taille de solution recherchée : 33
+sommets skip : 239 249 250 255 256 260 263 266 267 268 269 270 271 272 273 274 275 276 277 279 280 281 282 284 285 286 287 288 289 290 291 292 293 294 295 296 297 298 299 300 301 302 303 304 305 306 307 308 309 310 311 
+
+Bornes indices: 260(d=283) - 1(d=1) | 0.001435s
+Génération du graphe pour la distance 130 (indice 130) -> 2764 arcs
+Glouton suffisant
+
+Bornes indices: 130(d=130) - 1(d=1) | 0.002412s
+Génération du graphe pour la distance 65 (indice 65) -> 515 arcs
+Glouton suffisant
+
+Bornes indices: 65(d=65) - 1(d=1) | 0.002569s
+Génération du graphe pour la distance 33 (indice 33) -> 131 arcs
+Alber : Nombre de sommets fixés : 20 | arcs restants : 123/131 | sommets restants : 28/100
+Aucune solution trouvée
+
+Bornes indices: 65(d=65) - 34(d=34) | 0.002756s
+Génération du graphe pour la distance 49 (indice 49) -> 287 arcs
+Glouton suffisant
+
+Bornes indices: 49(d=49) - 34(d=34) | 0.002849s
+Génération du graphe pour la distance 41 (indice 41) -> 201 arcs
+Alber : Nombre de sommets fixés : 16 | arcs restants : 153/201 | sommets restants : 39/100
+Aucune solution trouvée
+
+Bornes indices: 49(d=49) - 42(d=42) | 0.003097s
+Génération du graphe pour la distance 45 (indice 45) -> 235 arcs
+Alber : Nombre de sommets fixés : 18 | arcs restants : 177/235 | sommets restants : 33/100
+Aucune solution trouvée
+
+Bornes indices: 49(d=49) - 46(d=46) | 0.003375s
+Génération du graphe pour la distance 47 (indice 47) -> 253 arcs
+Alber : Nombre de sommets fixés : 18 | arcs restants : 192/253 | sommets restants : 32/100
+Aucune solution trouvée
+
+Bornes indices: 49(d=49) - 48(d=48) | 0.003691s
+Génération du graphe pour la distance 48 (indice 48) -> 271 arcs
+Glouton suffisant
+
+Indice : 48 - Opti : 48
+time for end : 0.003766s
+Instance lue: pmed6.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 200
+Taille de solution recherchée : 5
+sommets skip : 175 176 184 188 189 190 193 194 196 197 
+
+Bornes indices: 187(d=195) - 1(d=1) | 0.010439s
+Génération du graphe pour la distance 94 (indice 94) -> 13859 arcs
+Glouton suffisant
+
+Bornes indices: 94(d=94) - 1(d=1) | 0.028936s
+Génération du graphe pour la distance 47 (indice 47) -> 1980 arcs
+Alber : Nombre de sommets fixés : 7 | arcs restants : 1459/1980 | sommets restants : 174/200
+df est trop grand
+
+Bornes indices: 94(d=94) - 48(d=48) | 0.031728s
+Génération du graphe pour la distance 71 (indice 71) -> 7101 arcs
+Alber : Pas de réduction
+Aucune solution trouvée
+
+Bornes indices: 94(d=94) - 72(d=72) | 38.347411s
+Génération du graphe pour la distance 83 (indice 83) -> 10770 arcs
+Alber : Pas de réduction
+Aucune solution trouvée
+
+Bornes indices: 94(d=94) - 84(d=84) | 92.512025s
+Génération du graphe pour la distance 89 (indice 89) -> 12546 arcs
+Glouton suffisant
+
+Bornes indices: 89(d=89) - 84(d=84) | 92.526240s
+Génération du graphe pour la distance 86 (indice 86) -> 11644 arcs
+Alber : Pas de réduction
+Solution trouvée
+
+Bornes indices: 86(d=86) - 84(d=84) | 92.636624s
+Génération du graphe pour la distance 85 (indice 85) -> 11350 arcs
+Alber : Pas de réduction
+Solution trouvée
+
+Bornes indices: 85(d=85) - 84(d=84) | 92.740807s
+Génération du graphe pour la distance 84 (indice 84) -> 11052 arcs
+Alber : Pas de réduction
+Solution trouvée
+
+Indice : 84 - Opti : 84
+time for end : 92.796595s
+Instance lue: pmed7.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 200
+Taille de solution recherchée : 10
+sommets skip : 163 167 170 171 173 174 175 176 177 178 179 180 181 182 
+
+Bornes indices: 169(d=183) - 1(d=1) | 0.010667s
+Génération du graphe pour la distance 85 (indice 85) -> 12206 arcs
+Glouton suffisant
+
+Bornes indices: 85(d=85) - 1(d=1) | 0.024234s
+Génération du graphe pour la distance 43 (indice 43) -> 2151 arcs
+Alber : Nombre de sommets fixés : 6 | arcs restants : 1355/2151 | sommets restants : 164/200
+Aucune solution trouvée
+
+Bornes indices: 85(d=85) - 44(d=44) | 0.027600s
+Génération du graphe pour la distance 64 (indice 64) -> 6349 arcs
+Alber : Pas de réduction
+Solution trouvée
+
+Bornes indices: 64(d=64) - 44(d=44) | 82.641098s
+Génération du graphe pour la distance 54 (indice 54) -> 4042 arcs
+Alber : Nombre de sommets fixés : 3 | arcs restants : 2297/4042 | sommets restants : 190/200
+Aucune solution trouvée
+
+Bornes indices: 64(d=64) - 55(d=55) | 109.510062s
+Génération du graphe pour la distance 59 (indice 59) -> 5093 arcs
+Alber : Nombre de sommets fixés : 1 | arcs restants : 4876/5093 | sommets restants : 195/200
+time out
+Instance lue: pmed8.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 200
+Taille de solution recherchée : 20
+sommets skip : 189 192 198 201 203 204 207 209 210 211 212 215 216 217 218 219 
+
+Bornes indices: 203(d=214) - 1(d=1) | 0.010818s
+Génération du graphe pour la distance 102 (indice 102) -> 15287 arcs
+Glouton suffisant
+
+Bornes indices: 102(d=102) - 1(d=1) | 0.032404s
+Génération du graphe pour la distance 51 (indice 51) -> 2575 arcs
+Alber : Nombre de sommets fixés : 7 | arcs restants : 1884/2575 | sommets restants : 181/200
+Aucune solution trouvée
+
+Bornes indices: 102(d=102) - 52(d=52) | 618.273277s
+Génération du graphe pour la distance 77 (indice 77) -> 8655 arcs
+Glouton suffisant
+
+Bornes indices: 77(d=77) - 52(d=52) | 618.280026s
+Génération du graphe pour la distance 64 (indice 64) -> 5031 arcs
+Glouton suffisant
+
+Bornes indices: 64(d=64) - 52(d=52) | 618.283077s
+Génération du graphe pour la distance 58 (indice 58) -> 3790 arcs
+Alber : Nombre de sommets fixés : 3 | arcs restants : 3633/3790 | sommets restants : 194/200
+Solution trouvée
+
+Bornes indices: 58(d=58) - 52(d=52) | 702.964282s
+Génération du graphe pour la distance 55 (indice 55) -> 3248 arcs
+Alber : Nombre de sommets fixés : 4 | arcs restants : 3175/3248 | sommets restants : 191/200
+Solution trouvée
+
+Bornes indices: 55(d=55) - 52(d=52) | 823.879477s
+Génération du graphe pour la distance 53 (indice 53) -> 2895 arcs
+Alber : Nombre de sommets fixés : 6 | arcs restants : 2683/2895 | sommets restants : 185/200
+time out
+Instance lue: pmed9.txt
+k nombre d'IS : 8
+Nombre de sommet du graphe d'origine : 200
+Taille de solution recherchée : 40
+sommets skip : 179 182 187 188 189 190 191 192 193 194 196 199 200 201 202 203 204 205 206 207 208 209 210 211 212 213 
+
+Bornes indices: 188(d=214) - 1(d=1) | 0.010703s
+Génération du graphe pour la distance 94 (indice 94) -> 14870 arcs
+Glouton suffisant
+
+Bornes indices: 94(d=94) - 1(d=1) | 0.031859s
+Génération du graphe pour la distance 47 (indice 47) -> 2429 arcs
+Glouton suffisant
+
+Bornes indices: 47(d=47) - 1(d=1) | 0.033274s
+Génération du graphe pour la distance 24 (indice 24) -> 452 arcs
+Alber : Nombre de sommets fixés : 38 | arcs restants : 340/452 | sommets restants : 49/200
+Aucune solution trouvée
+
+Bornes indices: 47(d=47) - 25(d=25) | 0.034359s
+Génération du graphe pour la distance 36 (indice 36) -> 1147 arcs
+Alber : Nombre de sommets fixés : 20 | arcs restants : 566/1147 | sommets restants : 107/200
+Aucune solution trouvée
+
+Bornes indices: 47(d=47) - 37(d=37) | 0.162656s
+Génération du graphe pour la distance 42 (indice 42) -> 1753 arcs
+Glouton suffisant
+
+Bornes indices: 42(d=42) - 37(d=37) | 0.163401s
+Génération du graphe pour la distance 39 (indice 39) -> 1406 arcs
+Glouton suffisant
+
+Bornes indices: 39(d=39) - 37(d=37) | 0.163978s
+Génération du graphe pour la distance 38 (indice 38) -> 1312 arcs
+Glouton suffisant
+
+Bornes indices: 38(d=38) - 37(d=37) | 0.164523s
+Génération du graphe pour la distance 37 (indice 37) -> 1218 arcs
+Alber : Nombre de sommets fixés : 16 | arcs restants : 663/1218 | sommets restants : 120/200
+Solution trouvée
+
+Indice : 37 - Opti : 37
+time for end : 0.169731s

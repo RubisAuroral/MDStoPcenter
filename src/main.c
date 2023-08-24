@@ -57,8 +57,10 @@ int main(int argc, char *argv[]){
 
 	int *bornes = NULL;
 	bornes = calcbornes(g);
-	int max = bornes[0]-1;
-	int min = 1;
+	/*int max = bornes[0]-1;
+	int min = 1;*/
+	int min = invdichotomieChuMin(g, bornes);
+	int max = min*2;
 	min = dichotomie(g, bornes, max, min);
 	printf("\nIndice : %d - Opti : %d\n", min, bornes[min]);
 	free(d0);

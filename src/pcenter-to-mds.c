@@ -38,7 +38,7 @@ int distmin(Graph *g){
 }
 
 int *calcbornes(Graph *g){
-    int taille = distmax(g);
+    int taille = distmax(g)+1;
     int tabtemp[taille];
     memset(tabtemp, 0, taille * sizeof(int));
     for(int i=0; i<g->nbVertices-1; i++){
@@ -114,6 +114,50 @@ int dichotomieChuMin(Graph *g, int *tab){
                 }
                 else{
                     actuel*=2;
+                }
+            }
+        }
+        freeGraph(gtemp);
+    }
+}
+
+int invdichotomieChuMin(Graph *g, int *tab){
+    int actuel=tab[0]-1;
+    while(1){
+        end = clock();
+        printf("\nBornes indices: ? - %d(d=%d) | %fs\n", actuel, tab[actuel], (double)(end - begin) / CLOCKS_PER_SEC);
+        for(int i=0; i<g->nbVertices; i++){
+            d0[i]=0;
+            df[i]=0;
+        }
+        g->adom=g->nbVertices;
+        printf("Génération du graphe pour la distance %d", tab[actuel]);
+        Graph *gtemp = cleanGraph(g->nbVertices);
+        int nbedge = mdsgraph(gtemp, g, tab[actuel]);
+        printf(" -> %d arcs\n", nbedge);
+        created0(gtemp, d0);
+        if(listeSize(d0, g->nbVertices) <= g -> p){ 
+            printf("Glouton suffisant\n");
+            actuel/=2;
+        } else{
+            unDom(gtemp);
+            int newnbedge=0; //nbedge-alber(gtemp, df);
+            int solutionPartielle=listeSize(df, gtemp->nbVertices);
+            if(solutionPartielle!=0) printf("Alber : Nombre de sommets fixés : %d | arcs restants : %d/%d | sommets restants : %d/%d\n", solutionPartielle, newnbedge,nbedge, listeSize(gtemp->ingraph, gtemp->nbVertices), gtemp->nbVertices);
+            else printf("Alber : Pas de réduction\n");
+
+            if(solutionPartielle > g -> p){
+                freeGraph(gtemp);
+                return actuel;
+            } else{
+                BnB(gtemp);
+                if(listeSize(d0, g->nbVertices) <= g -> p){
+                    printf("Solution trouvée\n");
+                    actuel/=2;
+                }
+                else{
+                    freeGraph(gtemp);
+                    return actuel;
                 }
             }
         }
