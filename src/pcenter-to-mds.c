@@ -10,6 +10,8 @@ extern clock_t begin;
 extern clock_t end;
 extern int *d0;
 extern int *df;
+extern int info;
+extern double d;
 
 int compare ( const void * first, const void * second ) {
     int firstInt = * (const int *) first;
@@ -17,6 +19,7 @@ int compare ( const void * first, const void * second ) {
     return firstInt - secondInt;
 }
 
+/*Renvoie la plus grande distance de la matrice de distance de g*/
 int distmax(Graph *g){
     int max=0;
     for(int i=0; i<g->nbVertices-1; i++){
@@ -27,6 +30,7 @@ int distmax(Graph *g){
     return max;
 }
 
+/*Renvoie la plus petite distance de la matrice de distance de g*/
 int distmin(Graph *g){
     int min=INT_MAX;
     for(int i=0; i<g->nbVertices-1; i++){
@@ -37,6 +41,7 @@ int distmin(Graph *g){
     return min;
 }
 
+/*Renvoie le tableau de l'ensemble des distances unique de la matrice de distance de g*/
 int *calcbornes(Graph *g){
     int taille = distmax(g)+1;
     int tabtemp[taille];
@@ -50,20 +55,16 @@ int *calcbornes(Graph *g){
     int *tab = malloc(t2 * sizeof(int));
     tab[0]=t2;
     int n=1;
-    printf("sommets skip : ");
     for(int j=1; j<taille; j++){
         if(tabtemp[j]){
             tab[n]=j;
             n++;
         }
-        else{
-            printf("%d ", j);
-        }
     }
-    printf("\n");
     return tab;
 }
 
+/*Renvoie la n-eme plus petite distance de la matrice de distance de g*/
 int distmin2(Graph *g, int p){
     int valeurs[g->nbVertices * (g->nbVertices - 1) / 2]; // Tableau pour stocker les valeurs de distance
     int index = 0;
@@ -77,6 +78,7 @@ int distmin2(Graph *g, int p){
     return valeurs[p];
 }
 
+/*Effectue la Dichotomie de Chu Min LI -> D'abord on teste l'indice 1, puis l'indice 2, puis l'indice 4, puis 8... jusqu'à trouver une solution*/
 int dichotomieChuMin(Graph *g, int *tab){
     int actuel=1;
     while(1){
@@ -87,28 +89,30 @@ int dichotomieChuMin(Graph *g, int *tab){
             df[i]=0;
         }
         g->adom=g->nbVertices;
-        printf("Génération du graphe pour la distance %d", tab[actuel]);
+        if(info) printf("Génération du graphe pour la distance %d", tab[actuel]);
         Graph *gtemp = cleanGraph(g->nbVertices);
         int nbedge = mdsgraph(gtemp, g, tab[actuel]);
-        printf(" -> %d arcs\n", nbedge);
+        if(info) printf(" -> %d arcs\n", nbedge);
         created0(gtemp, d0);
         if(listeSize(d0, g->nbVertices) <= g -> p){ 
-            printf("Glouton suffisant\n");
+            if(info) printf("Glouton suffisant\n");
             freeGraph(gtemp);
             return actuel;
         } else{
             unDom(gtemp);
             int newnbedge=0; //nbedge-alber(gtemp, df);
             int solutionPartielle=listeSize(df, gtemp->nbVertices);
-            if(solutionPartielle!=0) printf("Alber : Nombre de sommets fixés : %d | arcs restants : %d/%d | sommets restants : %d/%d\n", solutionPartielle, newnbedge,nbedge, listeSize(gtemp->ingraph, gtemp->nbVertices), gtemp->nbVertices);
-            else printf("Alber : Pas de réduction\n");
+            if(info){
+                if(solutionPartielle!=0) printf("Alber : Nombre de sommets fixés : %d | arcs restants : %d/%d | sommets restants : %d/%d\n", solutionPartielle, newnbedge,nbedge, listeSize(gtemp->ingraph, gtemp->nbVertices), gtemp->nbVertices);
+                else printf("Alber : Pas de réduction\n");
+            }
 
             if(solutionPartielle > g -> p){
                 actuel*=2;
             } else{
                 BnB(gtemp);
                 if(listeSize(d0, g->nbVertices) <= g -> p){
-                    printf("Solution trouvée\n");
+                    if(info) printf("Solution trouvée\n");
                     freeGraph(gtemp);
                     return actuel;
                 }
@@ -121,6 +125,8 @@ int dichotomieChuMin(Graph *g, int *tab){
     }
 }
 
+
+/*Effectue l'inverse de la dichotomie de Chu Min (On commence par le dernier indice et on divise par 2)*/
 int invdichotomieChuMin(Graph *g, int *tab){
     int actuel=tab[0]-1;
     while(1){
@@ -131,28 +137,29 @@ int invdichotomieChuMin(Graph *g, int *tab){
             df[i]=0;
         }
         g->adom=g->nbVertices;
-        printf("Génération du graphe pour la distance %d", tab[actuel]);
+        if(info) printf("Génération du graphe pour la distance %d", tab[actuel]);
         Graph *gtemp = cleanGraph(g->nbVertices);
         int nbedge = mdsgraph(gtemp, g, tab[actuel]);
-        printf(" -> %d arcs\n", nbedge);
+        if(info) printf(" -> %d arcs\n", nbedge);
         created0(gtemp, d0);
         if(listeSize(d0, g->nbVertices) <= g -> p){ 
-            printf("Glouton suffisant\n");
+            if(info) printf("Glouton suffisant\n");
             actuel/=2;
         } else{
             unDom(gtemp);
             int newnbedge=0; //nbedge-alber(gtemp, df);
             int solutionPartielle=listeSize(df, gtemp->nbVertices);
-            if(solutionPartielle!=0) printf("Alber : Nombre de sommets fixés : %d | arcs restants : %d/%d | sommets restants : %d/%d\n", solutionPartielle, newnbedge,nbedge, listeSize(gtemp->ingraph, gtemp->nbVertices), gtemp->nbVertices);
-            else printf("Alber : Pas de réduction\n");
-
+            if(info){
+                if(solutionPartielle!=0) printf("Alber : Nombre de sommets fixés : %d | arcs restants : %d/%d | sommets restants : %d/%d\n", solutionPartielle, newnbedge,nbedge, listeSize(gtemp->ingraph, gtemp->nbVertices), gtemp->nbVertices);
+                else printf("Alber : Pas de réduction\n");
+            }
             if(solutionPartielle > g -> p){
                 freeGraph(gtemp);
                 return actuel;
             } else{
                 BnB(gtemp);
                 if(listeSize(d0, g->nbVertices) <= g -> p){
-                    printf("Solution trouvée\n");
+                    if(info) printf("Solution trouvée\n");
                     actuel/=2;
                 }
                 else{
@@ -165,6 +172,7 @@ int invdichotomieChuMin(Graph *g, int *tab){
     }
 }
 
+/*Effectue la dichotomie classique*/
 int dichotomie(Graph *g, int *tab, int sup, int inf){
     while(sup!=inf){
 		end = clock();
@@ -175,34 +183,35 @@ int dichotomie(Graph *g, int *tab, int sup, int inf){
 		}
 
 		g->adom=g->nbVertices;
-		int actuel=(sup+inf)/2;
-		printf("Génération du graphe pour la distance %d (indice %d)", tab[actuel], actuel);
+		int actuel=(sup+inf)*d;
+		if(info) printf("Génération du graphe pour la distance %d (indice %d)", tab[actuel], actuel);
 		Graph *gtemp = cleanGraph(g->nbVertices);
 		int nbedge = mdsgraph(gtemp, g, tab[actuel]);
-		printf(" -> %d arcs\n", nbedge);
+		if(info) printf(" -> %d arcs\n", nbedge);
 		created0(gtemp, d0);
 
 		if(listeSize(d0, g->nbVertices) <= g -> p){ 
-			printf("Glouton suffisant\n");
+			if(info) printf("Glouton suffisant\n");
 			sup=actuel;
 		} else{
 			unDom(gtemp);
 			int newnbedge=nbedge-alber(gtemp, df);
 			int solutionPartielle=listeSize(df, gtemp->nbVertices);
-			if(solutionPartielle!=0) printf("Alber : Nombre de sommets fixés : %d | arcs restants : %d/%d | sommets restants : %d/%d\n", solutionPartielle, newnbedge,nbedge, listeSize(gtemp->ingraph, gtemp->nbVertices), gtemp->nbVertices);
-			else printf("Alber : Pas de réduction\n");
-
+			if(info){
+                if(solutionPartielle!=0) printf("Alber : Nombre de sommets fixés : %d | arcs restants : %d/%d | sommets restants : %d/%d\n", solutionPartielle, newnbedge,nbedge, listeSize(gtemp->ingraph, gtemp->nbVertices), gtemp->nbVertices);
+                else printf("Alber : Pas de réduction\n");
+            }
 			if(solutionPartielle > g -> p){
-				printf("df est trop grand\n");
+				if(info) printf("df est trop grand\n");
 				inf=actuel+1;
 			} else{
 				BnB(gtemp);
 				if(listeSize(d0, g->nbVertices) <= g -> p){
-					printf("Solution trouvée\n");
+					if(info) printf("Solution trouvée\n");
 					sup=actuel;
 				}
 				else{
-					printf("Aucune solution trouvée\n");
+					if(info) printf("Aucune solution trouvée\n");
 					inf=actuel+1;
 				}
 			}
@@ -212,7 +221,7 @@ int dichotomie(Graph *g, int *tab, int sup, int inf){
     return inf;
 }
 
-
+/*Transforme le graphe origine en graphe dépondéré gtemp en fonction de la distance dist*/
 int mdsgraph(Graph *gtemp, Graph *origine, int dist){
     int nbedge=0;
     Edge edge;

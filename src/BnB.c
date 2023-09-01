@@ -120,6 +120,24 @@ int score(Graph *gstate, int * IS, int * P, int sommet){
     return 0;            
 }
 
+/*
+Affiche les IS
+*/
+
+void printIS(int IS[k][gstate->nbVertices]){
+    for(int i=0; i<k; i++){
+        printf("iSET %d={", i);
+        for(int j=0; j<gstate->nbVertices; j++){
+            if(IS[i][j]) printf("%d ", j+1);
+        }
+        printf("}\n");
+    }
+}
+
+/*
+Affiche les différents S (Non utilisé)
+*/
+
 void printAllS(Graph *gstate){
     printf("S1 :");
     for(int i=0; i<gstate->nbVertices; i++) if(!gstate->dom[i] && !gstate->branched[i]) printf(" %d", i);
@@ -186,16 +204,20 @@ Branche ReduceBranches(){
         }
     }
     int max = maxIS(I, gstate->nbVertices);
-    
-    if(max<=p-(tailledf+level)){
+    /*
+        printf("First part of ReduceBranches\n")
+        printf("lb=%d expected >= %d\n", maxIS(I, gstate->nbVertices), p-(tailledf+level));
+        printIS(I);
+    */
+    if(max<p-(tailledf+level)){
         int size=0;
         for(int i=0; i<gstate->nbVertices; i++){
-            if(gstate->ingraph[i] && !gstate->branched[i] && nbVoisinv2(gstate, i)!=0) size++;
+            if(gstate->ingraph[i] && !gstate->branched[i]) size++;
         }
         B.B = malloc(size * sizeof(int));
         B.x = size;
         int c=0;
-        for(int i=0; i<gstate->nbVertices; i++) if(gstate->ingraph[i] && !gstate->branched[i] && nbVoisinv2(gstate, i)!=0){
+        for(int i=0; i<gstate->nbVertices; i++) if(gstate->ingraph[i] && !gstate->branched[i]){
             B.B[c]=i;
             c++;
         }
@@ -220,7 +242,7 @@ Branche ReduceBranches(){
                 }
             }
             max = maxIS(I, gstate->nbVertices);
-            if(max<=p-(tailledf+level)){
+            if(max<p-(tailledf+level)){
                 P[i]=0;
                 for(int j=0; j<k; j++){
                     for(int z=0; z<gstate->nbVertices+1; z++){
@@ -230,7 +252,11 @@ Branche ReduceBranches(){
             }
         }
     }
-
+    /*
+        printf("Second part of ReduceBranches\n")
+        printf("lb=%d expected >= %d\n", maxIS(I, gstate->nbVertices), p-(tailledf+level));
+        printIS(I);
+    */
     int size=0, size2=0;
     for(int i=0; i<gstate->nbVertices; i++){
         if(gstate->ingraph[i] && !gstate->branched[i] && nbVoisinv2(gstate, i)!=0){
@@ -268,6 +294,10 @@ Branche ReduceBranches2(){
         }
         return B;
 }
+
+/*
+Branch and bound
+*/
 
 void BnB(Graph *gd){
     level=0, backtrack=0;
@@ -324,6 +354,7 @@ void BnB(Graph *gd){
                     if(sauvegarde[level].etage.x>1) qsort(sauvegarde[level].etage.B, sauvegarde[level].etage.x, sizeof(int), myComp);
                     gstate->branched[sauvegarde[level].etage.B[sauvegarde[level].last]]=1;
                     df[sauvegarde[level].etage.B[sauvegarde[level].last]]=1;
+                    //printf("branching on %d\n", sauvegarde[level].etage.B[sauvegarde[level].last]+1);
                     domine(sauvegarde[level].etage.B[sauvegarde[level].last], gstate);
                     level++;
                 }
@@ -333,6 +364,7 @@ void BnB(Graph *gd){
         if(backtrack){
             do{
                 level--;
+                //printf("backtrack on level %d\n", level+tailledf);
                 if(level < 0) return;
                 
                 df[sauvegarde[level].etage.B[sauvegarde[level].last]]=0;
@@ -351,6 +383,7 @@ void BnB(Graph *gd){
             }while (1);
             gstate->branched[sauvegarde[level].etage.B[sauvegarde[level].last]]=1;
             df[sauvegarde[level].etage.B[sauvegarde[level].last]]=1;
+            //printf("branching on %d\n", sauvegarde[level].etage.B[sauvegarde[level].last]+1);
             domine(sauvegarde[level].etage.B[sauvegarde[level].last], gstate);
             level++;
         }

@@ -1,11 +1,14 @@
 #include "../headers/p_center.h"
 
+
+/*Non utilisé : Initialise un tableau à 0*/
 void inittab(int *tab, int size){
   for(int i=0; i<size; i++){
     tab[i]=0;
   }
 }
 
+/*Free une liste*/
 void freeList(adjacencyListElement *node) {
   adjacencyListElement *temp;
   while (node != NULL) {
@@ -15,6 +18,7 @@ void freeList(adjacencyListElement *node) {
   }
 }
 
+/*Retourne le nomnbre de voisin non dominé*/
 int nbVoisin(Graph *g, int x){
   adjacencyListElement *temp = g->adjacencyLists[x];
   int z=0;
@@ -25,6 +29,7 @@ int nbVoisin(Graph *g, int x){
   return z;
 }
 
+/*Retourne le nomnbre de voisin non dominé en se comptant lui même comme un voisin*/
 int nbVoisinv2(Graph *g, int x){
   adjacencyListElement *temp = g->adjacencyLists[x];
   int z=0;
@@ -36,6 +41,7 @@ int nbVoisinv2(Graph *g, int x){
   return z;
 }
 
+/*Retourne le degré d'un sommet*/
 int degre(Graph *g, int x){
   adjacencyListElement *temp = g->adjacencyLists[x];
   int z=0;
@@ -46,6 +52,7 @@ int degre(Graph *g, int x){
   return z;
 }
 
+/*Fonction de test plus utilisé.*/
 void exemple(Graph *g, char *file){
   Edge edge;
 	edge.weight=0;
@@ -60,6 +67,7 @@ void exemple(Graph *g, char *file){
       fclose(f);
 }
 
+/*Ajoute un élément à une liste*/
 void ajoute(adjacencyListElement** firstValue, int nouvelleValeur) {
   adjacencyListElement *element = (adjacencyListElement*) malloc(sizeof(adjacencyListElement));
   adjacencyListElement *last = *firstValue;
@@ -80,7 +88,7 @@ void ajoute(adjacencyListElement** firstValue, int nouvelleValeur) {
   return;
 }
 
-
+/*Affiche le contenu d'une liste*/
 void afficheListe(adjacencyListElement * node) {
   while (node != NULL) {
     printf("%d ", node->v+1);
@@ -89,6 +97,7 @@ void afficheListe(adjacencyListElement * node) {
   printf("\n");
 }
 
+/*Supprime un sommet d'une liste*/
 void deleteNode(adjacencyListElement **L, int x) {
   if(*L==NULL) return;
 
@@ -109,6 +118,7 @@ void deleteNode(adjacencyListElement **L, int x) {
   }
 }
 
+/*Obsolèté : Renvoie la liste L1 de laquelle on a retiré tout éléments de la liste L2*/
 adjacencyListElement* difference(adjacencyListElement * L1, adjacencyListElement* L2) {
   adjacencyListElement *temp, *result = NULL;
   int found;
@@ -131,6 +141,7 @@ adjacencyListElement* difference(adjacencyListElement * L1, adjacencyListElement
   return result;
 }
 
+/*Génère & initialise un graphe vierge*/
 Graph* cleanGraph(int x){
 	Graph *g = (Graph*)malloc(sizeof(*g));
       int nbVertices=x;
@@ -153,6 +164,7 @@ Graph* cleanGraph(int x){
         return g;
 }
 
+/*Obsolète : Renvoie si un sommet est présent dans une liste*/
 int inL(adjacencyListElement *adj, int x, int base){
   adjacencyListElement *adj2 = adj;
   while(adj2 != NULL){
@@ -163,6 +175,7 @@ int inL(adjacencyListElement *adj, int x, int base){
   return 0;
 }
 
+/*Obsolète : Renvoie si une liste est inclues dans une autre liste*/
 int inLv2(adjacencyListElement *adj, adjacencyListElement *L){
   int test=0;
   adjacencyListElement *adj2 = adj;
@@ -173,12 +186,14 @@ int inLv2(adjacencyListElement *adj, adjacencyListElement *L){
   return test;
 }
 
+/*Renvoie la taille d'un tableau)*/
 int listeSize(int *L, int taille){
   int count=0;
   for(int i=0; i<taille; i++) count+=L[i];
   return count;
 }
 
+/*Obsolète : Renvoie la taille d'une liste*/
 int listeSize2(adjacencyListElement *L){
   int count = 0;
   adjacencyListElement *temp=L;
@@ -189,6 +204,8 @@ int listeSize2(adjacencyListElement *L){
   return count; 
 }
 
+/*Obsolète : Renvoie l'union de deux listes*/
+
 void Union(int * Liste1, adjacencyListElement * Liste2){
   adjacencyListElement * temp = Liste2;
   while(temp!=NULL){
@@ -198,6 +215,7 @@ void Union(int * Liste1, adjacencyListElement * Liste2){
   freeList(temp);
 }
 
+/*Obsolète : Renvoie l'intersection de deux listes*/
 void Intersection(int *tab, adjacencyListElement *Liste1, int *Liste2){
   adjacencyListElement * temp = Liste1;
   while(temp!=NULL){
@@ -208,6 +226,7 @@ void Intersection(int *tab, adjacencyListElement *Liste1, int *Liste2){
   freeList(temp);
 }
 
+/*Affiche le statut du graphe*/
 void print_graph_status(Graph *g){
   printf("Nombre se sommets : %d\n", g->nbVertices);
   printf("Sommets du graph : ");
@@ -221,6 +240,7 @@ void print_graph_status(Graph *g){
   printf("\n");
 }
 
+/*Affiche un graphe formaté dans le format des instances de Hua*/
 void instanceHua(Graph *g){
   int nbedge=0;
   for(int i=0; i<g->nbVertices; i++){
@@ -240,6 +260,7 @@ void instanceHua(Graph *g){
   }
 }
 
+/*Free le graphe*/
 void freeGraph(Graph *g){
   for(int i=0; i<g->nbVertices; i++) freeList(g->adjacencyLists[i]);
   free(g->adjacencyLists);

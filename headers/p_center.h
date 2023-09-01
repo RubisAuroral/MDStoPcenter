@@ -42,11 +42,11 @@ typedef struct Graph Graph;
 struct Graph{
     int nbVertices;
     int p;
-    int adom;
-    int* dom;
-    int* save;
-    int* branched;
-    int* ingraph;
+    int adom; //Nombre de sommets non couverts/dominés
+    int* dom; //Liste des sommets dominés
+    int* save; //Liste des sommets dominés définitivement
+    int* branched; //Liste des sommets branchés
+    int* ingraph; //Liste des sommets encore présents dans le graphe
     adjacencyListElement** adjacencyLists;
     int** distanceMatrix;
 };

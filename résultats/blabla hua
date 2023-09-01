@@ -1,0 +1,72 @@
+POUR INFO : CUR_BRA_NODE = Élément CUR_BRA_IDX de BRA_STK
+			CUR_BRA_INDEX = BRAIDX[CUR_LEVEL]
+
+
+
+affiche les paramètres de compilation
+affiche l'instance sur laquelle on travaille & donne la borne sup de la recherche
+Créer Config, tableau d'entier
+Créer Location, tableau d'entier
+Créer Etat, tableau de VSTATUS
+Créer PID, tableau de PSTATUS
+Créer liste de branches (BRA_STK)
+Créer le vecteur solution (VEC_SOLUTION)
+Créer la liste de sommets fixés (FIX_STK)
+Créer une liste temporaire (TMP_STK)
+Créer une liste d'adjacence (ADJ_STK)
+Créer MAXIS de liste d'IS (iSET)
+
+Reduce_graph :
+Change rien aux variables ci-dessus
+Actualise le nombre de sommets fixés et de sommets non fixés
+
+Partition_oneproblem
+
+Créer un vecteur nommé subgraphs qui contient tous les sommets
+qui n'ont pas été supprimés à l'étape précédente.
+Il crée notre sous graphe pour la suite du programme.
+VEC_SUBGRAPHS
+
+
+solve_subproblems()
+
+problem number++
+Les sommets fixés sont mis dans USED (équivalent de branched chez moi)
+CFG = tout les sommets de notre VEC_SUBGRAPHS
+LOCATION c'est les indices de chaque sommet dans dans CFG. Exemple : Premier sommet de CFG : 42, dans LOCATION, LOC[42]=0
+j aura pour valeur le nombre de sommet de VEC_SUBGRAPHS à la fin.
+Si la UPPER_BOUND n'a pas été fixé à la main : 
+
+fast_search_initial_solution :
+Pour tous les sommets du graphe
+	Si le sommet est fixé, ajoute le sommet à VEC_SOLUTION
+	Set le status en "branché"
+	Pour chacun de ses voisins, s'il est pas dominé, ajoute 1 au nombre de dominé et set le voisin en dominé
+	S'il est fixé mais pas dominé, tu le domines
+
+Pour tous les sommets du graphe
+	S'il est pas fixé
+		et s'il est pas dominé tu notes 1 dans VAL sinon 0
+		Pour chacun de ses voisins, s'il est pas dominé, tu ajoutes 1 à val
+			-> Pour chaque sommet non fixé, on a son score de domination
+			et tu mets le sommet dans une pile qui est en permance rangé par ordre décroissant de VAL.
+
+Tant qu'on a pas dominé tout le graphe, on prend le premier sommet de la pile
+On vérifie que c'est bien celui qui en domine le plus...
+Puis s'il est pas branché, on l'insère dans le vecteur solution, on domine tous ses voisins etc...
+A la fin on reset le status premier et on retourne le vecteur solution.
+
+On initialise le best_level à notre upper bound
+On initialise BRAIDX et UNDIDX deux tableaux d'entier.
+Si il y a déjà des sommets de fixés, rentre tout de suite dans search_domset
+Sinon fais des trucs
+
+search_domset
+
+bnode prend la valeur du noeud actuel. S'il est nulle (on est donc arrivé à la fin de la liste de branches -> plutôt il n'y a pas de branches), on rollback.
+On va à l'indice suivant
+Si l'indice suivant est finito (none), on backtrack (ça veut dire que y a plus de super branches) Le backtrack ça clear tous les status des sommets de la branche
+Sinon, bnode prend la valeur de CUR_BRA_NODE et on le branche?
+int domc=0 w/e
+Si bnode n'est pas dominé, on le domine, et on ajoute 1 à domc et à CUR_UND_IDX. On swap cfg ? -> On swap la position dans la config de bnode et CUR_UND_IDX
+Pour chacun des voisins, si il est pas dominé on le domine et si le voisin est le voisin est CFG[CUR_UND_IDX] alors on les swap ??

@@ -1,6 +1,8 @@
 #include "../headers/p_center.h"
 #include "../headers/misc.h"
 
+
+/*Choisit le meilleur sommet du grpahe -> Celui qui en dominerait le plus dans l'état actuel*/
 int bestToChoose(Graph *gd){
 	int r,zb=0, b=0;
 	for (int i = 0; i < gd->nbVertices; i++){
@@ -13,6 +15,7 @@ int bestToChoose(Graph *gd){
 	return b;
 }
 
+/*Domine le sommet x et tout ses voisins*/
 void domine(int x, Graph *gd){
 	adjacencyListElement *adj = gd->adjacencyLists[x];
 	while (adj != NULL){
@@ -24,6 +27,7 @@ void domine(int x, Graph *gd){
 	gd->dom[x]=1;
 }
 
+/*Domine définitivement le sommet x et ses voisins -> Utilisé uniquement quand des sommets sont ajoutés par Alber*/
 void dominesave(int x, Graph *gd){
 	adjacencyListElement *adj = gd->adjacencyLists[x];
 	while (adj != NULL){
@@ -33,6 +37,7 @@ void dominesave(int x, Graph *gd){
 	gd->save[x]=1;
 }
 
+/*Domine une liste de sommets*/
 void domineliste(int *sol, Graph *g){
 	for(int i=0; i<g->nbVertices; i++){
 		if(sol[i]==1){
@@ -41,6 +46,7 @@ void domineliste(int *sol, Graph *g){
 	}
 }
 
+/*Vérifie si tous les sommets sont dominés*/
 int alldom(Graph *gd, int x){
 	for(int i=0; i<x; i++){
 		if(gd->dom[i]==0) return 0;
@@ -48,16 +54,19 @@ int alldom(Graph *gd, int x){
 	return 1;
 }
 
+/*Affiche tous les sommets dominés*/
 void afficheDom(Graph *gd){
 	for(int i=0; i<gd->nbVertices; i++) printf("%d", gd->dom[i]);
 	printf("\n");
 }
 
+/*Affiche tous les sommets branchés*/
 void afficheBranched(Graph *gd){
 	for(int i=0; i<gd->nbVertices; i++) printf("%d", gd->branched[i]);
 	printf("\n");
 }
 
+/*Rend non dominé tous les sommets du graphe (sauf ceux qui sont dominés définitivement)*/
 void unDom(Graph *g){
 	for(int i=0; i<g->nbVertices;i++) if(!g->save[i] && g->dom[i]){
 		g->dom[i]=0;
@@ -65,6 +74,7 @@ void unDom(Graph *g){
 	}
 }
 
+/*Créé l'ensemble N1 pour Alber*/
 void createN1(Graph *gd, int x, int *N1){
 	adjacencyListElement *adj = gd->adjacencyLists[x];
 	int adjtab[gd->nbVertices];
@@ -90,6 +100,7 @@ void createN1(Graph *gd, int x, int *N1){
 	}
 }
 
+/*Créé l'ensemble N2 pour Alber*/
 void createN2(Graph *gd, int x, int *N1, int *N2){
 	adjacencyListElement *adj = gd->adjacencyLists[x];
 	int adjtab[gd->nbVertices];
@@ -118,6 +129,7 @@ void createN2(Graph *gd, int x, int *N1, int *N2){
 	}
 }
 
+/*Créé l'ensemble N3 pour Alber*/
 void createN3(Graph *gd, int x, int *N1, int *N2, int *N3){
 	adjacencyListElement *adj = gd->adjacencyLists[x];
 	while (adj != NULL){ 
@@ -126,6 +138,7 @@ void createN3(Graph *gd, int x, int *N1, int *N2, int *N3){
 	}
 }
 
+/*Vérifie si un tableau est vide*/
 int nullTab(int * tab, int taille){
 	for(int i=0; i<taille; i++){
 		if(tab[i]==1) return 0;
@@ -133,12 +146,14 @@ int nullTab(int * tab, int taille){
 	return 1;
 }
 
+/*Vérifie si un tableau est plein*/
 int fullTab(int * tab, int taille){
 	int x=listeSize(tab, taille);
 	if(x==taille) return 1;
 	else return 0;
 }
 
+/*Supprime le sommet x du graphe gd*/
 int reduceGraph(Graph *gd, int x) {
 	int tmp=nbVoisin(gd,x);
 	gd->ingraph[x]=0;
@@ -152,6 +167,7 @@ int reduceGraph(Graph *gd, int x) {
 	return tmp;
 }
 
+/*Applique la simplerules 1*/
 int rule1(Graph *g){
 	int tmp=0;
 	int memory[g->nbVertices];
@@ -176,6 +192,7 @@ int rule1(Graph *g){
 	return tmp;
 }
 
+/*Applique la simplerules 2*/
 int rule2(Graph *g){
 	int tmp=0;
 	for(int i=0; i<g->nbVertices; i++){
@@ -187,6 +204,7 @@ int rule2(Graph *g){
 	return tmp;
 }
 
+/*Applique la simplerules 3*/
 int rule3v1(Graph *g){
 	int tmp=0;
 	for(int i=0; i<g->nbVertices; i++){
@@ -209,6 +227,7 @@ int rule3v1(Graph *g){
 	return tmp;
 }
 
+/*Applique la variante de la simplerules 3*/
 int rule3v2(Graph *g){
 	int tmp=0;
 	for(int i=0; i<g->nbVertices; i++){
@@ -239,7 +258,7 @@ int rule3v2(Graph *g){
 	return tmp;
 }
 
-
+/*Applique la simplerules 4*/
 int rule4(Graph *g){
 	int tmp=0;
 	for(int i=0; i<g->nbVertices; i++){
@@ -270,6 +289,7 @@ int rule4(Graph *g){
 	return tmp;
 }
 
+/*Applique toutes les simplesrules*/
 int simplerules(Graph *g){
 	int delBySimpleRules=0;
 	delBySimpleRules+=rule1(g);
@@ -280,10 +300,12 @@ int simplerules(Graph *g){
 	return delBySimpleRules;
 }
 
+/*Branche tous les sommets qui sont dans df*/
 void branchedf(Graph *g, int *df){
 	for(int i=0; i<g->nbVertices; i++) if(df[i]) g->branched[i]=1;
 }
 
+/*Créé la solution glouton*/
 void created0(Graph *g, int * d0){
 	while(g->adom!=0){
 		int x=bestToChoose(g);
@@ -292,6 +314,7 @@ void created0(Graph *g, int * d0){
 	}
 }
 
+/*Affiche les résultats du preprocessing*/
 void printpreproc(Graph *g, int *df, int *d0){
 	int tailledf=0, tailled0=0;
 	for(int i=0; i<g->nbVertices; i++){
@@ -310,7 +333,7 @@ void printpreproc(Graph *g, int *df, int *d0){
 	printf("Il reste %d sommets potentiels\n", remaining);
 	printf("Nombre de sommets fixés: %d - Best actuel : %d\n", tailledf, tailled0);
 }
-
+/*Applique Alber*/
 int alber(Graph *g, int * df){
 	int tmp=0;
 	int inN3;

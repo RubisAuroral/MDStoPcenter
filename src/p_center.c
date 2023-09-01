@@ -1,3 +1,8 @@
+/*
+FICHIER DE THOMAS BAZAILLE
+*/
+
+
 #include "../headers/p_center.h"
 
 void addEdge(Graph *g, Edge edge){
